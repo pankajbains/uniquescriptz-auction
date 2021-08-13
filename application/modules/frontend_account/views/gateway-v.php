@@ -1,4 +1,20 @@
 
+ <style>
+        .stripe-button-el span {
+        background:#595959;
+        }
+        .stripe-button-el{
+
+        background:#595959;
+        width:100%;
+        height:40px;
+        line-height:40px;
+        font-size:13px;
+
+        font-weight:400;
+        }
+</style>
+	
 		<!-- Begin Hiraola's Page Area -->
         <div class="about-us-area account-page-area pb-5">
             <div class="container">
@@ -16,7 +32,10 @@
 
 
                         <div class="col-lg-9">
-                           
+						<?php  
+							$url = $this->uri->segment(2);  
+						 
+						?>
                                     <div class="myaccount-orders">
                                         <h4 class="small-title">Gatways</h4>
 											<div class="table-responsive">
@@ -30,18 +49,52 @@
 														</tr>
 														<?php
 															for($i=0;$i<count($content_gateway);$i++){
+																 
+															if($content_record[0]['coupon_rate']!=''){
+																$percent = $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
+																$price= number_format(($percent)+$content_gateway[$i]['gateway_other_fee']+$content_record[0]['coupon_rate'],'2','.',' ');
 																
-																if($content_record[0]['coupon_rate']!=''){
-																$price= $content_gateway[$i]['gateway_fee']+$content_gateway[$i]['gateway_other_fee']+$content_record[0]['coupon_rate'];
-																}else{
-																$price= $content_gateway[$i]['gateway_fee']+$content_gateway[$i]['gateway_other_fee']+$content_record[0]['credit_rate'];
-																}
+															}else{
+																$percent =  $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
+																$price =  number_format(($percent)+$content_gateway[$i]['gateway_other_fee']+$content_record[0]['credit_rate'],'2','.',' ');
+																
+															}
 														?>
 														<tr>
+														
 															<td><a href="#"><?php echo $content_gateway[$i]['gateway_name']?></a></td>
-															<td>$<?php echo $content_gateway[$i]['gateway_fee'].'+$'.$content_gateway[$i]['gateway_other_fee']?></td>
-															<td>$<?php echo number_format($price,2);?></td>
-															<td><a href="<?php echo base_url().'gateway/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html" class="hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></a>
+															<td><?php  echo '$'.$percent .'%'.' + $'; echo $content_gateway[$i]['gateway_other_fee']; ?> </td>
+															<td><?php  echo '$'.$price ?> </td>
+															 
+															<td>
+															
+															<?php  if($content_gateway[$i]['id'] == "2" ) {  ?>
+																<form action="<?php echo base_url().'stripe-payment/'.$url.'/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html">
+																
+																<input type="hidden" name="b_amount" id="b_amount" value="<?php echo $price;?>">
+																<input type="hidden" name="bidcoupon_id" id="bidcoupon_id" value="<?php echo $this->uri->segment(3);?>">
+																<script
+																		src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+																		data-key="<?php echo $content_gateway[$i]['public_key'] ?>"
+																		data-amount="<?php echo (number_format($price, 2,'.',' ') * 100); ?>"
+																		data-name="<?php echo $sitesetting[0]['site_name']; ?>"
+																		data-description="<?php echo $sitesetting[0]['site_desc']; ?>"
+																		data-currency="CAD"
+																		>
+																</script> 
+															   	<script>
+																	document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+																</script> 
+																	<button type="submit" class="stripe-button hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></button>
+																</form>	 
+																
+															<?php } else  { ?>
+																  
+																<a href="<?php echo base_url().'paygateway/'.$url.'/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html" class="hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></a>
+																 
+
+															<?php } ?>
+
 															</td>
 														</tr>
 														<?php
@@ -60,3 +113,8 @@
         </div>
         <!-- Hiraola's Page Area  End Here -->
 
+
+		
+		
+                                  
+		

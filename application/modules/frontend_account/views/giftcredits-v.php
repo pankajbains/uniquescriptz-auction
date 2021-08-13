@@ -37,7 +37,7 @@ input[type="radio"] {
 														?>
                                                     <tr>
 														<td><input type="radio" name="couponid" id="couponid" value="<?php echo $content_credits[$i]['id']?>"></td>
-                                                        <td>$<?php echo $content_credits[$i]['coupon_rate']?></td>
+                                                        <td><?php  echo $this->frontend_templates->convert_currency_price('currency_price',$content_credits[$i]['coupon_rate']); ?>  </td>
                                                         <td><?php echo $content_credits[$i]['coupon_credit']?> Credits</td>
                                                         <td><?php echo $content_credits[$i]['coupon_validity']?> Month</td>
                                                     </tr>

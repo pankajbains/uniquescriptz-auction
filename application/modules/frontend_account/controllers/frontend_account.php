@@ -23,7 +23,8 @@ class Frontend_account extends Frontend_Controller {
 					
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('frontend_account_m');
+		$this->load->model('frontend_account_m'); 
+		// $this->load->library('paypal_lib');
 		//$this->load->model('post_m');
 		//$this->load->model('common');
 		//$this->load->helper('url_helper');
@@ -109,6 +110,8 @@ class Frontend_account extends Frontend_Controller {
 		$data['content_data']=$this->frontend_account_m->get_page(str_replace('_','-',$this->router->fetch_method()));
 
 		$data['content_credits']=$this->frontend_account_m->get_bid_credits();
+
+		$data['content_user']=$this->frontend_account_m->get_users($_SESSION['user_id']);
 
 		$data['content_view']='frontend_account/buycredits-v';
 
@@ -230,7 +233,7 @@ class Frontend_account extends Frontend_Controller {
 
 	public function coupon_pay(){
 		
-
+		
 		$this->session_check();
 		if($this->uri->segment(3)!=''&&$this->uri->segment(4)!=''){
 			
@@ -264,6 +267,222 @@ class Frontend_account extends Frontend_Controller {
 
 	}
 
+	
+	public function stripe_payment()
+	{
+		$this->session_check();
+		 
+		
+		if($this->uri->segment(2) == "credit_pay"){
+		
+			$content_record=$this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(4));
+			$content_gateway=$this->frontend_templates_m->get_records('manage_paymentgateway','id', $this->uri->segment(3));
+			$data['content_data'] = $this->frontend_account_m->save_stripe_data($this->input->get(),$content_record, $content_gateway, $this->uri->segment(2));
+	
+		} else { 
+
+			
+			$content_record=$this->frontend_templates_m->get_records('user_bidcoupon_rate','id',$this->uri->segment(4));
+			$content_gateway=$this->frontend_templates_m->get_records('manage_paymentgateway','id', $this->uri->segment(3));
+			 
+			$content_data = $this->frontend_account_m->save_stripe_data($this->input->get(),$content_record, $content_gateway, $this->uri->segment(2));
+			 
+			if($content_data == 'success' ) {
+
+				$bidcoupon_id = $this->input->get('bidcoupon_id');
+				$bidcoupons = $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $bidcoupon_id);
+				
+				$emailcontent = $this->frontend_templates_m->emaildata('gift_coupon_email');
+				 
+				$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+				$text = $emailcontent['content_emails'][0]['user_emails_body'];
+		
+				$reciverusername = ucfirst($bidcoupons[0]['name']);
+				$message = $bidcoupons[0]['message'];
+				$couponcode = $bidcoupons[0]['coupon_code'];
+				$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
+
+				$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+				$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
+
+				 
+				$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
+				$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+				$sitenamenew= $this->config->item('sitename');
+				
+				$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
+				$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
+		
+				$textnew = str_replace($activeword, $replacedword, $text);
+				$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
+				$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+				 
+				 
+			}
+			
+
+		} 
+		 
+
+		if( $content_data == "invalid_request_error") { 
+
+			$this->session->set_flashdata('pay_error', 'error');
+			redirect( base_url().'user/account_details'); 
+		 
+		} else { 
+ 
+			
+			$this->session->set_flashdata('pay_success', 'success');
+			redirect( base_url().'user/account_details');
+			 
+		}
+	 
+	 
+	 
+		
+
+	}
+
+
+
+	public function paygateway()
+	{
+		$this->session_check();
+		 
+		var_dump($this->uri->segment(1),$this->uri->segment(2),$this->uri->segment(3),$this->uri->segment(4) ,$this->input->get());
+
+		// $site['config_type'] = "site_settings";
+		// $sitesetting = $this->frontend_templates_m->sitesettings($site);
+
+		// // Set variables for paypal form
+		// $returnURL = base_url().'paypal/success';
+		// $cancelURL = base_url().'user/account_details';
+		// $notifyURL = base_url().'paypal/ipn';
+		
+		// $content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','id',$this->uri->segment(3));
+		// $content_record = $this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(4));
+		
+		// if($content_record[0]['coupon_rate']!=''){
+		// 	$percent = $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
+		// 	$price= ($content_gateway[0]['gateway_fee']+$content_gateway[0]['gateway_other_fee']+$content_record[0]['coupon_rate'])+$percent;
+		// }else{
+		// 	$percent =  $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
+		// 	$price= ($content_gateway[0]['gateway_fee']+$content_gateway[0]['gateway_other_fee']+$content_record[0]['credit_rate'])+$percent;
+		// }
+		// // Get current user ID from the session 
+		// // Add fields to paypal form
+		// $this->common->add_field('return', $returnURL);
+		// $this->common->add_field('cancel_return', $cancelURL);
+		// $this->common->add_field('notify_url', $notifyURL);
+		// $this->common->add_field('item_name', $sitesetting[0]['site_name']);
+		// $this->common->add_field('item_desc',  $sitesetting[0]['site_desc']);
+		// $this->common->add_field('custom', $_SESSION['user_id']); 
+		// $this->common->add_field('amount', number_format($price ,2,'.',' '));
+			
+		
+		// if($this->uri->segment(2) == "credit_pay"){
+
+		// 	$tempdatas = array(
+		// 		'price' => $price,
+		// 		'coupon_rate'=>  $this->uri->segment(4),
+		// 		'coupon_process' => $this->uri->segment(2), 
+		// 	);
+	
+		// 	$this->session->set_userdata('temp_data', $tempdatas);
+
+		// 	// $this->common->paypal_auto_form();
+
+		// } else {
+			
+		// 	// $this->common->paypal_auto_form();
+		 
+		
+		// }
+
+	
+	}
+
+
+
+	public function success(){
+		//get the transaction data
+		// $temp_data = $this->session->userdata('temp_data');
+		// $paypalInfo = $this->input->get();
+		// var_dump($temp_data);
+ 
+		// $data['item_name'] = $paypalInfo['item_name']; 
+		// $data['txn_id'] = $paypalInfo["txn_id"];
+		// $data['amount'] = $paypalInfo["amount"];
+		// $data['currency_code'] = $paypalInfo["mc_currency"];
+		// $data['payer_status'] = $paypalInfo["payer_status"];
+		// $data['payment_status'] = $paypalInfo["payment_status"];
+		// $data['coupon_rate'] = $paypalInfo["coupon_rate"]; 
+		// $data['item_desc'] = $paypalInfo["item_desc"];
+		// pass the transaction data to view
+		// $this->load->view('paypal/success', $data);
+
+		// $data['payment_content']= $data;
+		// $data['content_view']='frontend_account/payment-success-page';
+		
+		// $this->frontend_templates->inner($data, $this->settings());
+
+	}
+	
+	
+	public function ipn(){
+		//paypal return transaction details array
+		// $paypalInfo = $this->input->post();
+		// $paypalURL = $this->paypal_lib->paypal_url; 
+		// $data['user_id'] = $paypalInfo['custom']; 
+		// $data['txn_id']    = $paypalInfo["txn_id"];
+		// $data['payment_gross'] = $paypalInfo["mc_gross"];
+		// $data['currency_code'] = $paypalInfo["mc_currency"];
+		// $data['payer_email'] = $paypalInfo["payer_email"];
+		// $data['payment_status']    = $paypalInfo["payment_status"];
+		// $paypalURL = $this->paypal_lib->paypal_url;        
+		// $result = $this->paypal_lib->curlPost($paypalURL,$paypalInfo);
+		
+	 		
+
+		//check whether the payment is verified
+	// 	if(preg_match("/VERIFIED/i",$result)){
+	// 		//insert the transaction data into the database
+	// 		$this->frontend_account_m->save_stripe_data($data);
+	// 		// $this->product->storeTransaction($data);
+	// 	}
+	}
+
+
+	public function cancel(){
+	 
+		$data['content_account']=$this->frontend_templates_m->get_records('user_register', 'email', $_SESSION['email']);
+		$data['content_view']='frontend_users_account/accountdetails-v';
+		
+		$this->frontend_templates->inner($data, $this->settings());
+		
+	}
+	
+
+	public function change_currency($data)
+	{
+		 
+		$currency_data  = $this->frontend_account_m->savetemp_currency($data); 
+		echo $currency_data;
+
+	}
+
+	public function set_currency()
+	{
+		
+		$currency_data  = $this->frontend_account_m->set_currency(); 
+		echo $currency_data;
+	}
+	// public function change_currency($data)
+	// { 
+	// 	$currency_data  = $this->frontend_account_m->change_currency($data); 
+	// 	echo $currency_data;
+
+	// }
 
 /*
 	public function details($slug=FALSE)

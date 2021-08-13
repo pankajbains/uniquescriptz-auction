@@ -112,16 +112,22 @@
 													</div>
 
 											</td>
-
+											<?php 
+												$user_datas =  $this->session->userdata();   
+												$permissions = json_decode($user_datas['admin_permission']);
+											?>
 											<td class="td-actions">
 												<div class="hidden-phone visible-desktop action-buttons">
+													<?php if(in_array('write', $permissions)){ ?>   
 													<a class="green" href="<?php echo adminRootUrl;?>user-emails/<?php echo $datapage['user-emails-type'];?>.php" title="edit">
 														<i class="icon-pencil bigger-130"></i>
 													</a>
-
+													<?php } ?>  
+													<?php if(in_array('delete', $permissions)){ ?>   
 													<a class="red" id="delemail" name="delemail" value="<?php echo $datapage['user-emails-id'];?>" style="cursor:pointer;"  title="delete">
 														<i class="icon-trash bigger-130"></i>
 													</a>
+													<?php } ?>  
 												</div>
 
 												<div class="hidden-desktop visible-phone">
@@ -131,6 +137,8 @@
 														</button>
 
 														<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
+														
+															<?php if(in_array('write', $permissions)){ ?>   
 															<li>
 																<a href="<?php echo adminRootUrl;?>user-emails/<?php echo $datapage['user-emails-type'];?>.php" class="tooltip-success" data-rel="tooltip" title="Edit">
 																	<span class="green">
@@ -138,7 +146,8 @@
 																	</span>
 																</a>
 															</li>
-
+															<?php } ?>  
+															<?php if(in_array('delete', $permissions)){ ?>  
 															<li>
 																<a id="delemail" name="delemail" value="<?php echo $datapage['user-emails-id'];?>" style="cursor:pointer;" class="tooltip-error" data-rel="tooltip" title="Delete">
 																	<span class="red">
@@ -146,6 +155,7 @@
 																	</span>
 																</a>
 															</li>
+															<?php } ?>  
 														</ul>
 													</div>
 												</div>

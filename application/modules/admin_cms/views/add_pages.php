@@ -47,10 +47,14 @@
 										<?php echo form_input(array('type'=> 'text', 'id' => 'cms_page_url', 'name' => 'cms_page_url', 'class'=> 'span6', 'placeholder' => 'URL Key', 'value'=>isset($currency_items[0]['cms_page_url']) ? $currency_items[0]['cms_page_url'] : '')); ?>
 
 									</div>
-								</div>
-                
+								</div> 
 
 								<div class="control-group">
+								<label  class="control-label" for="text1"><?php echo ucwords(str_replace('_',' ',$this->router->fetch_method()));?> Page Builder</label>
+									<div id="gjs"> 
+									</div> 
+								</div>
+								<!-- <div class="control-group">
 									<label  class="control-label" for="text1"><?php echo ucwords(str_replace('_',' ',$this->router->fetch_method()));?> Heading 1</label>
 									<div class="controls">
 
@@ -85,7 +89,7 @@
 								</div>
 								<div class="hr"></div>
 								<?php
-								for($i=1;$i<=7;$i++){
+								// for($i=1;$i<=7;$i++){
 								
 								?>
 
@@ -98,10 +102,10 @@
 										</script>
 
 									</div>
-								</div>
+								</div> -->
 
 								<?php
-									}
+									// }
 								?>
 								<div class="form-actions">
 									<button class="btn btn-info" type="submit"  id="submitcms" name="submitcms">

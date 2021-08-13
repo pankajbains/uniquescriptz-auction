@@ -52,6 +52,11 @@ class Admin_cms extends Backend_Controller {
 
 			$data['content_view']='admin_cms/add_pages';	
 			$data['currency_items'] = $this->admin_cms_m->add_cms($slug);
+
+			$data['cms_content'] = $this->admin_cms_m->load_cms_content($id);
+		//var_dump($data['cms_content']);
+		// echo $data['cms_content'];
+
 			$this->admin_templates->inner($data);
 
 		}
@@ -70,7 +75,18 @@ class Admin_cms extends Backend_Controller {
 		$this->admin_templates->inner($data);
 	}
 
+	function save_htmlpages()
+	{
+		$data = json_decode(file_get_contents("php://input"),true);
+		$this->admin_cms_m->save_cms_content($data);
+	}
 
-
+	function load_htmlpages($id)
+	{
+		
+		$data['cms_content'] = $this->admin_cms_m->load_cms_content($id);
+		echo $data['cms_content'];
+		
+	}
 
 }

@@ -67,6 +67,12 @@ $route['account/(:any)/(:any)'] = 'frontend_account/$1/$2';
 
 $route['account/(:any)/(:any)/(:any)'] = 'frontend_account/$1/$2/$3';
 
+$route['paygateway/(:any)/(:any)/(:any)'] = 'frontend_account/paygateway/$1/$2/$3';
+$route['stripe-payment/(:any)/(:any)/(:any)'] = 'frontend_account/stripe_payment/$1/$2/$3';
+$route['paypal/cancel'] = 'frontend_account/cancel';
+$route['paypal/success'] = 'frontend_account/success';
+$route['paypal/ipn'] = 'frontend_account/ipn';
+
 /*-- for user area routes--*/
 $route['user/(:any)'] = 'frontend_users_account/$1';
 
@@ -86,9 +92,13 @@ $route['product/(:any)/(:any)'] = 'frontend_auctions/product/$1/$2';
 
 $route['product/(:any)'] = 'frontend_auctions/$1';
 
+$route['set-currency'] = 'frontend_account/set_currency';
+$route['change-currency/(:any)'] = 'frontend_account/change_currency/$1';
 //$route['(:any)'] = 'frontend_home/$1';
 
-//$route['cms'] = 'frontend_home/cms';
+//$route['cms'] = 'frontend_home/cms'; 
+
+$route['backend_admin_users/(:any)'] = 'backend_admin_users/$1';
 
 $route['manage-auction'] = 'admin';
 $route['manage-auction/(:any)'] = '$1';

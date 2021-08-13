@@ -32,7 +32,7 @@ $(document).ready(function () {
 					   cms_id:$('#cms_id').val(),
 					   cms_page_name:$('#cms_page_name').val(),
 					   cms_page_url:$('#cms_page_url').val(),
-					   cms_page_heading1: CKEDITOR.instances['cms_page_heading1'].getData(),
+					   /* cms_page_heading1: CKEDITOR.instances['cms_page_heading1'].getData(),
 					   cms_page_heading2: CKEDITOR.instances['cms_page_heading2'].getData(),
 					   cms_page_heading3: CKEDITOR.instances['cms_page_heading3'].getData(),
 					   cms_page_paragraph1: CKEDITOR.instances['cms_page_paragraph1'].getData(),
@@ -41,7 +41,7 @@ $(document).ready(function () {
 					   cms_page_paragraph4: CKEDITOR.instances['cms_page_paragraph4'].getData(),
 					   cms_page_paragraph5: CKEDITOR.instances['cms_page_paragraph5'].getData(),
 					   cms_page_paragraph6: CKEDITOR.instances['cms_page_paragraph6'].getData(),
-					   cms_page_paragraph7: CKEDITOR.instances['cms_page_paragraph7'].getData(),
+					   cms_page_paragraph7: CKEDITOR.instances['cms_page_paragraph7'].getData(), */
 
 					   
 					   },
@@ -58,8 +58,40 @@ $(document).ready(function () {
 					 return false;  //stop the actual form post !important!
 			 
 				});
+	 
 
+	const editor = grapesjs.init({
+        
+		container: '#gjs', 
+		fromElement: true, 
+		height: '700px',
+		width: 'auto', 
+		plugins: ['gjs-preset-webpage'], 
+		pluginsOpts: { 'gjs-preset-webpage': {} },  
+		storageManager : true,
+		
+		storageManager: {
+			type: 'remote',
+			stepsBeforeSave: 1, 
+			autosave: true,          
+			autoload: true,   
+			params: { page_id: $('#cms_id').val() },
+			urlLoad: "../admin_cms/load_htmlpages/"+$('#cms_id').val(),
+			urlStore: "../admin_cms/save_htmlpages",
+			
+			 
+			contentTypeJson: true,
+			storeComponents: true,
+			storeStyles: true,
+			storeHtml: true,
+			storeCss: true,
+			headers: {
+				'Content-Type': 'application/json',
+				<!-- 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') -->
+			}, 
+		}, 
 
+	});
  
 });
 

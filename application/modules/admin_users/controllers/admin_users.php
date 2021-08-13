@@ -30,7 +30,7 @@ class Admin_users extends Backend_Controller {
 		//$this->load->helper('url_helper');
 		//$this->load->helper('download');
         //$this->load->library('PHPReport');
-		
+		$this->load->library('excel');
 
 	}
 
@@ -92,6 +92,66 @@ class Admin_users extends Backend_Controller {
 		$query = $this->db->get();
 		var_dump( $query->result_array());
 		header("location:../registered_users.html");
+	}
+
+	public function downloadxls()
+	{
+
+		$usersData = $this->admin_users_m->get_users_list();
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		
+		// set Header
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'User Id');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'First Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Last Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'User Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Email');
+		$objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Password');
+		$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Mobile');
+		$objPHPExcel->getActiveSheet()->SetCellValue('H1', 'Country');
+		$objPHPExcel->getActiveSheet()->SetCellValue('I1', 'IpAddress');
+		$objPHPExcel->getActiveSheet()->SetCellValue('J1', 'NewsLetter');
+		$objPHPExcel->getActiveSheet()->SetCellValue('K1', 'ActivityStatus');
+		$objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Verified');
+		$objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Reg Date');
+		$objPHPExcel->getActiveSheet()->SetCellValue('N1', 'Gender');
+		$objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Active');
+		$objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Banned');
+		$objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Terms');
+		
+		$rowCount = 2;
+        foreach ($usersData as $list) {
+			
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $list['user_id']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $list['first_name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $list['last_name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $this->admin_templates->encrypt_decrypt('decrypt',$list['user_name']));
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $this->admin_templates->encrypt_decrypt('decrypt',$list['email']));
+            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $this->admin_templates->encrypt_decrypt('decrypt',$list['password']));
+            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $list['mobile']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $list['country']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, $list['ipaddress']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $list['newsletters']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, $list['activitystatus']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, $list['verified']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount,  date("d-m-Y", strtotime($list['reg_date'])));
+            $objPHPExcel->getActiveSheet()->SetCellValue('N' . $rowCount, $list['gender']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, $list['active']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, $list['banned']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, $list['terms']);
+            
+            $rowCount++;
+        }
+        $filename = "users". date("Y-m-d-H-i-s").".csv";
+        header('Content-Type: application/vnd.ms-excel'); 
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0'); 
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
+		$objWriter->save('php://output'); 
+		
+
+
 	}
 
 }

@@ -37,6 +37,17 @@ class frontend_users_m extends CI_Model {
 
 		}
 
+		public function get_users($data){
+			
+			$this->db->select('paid_credit, free_credit');
+			$this->db->from('user_credits');
+			$wharray = array('user_id'=>$data);
+			$this->db->where($wharray);
+			$query = $this->db->get(); 
+			return $query->result_array($query);
+
+		}
+
 
 		public function account_now($data){
 

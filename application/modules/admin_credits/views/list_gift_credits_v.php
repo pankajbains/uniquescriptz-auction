@@ -48,24 +48,22 @@
 												</label>
 											</th>
 											<th><?php echo ucwords($configpage[1]);?> Name</th>
-											<th><?php echo ucwords($configpage[1]);?> ID</th>
-											<th><?php echo ucwords($configpage[1]);?> Total Bids</th>
-											<th><?php echo ucwords($configpage[1]);?> End Date</th>
-												<th class="hidden"></th>
-											<th class="hidden-480">
-												<i class="icon-time bigger-110 hidden-phone"></i>
-												Featured <?php echo ucwords($configpage[1]);?>
-											</th>
-											<th class="hidden-480">Active</th>
-											<th class="hidden-480"></th>
-											
+											<th><?php echo ucwords($configpage[1]);?> Email</th>
+											<th><?php echo ucwords($configpage[1]);?> Coupon Code</th>
+											<th class="hidden"></th>
+											<th>Coupon Value</th>
+											<th>Coupon Credit</th>
+											 
+											<th class="hidden-480">Coupon Validity</th>
+											<th class="hidden-480">Coupon Used</th>
+										
 										</tr>
 									</thead>
 
 
 									<tbody>
-										<?php for($i=0;$i<count($auctions_list);$i++){?>
-										<tr id="<?php echo $auctions_list[$i]['auction_id'];?>">
+										<?php for($i=0;$i<count($gift_credits);$i++){?>
+										<tr id="<?php echo $gift_credits[$i]['auction_id'];?>">
 											<td class="center">
 												<label>
 													<input type="checkbox" />
@@ -74,87 +72,22 @@
 											</td>
 
 											<td>
-												<a href="add_auctions/<?php echo $auctions_list[$i]['auction_id'];?>.html"><?php echo $auctions_list[$i]['auction_name'];?></a>
+												<?php echo $gift_credits[$i]['first_name'];?>
 											</td>
 											<td>
-												<a href="add_auctions/<?php echo $auctions_list[$i]['auction_id'];?>.html"><?php echo $auctions_list[$i]['auction_id'];?></a>
+												<?php echo $this->common->encrypt_decrypt('decrypt',$gift_credits[$i]['email']) ;?>
 											</td>
-											<td><?php echo $auctions_list[$i]['auction_max_bid'];?> </td>
-											<td><?php echo $auctions_list[$i]['auction_edate'].' '.$auctions_list[$i]['auction_etime'];?></td>
-											 <td  class="hidden"></td>
-											<td  class="hidden-480">
-													<div class="span3">
-
-														<label>
-															<input name="featured" id="featured" class="ace-switch ace-switch-6" type="checkbox" <?php if($auctions_list[$i]['featured']=='1'){echo 'checked';}?> value="<?php echo $auctions_list[$i]['auction_id'].'|auction_features|auction_id|featured';?>"/>
-															<span class="lbl"> </span>
-														</label>
-													</div>
-
-											</td>
-
-											<td class="hidden-480">
-
-													<div class="span3">
-
-														<label>
-															<input name="status" id="status" class="ace-switch ace-switch-6" type="checkbox" <?php if($auctions_list[$i]['auction_open']=='1'){echo 'checked';}?> value="<?php echo $auctions_list[$i]['auction_id'].'|auction_items|auction_id|auction_open';?>"/>
-															<span class="lbl"> </span>
-														</label>
-
-													</div>
-													
-											</td>
+											<td><?php echo $gift_credits[$i]['coupon_code'];?></td>
+											<td><?php echo $gift_credits[$i]['coupon_value'];?> </td>
+											<td  class="hidden"></td>
+										
+											<td  class="hidden-480"><?php echo $gift_credits[$i]['coupon_credit'];?> 	</td>
 
 											<td class="td-actions">
-												<div class="hidden-phone visible-desktop action-buttons">
-													<a class="green" href="add_auctions/<?php echo $auctions_list[$i]['auction_id'];?>.html" title="edit"  data-rel="tooltip" >
-														<i class="icon-pencil bigger-130"></i>
-													</a>
-
-													<a class="green" style="cursor:pointer;" id="duprec" value="<?php echo $auctions_list[$i]['auction_id'];?>" title="copy" data-rel="tooltip">
-														<i class="icon-retweet bigger-130"></i>
-													</a>
-
-													<a id="delrec" name="delrec" value="<?php echo $auctions_list[$i]['auction_id'].'|auction_items|auction_id';?>" style="cursor:pointer;" class="tooltip-error" data-rel="tooltip" title="Delete">
-														<i class="icon-trash bigger-130"></i>
-													</a>
-												</div>
-
-												<div class="hidden-desktop visible-phone">
-													<div class="inline position-relative">
-														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
-															<i class="icon-caret-down icon-only bigger-120"></i>
-														</button>
-
-														<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
-
-
-															<li>
-																<a href="add_coupons/<?php echo $auctions_list[$i]['auction_id'];?>.html" class="tooltip-success" data-rel="tooltip" title="Edit">
-																	<span class="green">
-																		<i class="icon-edit bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															<li>
-																<a style="cursor:pointer;" id="duprec" value="<?php echo $auctions_list[$i]['auction_id'];?>" class="tooltip-success" data-rel="tooltip" title="Copy">
-																	<span class="green">
-																		<i class="icon-retweet bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															<li>
-																<a id="delrec" name="delrec" value="<?php echo $auctions_list[$i]['auction_id'].'|auction_items|auciton_id';?>" style="cursor:pointer;" class="tooltip-error" data-rel="tooltip" title="Delete">
-																	<span class="red">
-																		<i class="icon-trash bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-														</ul>
-													</div>
-												</div>
+												<?php echo $gift_credits[$i]['coupon_validity'].' Month';?>
 											</td>
+											<td class="hidden-480"> <?php echo $gift_credits[$i]['coupon_used'];?> </td>
+											
 										</tr>
 
 										<?php

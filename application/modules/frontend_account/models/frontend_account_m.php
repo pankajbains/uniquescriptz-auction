@@ -9,6 +9,158 @@ class frontend_account_m extends CI_Model {
         }
 
 
+		public function save_stripe_data($data,$content_record, $content_gateway, $uri)
+		{
+		
+		
+				// $this->db->select('*');
+				// $this->db->from('user_bidcoupon_records');
+				// $wharray = array('id' => $data['bidcoupon_id']);
+				// $this->db->where($wharray); 
+				// $query = $this->db->get();
+				// $content_bidcoupon = $query->result_array($query); 
+				// var_dump($data['bidcoupon_id'], $content_bidcoupon);
+
+
+
+				
+			require_once('application/third_party/MX/StripePhp/init.php');
+			
+			try {
+				$content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','gateway_name','Stripe');
+				\Stripe\Stripe::setApiKey($content_gateway[0]['secret_key']);
+				$customer = \Stripe\Customer::create([
+					'name' => $_SESSION['first_name'],
+					'description' => 'test description',
+					'email' =>  $this->common->encrypt_decrypt('decrypt',$_SESSION['email']),
+					"source" => $data['stripeToken'],  
+					"address" => [
+						"city" => "On", 
+						"country" => "Canada", 
+						"line1" => "Woodstock", 
+						"line2" => "", 
+						"postal_code" => "BXN123", 
+						"state" => "ON"
+					]
+				]); 
+
+				$charge = \Stripe\Charge::create([
+					"amount" => $data['b_amount'] * 100,
+					"currency" => "CAD",
+					"customer" => $customer->id, 
+					"description" => "Test payment",
+					"metadata" => ["order_id" => $content_record[0]['id']], 
+				]);
+			 	
+				if($uri == "credit_pay") {
+					
+					$datauser = array(
+
+						'user_id' =>  $_SESSION['user_id'], 
+						'amount' => $data['b_amount'],
+						'purchase_date' => date('Y-m-d'),
+						'txn_id' => $charge->id,
+						'plan_id' => $content_record[0]['id'],
+						'plan_type' => $uri,
+						'paid_amount' => $content_record[0]['credit_rate'],
+						'paid_credit' => $content_record[0]['paid_credit'],
+						'free_credit' => $content_record[0]['free_credit'],
+
+					);
+
+					$this->db->select('*');
+					$this->db->from('user_credits');
+					$wharray = array('user_id' => $_SESSION['user_id']);
+					$this->db->where($wharray); 
+					$query = $this->db->get();
+					$datas = $query->result_array($query); 
+				
+					$this->db->set('paid_credit', $datauser['paid_credit']+$datas[0]['paid_credit']);
+					$this->db->set('free_credit', $datas[0]['free_credit']+$datauser['free_credit']);
+					$this->db->where('user_id', $_SESSION['user_id']);
+					$query=$this->db->update('user_credits');
+
+				} else {
+
+					$datauser = array(
+
+						'user_id' =>  $_SESSION['user_id'], 
+						'amount' => $data['b_amount'],
+						'purchase_date' => date('Y-m-d'),
+						'txn_id' => $charge->id,
+						'plan_id' => $content_record[0]['id'],
+						'plan_type' => $uri,
+						'paid_amount' => $content_record[0]['coupon_rate'],
+						'paid_credit' => $content_record[0]['coupon_credit'], 
+
+					);				
+
+					$coupon_datas = array(
+						'paid' => '1',
+						'txn_date'=>date('y-m-d')
+					);
+
+					$wharray = array('id' => $data['bidcoupon_id']);
+					$this->db->where($wharray);
+					$result = $this->db->update('user_bidcoupon_records', $coupon_datas);
+
+				}
+
+
+				$this->db->insert('user_payment', $datauser);
+				
+				return "success";
+				
+			} catch(\Stripe\Exception\InvalidRequestException $e) {
+				
+				$body = $e->getJsonBody(); 				
+				return $body['error']['type'];
+			
+			} 
+			catch(\Stripe\Exception\CardException $e) {
+
+				$body = $e->getJsonBody(); 				
+				return $body['error']['type'];
+
+			}
+
+			
+
+
+		}
+
+
+		public function get_users($data){
+			
+			$this->db->select('paid_credit, free_credit');
+			$this->db->from('user_credits');
+			$wharray = array('user_id'=>$data);
+			$this->db->where($wharray);
+			$query = $this->db->get(); 
+			return $query->result_array($query);
+
+		}
+
+
+		public function savetemp_currency($data)
+		{
+			
+			$getcurrency = $this->frontend_templates_m->get_records('config_currency','id', $data);		
+			
+			$this->session->set_userdata('currency_datas', $getcurrency);
+			return $getcurrency;
+		}
+		
+		public function set_currency()
+		{
+		 
+			$getcurrency = $this->frontend_templates_m->get_records('config_currency','base_currency', '1');		
+			$this->session->set_userdata('currency_datas', $getcurrency);
+			return $getcurrency;
+			
+		}
+
+
 		public function get_page($data){
 
 			//print_r($data);

@@ -72,16 +72,22 @@
 											<th class="hidden"></th>
 											<th class="hidden"></th>
 											<th class="hidden"></th>
+											<?php 
+												$user_datas =  $this->session->userdata();   
+												$permissions = json_decode($user_datas['admin_permission']);
+											?>
 											<td class="td-actions">
 												<div class="hidden-phone visible-desktop action-buttons">
-
+													<?php if(in_array('write', $permissions)){ ?>
 													<a class="green" href="<?php echo base_url();?>admin_affiliates/add_affiliates/<?php echo $content_list[$i]['aff_id'];?>.html">
 														<i class="icon-pencil bigger-130"></i>
 													</a>
-
+													<?php } ?> 
+													<?php if(in_array('delete', $permissions)){ ?>
 													<a class="red" id="delrec" name="delrec" value="<?php echo $content_list[$i]['aff_id'].'|user_affiliates|aff_id';?>">
 														<i class="icon-trash bigger-130"></i>
 													</a>
+													<?php } ?> 
 												</div>
 
 												<div class="hidden-desktop visible-phone">
@@ -91,7 +97,8 @@
 														</button>
 
 														<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
-
+														
+															<?php if(in_array('write', $permissions)){ ?>
 															<li>
 																<a href="<?php echo base_url();?>admin_affiliates/add_affiliates/<?php echo $content_list[$i]['aff_id'];?>.html" class="tooltip-success" data-rel="tooltip" title="Edit">
 																	<span class="green">
@@ -99,7 +106,8 @@
 																	</span>
 																</a>
 															</li>
-
+															<?php } ?>  
+															<?php if(in_array('delete', $permissions)){ ?>  
 															<li>
 																<a class="tooltip-error" data-rel="tooltip" title="Delete" id="delrec" name="delrec" value="<?php echo $content_list[$i]['aff_id'].'|user_affiliates|aff_id';?>">
 																	<span class="red">
@@ -108,6 +116,7 @@
 																	</span>
 																</a>
 															</li>
+															<?php } ?>  
 														</ul>
 													</div>
 												</div>

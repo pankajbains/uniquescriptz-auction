@@ -116,7 +116,11 @@
 
 														<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
 
-
+														<?php 
+														$user_datas =  $this->session->userdata();   
+														$permissions = json_decode($user_datas['admin_permission']);
+														?>
+															<?php if(in_array('write', $permissions)){ ?>
 															<li>
 																<a href="add_coupon_credits/<?php echo $credit_list[$i]['id'];?>.html" class="tooltip-success" data-rel="tooltip" title="Edit">
 																	<span class="green">
@@ -124,7 +128,8 @@
 																	</span>
 																</a>
 															</li>
-															
+															<?php } ?>  
+															<?php if(in_array('delete', $permissions)){ ?>
 															<li>
 																<a id="delrec" name="delrec" value="<?php echo $credit_list[$i]['id'].'|user_bidcoupon_rate|id';?>" style="cursor:pointer;" class="tooltip-error" data-rel="tooltip" title="Delete">
 																	<span class="red">
@@ -132,6 +137,7 @@
 																	</span>
 																</a>
 															</li>
+															<?php } ?>  
 														</ul>
 													</div>
 												</div>

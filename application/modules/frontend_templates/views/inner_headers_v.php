@@ -42,8 +42,9 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="<?php echo base_url();?>assets/frontendfiles/css/style.css">
     <!--<link rel="stylesheet" href="<?php echo base_url();?>assets/frontendfiles/css/style.min.css">-->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    
 
-	
 </head>
 
 <body class="template-color-1">
@@ -104,20 +105,27 @@
                         <div class="col-lg-7">
                             <div class="ht-right_area">
                                 <div class="ht-menu">
+                                
                                     <ul>
-										<?php if(count($currency)>1){ ?>
-                                        <li><a href="javascript:void(0)">Currency<i class="fa fa-chevron-down"></i></a>
-                                            <ul class="ht-dropdown ht-currency">
-												<?php for($i=0; $i<count($currency);$i++){?>
-                                                <li <?php echo ($currency[$i]['base_currency']=='1')?' class="active"':'';?>><a href="javascript:void(0)" ><?php echo $currency[$i]['currency'].' ('.$currency[$i]['currency_code'].')';?></a></li>
-                                               <?php } ?>
-                                            </ul>
-                                        </li>
-										<?php } ?>
+                                        <?php 
+                                        $s_currency =  $this->session->userdata('currency_datas');  
+                                        if(count($currency)>1){ 
+                                        ?>
+                                           <li><a href="javascript:void(0)">Currency<i class="fa fa-chevron-down"></i></a>
+                                                <ul class="ht-dropdown ht-currency">
+                                                    <?php for($i=0; $i<count($currency);$i++){?>
+                                                    <li <?php echo ($currency[$i]['currency']==$s_currency[0]['currency'])?' class="active"':'';?>  ><a href="javascript:void(0)" onclick="language(<?php echo $currency[$i]['id'] ;?>);" ><?php echo $currency[$i]['currency'].' ('.$currency[$i]['currency_code'].')';?></a></li>
+                                                <?php } ?>
+                                                </ul>
+                                            </li>
+                                        <?php
+                                            }
+                                        ?>
+                                           
                                         <!--li><a href="javascript:void(0)">Language <i class="fa fa-chevron-down"></i></a>
                                             <ul class="ht-dropdown">
                                                 <li class="active"><a href="javascript:void(0)"><img src="<?php echo base_url();?>assets/frontendfiles/images/menu/icon/1.jpg" alt="JB's Language Icon">English</a></li>
-                                                <li><a href="javascript:void(0)"><img src="<?php echo base_url();?>assets/frontendfiles/images/menu/icon/2.jpg" alt="JB's Language Icon">Français</a>
+                                                <li><a href="javascript:void(0)"><img src="<?php echo base_url();?>assets/frontendfiles/images/menu/icon/2.jpg" alt="JB's Language Icon">Franï¿½ais</a>
                                                 </li>
                                             </ul>
                                         </li-->
@@ -651,7 +659,7 @@
                                     <ul class="sub-menu">
                                         <li>
                                             <a href="javascript:void(0)">
-                                                <span class="mm-text">EUR €</span>
+                                                <span class="mm-text">EUR ï¿½</span>
                                             </a>
                                         </li>
                                         <li>
@@ -671,7 +679,7 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void(0)">
-                                                <span class="mm-text">Français</span>
+                                                <span class="mm-text">Franï¿½ais</span>
                                             </a>
                                         </li>
                                         <li>

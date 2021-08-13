@@ -104,7 +104,11 @@ class admin_users_m extends CI_Model {
 						);
 
 						$this->db->insert('user_referral', $datarefer);
-
+											
+						$datacredit = array(
+							'user_id' => $user_id
+						);
+						$this->db->insert('user_credits', $datacredit);
 
 						return TRUE;
 						
