@@ -16,7 +16,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<link href="<?php echo base_url();?>assets/backendfiles/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/backendfiles/css/font-awesome.min.css" />
 		
-
 		<!--[if IE 7]>
 		  <link rel="stylesheet" href="<?php echo base_url();?>assets/backendfiles/css/font-awesome-ie7.min.css" />
 		<![endif]-->
@@ -42,7 +41,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php
 			}
 		?>
-
+		<link rel="stylesheet" href="//unpkg.com/grapesjs/dist/css/grapes.min.css"> 
+		<script src="<?php echo base_url();?>assets/backendfiles/js/grapes.min.js"></script>
+		<script src="<?php echo base_url();?>assets/backendfiles/js/grapesjs-preset-webpage.min.js"></script>
 		<script src="//cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 
 

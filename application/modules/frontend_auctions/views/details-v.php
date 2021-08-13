@@ -91,7 +91,7 @@
 									<form class="form-group" id="bid_form" name="bid_form" method="POST">
 										<div class="coupon-all">
 											<div class="coupon">
-												<strong>$</strong> <input id="bid_price" class="input-text" name="bid_price" value="" placeholder="1.65" type="text">&nbsp;&nbsp;
+												<strong><?php echo $this->frontend_templates->convert_currency_price('currency_code', ''); ?></strong> <input id="bid_price" class="input-text" name="bid_price" value="" placeholder="1.65" type="text">&nbsp;&nbsp;
 
 												<input id="auction_id" class="input-text" name="auction_id" value="<?php echo $content_data[0]['auction_id'];?>" type="hidden">
 

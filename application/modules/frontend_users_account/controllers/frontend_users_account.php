@@ -65,6 +65,8 @@ class Frontend_users_account extends Frontend_Controller {
 
 		$data['content_data']=$this->frontend_users_m->get_page(str_replace('_','-',$this->router->fetch_method()));
 
+		$data['content_user']=$this->frontend_users_m->get_users($_SESSION['user_id']);
+
 		$data['content_view']='frontend_users_account/accountdetails-v';
 
 		$data['content_account']=$this->frontend_templates_m->get_records('user_register', 'email', $_SESSION['email']);

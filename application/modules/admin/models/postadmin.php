@@ -30,6 +30,8 @@ class postadmin extends CI_Model {
 						'admin_password'=>$adminlogin[0]['admin_password'],
 						'config_type' =>$adminlogin[0]['config_type'],
 						'admin_access' =>$adminlogin[0]['admin_access'],
+						'admin_role' =>$adminlogin[0]['admin_role'],
+						'admin_permission' =>$adminlogin[0]['admin_permission'],
 						'logged_in'=>TRUE
 				);
 

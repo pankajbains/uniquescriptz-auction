@@ -548,3 +548,6 @@ $config['proxy_ips'] = '';
 
 $config['sitename'] = 'UniqueScriptz Auction';//$_SERVER['HTTP_HOST'];
 
+
+// $config['stripe_key'] = 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP';
+// $config['stripe_secret'] = 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ';

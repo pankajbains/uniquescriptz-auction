@@ -114,6 +114,18 @@ class Admin_credits extends Backend_Controller {
 
 	}
 
+	public function list_gift_credits($slug=NULL) // function call with page name
+	{
+		
+		$this->session_check();
+	
+		$data['gift_credits'] = $this->admin_credits_m->get_gift_credits_list(); // module call to list user from database
+		$data['content_view']='admin_credits/list_gift_credits_v';	 // view call to display user from database
+		
+		// var_dump($data);
+		$this->admin_templates->inner($data);				 
+		
+	}
 
 
 

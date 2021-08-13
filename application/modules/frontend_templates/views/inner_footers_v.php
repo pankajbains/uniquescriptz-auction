@@ -239,20 +239,20 @@
                                         </ul>
                                     </div>
                                     <div class="price-box">
-                                        <span class="new-price">£82.84</span>
-                                        <span class="old-price">£93.68</span>
+                                        <span class="new-price">ï¿½82.84</span>
+                                        <span class="old-price">ï¿½93.68</span>
                                     </div>
                                     <div class="essential_stuff">
                                         <ul>
-                                            <li>EX Tax:<span>£453.35</span></li>
+                                            <li>EX Tax:<span>ï¿½453.35</span></li>
                                             <li>Price in reward points:<span>400</span></li>
                                         </ul>
                                     </div>
                                     <div class="list-item">
                                         <ul>
-                                            <li>10 or more £81.03</li>
-                                            <li>20 or more £71.09</li>
-                                            <li>30 or more £61.15</li>
+                                            <li>10 or more ï¿½81.03</li>
+                                            <li>20 or more ï¿½71.09</li>
+                                            <li>30 or more ï¿½61.15</li>
                                         </ul>
                                     </div>
                                     <div class="list-item last-child">
@@ -271,19 +271,19 @@
                                         <div class="color-list">
                                             <a href="javascript:void(0)" class="single-color active" data-swatch-color="red">
                                                 <span class="bg-red_color"></span>
-                                                <span class="color-text">Red (+£3.61)</span>
+                                                <span class="color-text">Red (+ï¿½3.61)</span>
                                             </a>
                                             <a href="javascript:void(0)" class="single-color" data-swatch-color="orange">
                                                 <span class="burnt-orange_color"></span>
-                                                <span class="color-text">Orange (+£2.71)</span>
+                                                <span class="color-text">Orange (+ï¿½2.71)</span>
                                             </a>
                                             <a href="javascript:void(0)" class="single-color" data-swatch-color="brown">
                                                 <span class="brown_color"></span>
-                                                <span class="color-text">Brown (+£0.90)</span>
+                                                <span class="color-text">Brown (+ï¿½0.90)</span>
                                             </a>
                                             <a href="javascript:void(0)" class="single-color" data-swatch-color="umber">
                                                 <span class="raw-umber_color"></span>
-                                                <span class="color-text">Umber (+£1.81)</span>
+                                                <span class="color-text">Umber (+ï¿½1.81)</span>
                                             </a>
                                         </div>
                                     </div>
@@ -496,6 +496,42 @@
 
 		}
 	?>
+    <script>
+    /*----------------Load Currency Products------------------------*/ 
+
+     <?php 
+     $code = $this->session->userdata('currency_datas');
+
+     if(empty($code) ) { 
+     ?>
+        $(document).ready(function () {
+            $.ajax({
+
+                type: "get", 
+                url: "<?php echo base_url();?>set-currency",  
+                success: function (html) { 
+
+                }
+            });  
+        });  
+    <?php } ?>
+        
+        function language(id) {
+            
+            $.ajax({
+
+                type: "POST",  
+                url: "<?php echo base_url();?>change-currency/"+id,  
+                success: function (html) {
+                    
+                    location.reload();
+                }
+            });  
+
+            
+        }
+    
+    </script>
 </body>
 
 </html>

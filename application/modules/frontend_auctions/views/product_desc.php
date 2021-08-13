@@ -1,8 +1,8 @@
 <ul>
 										<?php if($content_featured[0]['sretail']==1){?>
-                                        <li>Retail Price: <a name="#"><span>$<?php echo $content_data[0]['auction_nprice'];?></span></a></li>
+                                        <li>Retail Price: <a name="#"><span><?php echo  $this->frontend_templates->convert_currency_price('currency_price',$content_data[0]['auction_nprice']); ?></span></a></li>
 										<?php } ?>
-                                        <li><?php echo ($sitesetting[0]['auction_type']=='lowest')?'Min':'Max';?> Bid Value: <a name="#">$<?php echo $content_data[0]['auction_price'];?></a></li>
+                                        <li><?php echo ($sitesetting[0]['auction_type']=='lowest')?'Min':'Max';?> Bid Value: <a name="#"><?php echo $this->frontend_templates->convert_currency_price('currency_price', $content_data[0]['auction_price'] );?></a></li>
                                         <li>Cost Per Bid: <a name="#"><?php echo $content_data[0]['auction_credits'];?> Credit</a></li>
 										<?php if($content_featured[0]['sallowed_bids']==1){?>
                                         <li>Bid Allowed Per Users: <a name="#"><?php echo ($content_data[0]['auction_users_bid']==0)?'Unlimited':$content_data[0]['auction_users_bid'];?></a></li>
@@ -27,6 +27,6 @@
 										</a></li>
 										<?php } ?>
 										<?php if($content_featured[0]['scurrent_bids']==1){?>
-										<li>Current Bid Between: <a name="#">$2.79 - $4.98</a></li>
+										<li>Current Bid Between: <a name="#"><?php echo  $this->frontend_templates->convert_currency_price('currency_price','2.79'); ?> - <?php echo  $this->frontend_templates->convert_currency_price('currency_price','4.98'); ?> </a></li>
 										<?php } ?>
                                     </ul>

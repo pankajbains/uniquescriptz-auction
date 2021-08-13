@@ -6,22 +6,39 @@
 					<div class="overview-content col-sm-12 col-md-12 col-xs-12 col-lg-12  pb-5">
                             <?php
 								$this->load->view('content-v');
-							?>
+							?> 
+                    <span> Your account has: <strong> <?php echo $content_user[0]['paid_credit']; ?></strong> Paid and <strong><?php echo $content_user[0]['free_credit']; ?></strong> Free Credits</span>             
                      </div>
-					
                         <div class="col-lg-3">
 						    <?php
 								$this->load->view('frontend_templates/usernav_v');
 							?>
 
                         </div>
-
+                       
 
                         <div class="col-lg-9">
-                           
+                       
                             <div class="tab-pane active" id="account-details">
                                     <div class="myaccount-details">
 
+                                        <?php 
+                                            $msg=  $this->session->flashdata('pay_success');
+                                            if($msg == "success"){
+                                                ?>
+                                                <div class="alert alert-block alert-success"  id="p_success">
+                                                    <span id="msg"><strong>Well done!</strong> Payment successfully done please check the account credits!</span>
+                                                </div>    
+                                            <?php }  ?>
+
+                                        <?php 
+                                            $msg=  $this->session->flashdata('pay_error');
+                                            if($msg == "error"){  ?>
+                                                <div class="alert alert-block alert-danger" id="p_error" >
+                                                    <span id="msg"><strong>Ooops!</strong> Payment cancelled please check the account! if any  amount debited then within 24 hours will be back</span>
+                                                </div> 
+                                        <?php  }   ?>
+                                        
 										<div class="alert alert-block alert-success" id="success" style="display:none;">
 											<span id="msg"><strong>Well done!</strong> Records are updated successfully!</span>
 										</div>
@@ -106,3 +123,6 @@
         </div>
         <!-- Hiraola's Page Area  End Here -->
 
+
+
+	

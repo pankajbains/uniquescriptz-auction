@@ -187,6 +187,25 @@ class admin_credits_m extends CI_Model {
 
 		}
 
+		public function get_gift_credits_list($slug = FALSE)
+		{
+
+				if ($slug === FALSE)
+				{
+						$this->db->order_by("id", "DESC");
+						$this->db->select('*', false);
+						$this->db->from('user_bidcoupon_records');
+						$query=$this->db->get();
+						return $query->result_array();
+
+				}else{
+
+						$query = $this->db->get_where('user_bidcoupon_records', array('id' => $slug));
+						return $query->result_array();
+
+				}
+
+		}
 
 
 

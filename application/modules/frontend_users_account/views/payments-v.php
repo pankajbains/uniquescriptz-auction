@@ -31,17 +31,28 @@
 															<th>Plan Purchased</th>
 														</tr>
 														<?php
+														
 															if(count($content_payments)>0){
+																for($i=0;$i<count($content_payments);$i++){
+																 
+																
 														?>
 														<tr>
-															<td><?php echo $content_payments[0]['txn_id']?></td>
-															<td><?php echo $content_payments[0]['purchase_date']?></td>
-															<td>$<?php echo $content_payments[0]['paid_amount']?></td>
-															<td><?php echo $content_payments[0]['plan_type'].' of $'.$content_payments[0]['amount']?></a>
+															<td><?php echo $content_payments[$i]['txn_id']?></td>
+															<td><?php echo date("d-m-Y", strtotime($content_payments[$i]['purchase_date'])); ?></td>
+															<td><?php echo  $this->frontend_templates->convert_currency_price('currency_price', $content_payments[$i]['amount']); ?> </td>
+															<?php if($content_payments[$i]['plan_type'] == "credit_pay") { ?>
+															<td><?php echo 'Credit Pay'.' of '.$this->frontend_templates->convert_currency_price('currency_price', $content_payments[$i]['paid_amount']); ?></a>
+															<?php  }  else { ?>
+																<td><?php echo  'Coupon Pay'.' of '.$this->frontend_templates->convert_currency_price('currency_price', $content_payments[$i]['paid_amount']); ?></a>
+															<?php  }  ?>
+
 															</td>
 														</tr>
 														<?php
-															}else{
+															}
+														}
+															else{
 														?>
 														<tr>
 															<td colspan="4"> No records available.
