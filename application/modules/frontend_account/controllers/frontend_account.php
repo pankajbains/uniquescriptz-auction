@@ -347,89 +347,135 @@ class Frontend_account extends Frontend_Controller {
 
 	public function paygateway()
 	{
-		$this->session_check();
-		 
-		var_dump($this->uri->segment(1),$this->uri->segment(2),$this->uri->segment(3),$this->uri->segment(4) ,$this->input->get());
-
-		// $site['config_type'] = "site_settings";
-		// $sitesetting = $this->frontend_templates_m->sitesettings($site);
-
-		// // Set variables for paypal form
-		// $returnURL = base_url().'paypal/success';
-		// $cancelURL = base_url().'user/account_details';
-		// $notifyURL = base_url().'paypal/ipn';
-		
-		// $content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','id',$this->uri->segment(3));
-		// $content_record = $this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(4));
-		
-		// if($content_record[0]['coupon_rate']!=''){
-		// 	$percent = $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
-		// 	$price= ($content_gateway[0]['gateway_fee']+$content_gateway[0]['gateway_other_fee']+$content_record[0]['coupon_rate'])+$percent;
-		// }else{
-		// 	$percent =  $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
-		// 	$price= ($content_gateway[0]['gateway_fee']+$content_gateway[0]['gateway_other_fee']+$content_record[0]['credit_rate'])+$percent;
-		// }
-		// // Get current user ID from the session 
-		// // Add fields to paypal form
-		// $this->common->add_field('return', $returnURL);
-		// $this->common->add_field('cancel_return', $cancelURL);
-		// $this->common->add_field('notify_url', $notifyURL);
-		// $this->common->add_field('item_name', $sitesetting[0]['site_name']);
-		// $this->common->add_field('item_desc',  $sitesetting[0]['site_desc']);
-		// $this->common->add_field('custom', $_SESSION['user_id']); 
-		// $this->common->add_field('amount', number_format($price ,2,'.',' '));
-			
-		
-		// if($this->uri->segment(2) == "credit_pay"){
-
-		// 	$tempdatas = array(
-		// 		'price' => $price,
-		// 		'coupon_rate'=>  $this->uri->segment(4),
-		// 		'coupon_process' => $this->uri->segment(2), 
-		// 	);
+		$this->session_check(); 
 	
-		// 	$this->session->set_userdata('temp_data', $tempdatas);
+		$site['config_type'] = "site_settings";
+		$sitesetting = $this->frontend_templates_m->sitesettings($site);
 
-		// 	// $this->common->paypal_auto_form();
-
-		// } else {
-			
-		// 	// $this->common->paypal_auto_form();
-		 
+		// Set variables for paypal form
+		$returnURL = base_url().'frontend_account/success';
+		$notifyURL = base_url().'frontend_account/ipn';
+		$cancelURL = base_url().'user/account_details';
+	
+		$content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','id',$this->uri->segment(3));
 		
-		// }
+		if($this->uri->segment(2) == "credit_pay"){
 
+				
+			$content_record = $this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(4));
+			
+		 
+			$percent =  $content_gateway[0]['gateway_fee']*$content_record[0]['credit_rate']/100;
+			$price =  number_format(($percent)+$content_gateway[0]['gateway_other_fee']+$content_record[0]['credit_rate'],'2','.',' ');
+	
+			$tempdatas = array( 
+				'content_record'=>  $this->uri->segment(4),
+				'credit_pay' => $this->uri->segment(2), 
+			);
+	
+			$this->session->set_userdata('temp_data', $tempdatas);
+		} else {
+
+ 			$content_record = $this->frontend_templates_m->get_records('user_bidcoupon_rate','id', $this->uri->segment(4));
+
+			$percent = $content_gateway[0]['gateway_fee']*$content_record[0]['coupon_rate']/100;
+			$price= number_format(($percent)+$content_gateway[0]['gateway_other_fee']+$content_record[0]['coupon_rate'],'2','.',' ');
+		 
+			$tempdatas = array( 
+				'user_bidcoupon_record_id'=>  $_POST['bidcoupon_id'],
+				'user_bidcoupon_id' => $this->uri->segment(4), 
+			);
+	
+			$this->session->set_userdata('temp_data', $tempdatas);
+
+		}
+		
+		// Add fields to paypal form
+		$this->common->add_field('return', $returnURL);
+		$this->common->add_field('cancel_return', $cancelURL);
+		$this->common->add_field('notify_url', $notifyURL);
+		$this->common->add_field('item_name', $sitesetting[0]['site_name']);
+		$this->common->add_field('item_desc',  $sitesetting[0]['site_desc']);
+		$this->common->add_field('custom', $_SESSION['user_id']); 
+		$this->common->add_field('amount', $price);
+
+		$this->common->paypal_auto_form();
+	 
 	
 	}
 
 
 
 	public function success(){
-		//get the transaction data
-		// $temp_data = $this->session->userdata('temp_data');
-		// $paypalInfo = $this->input->get();
-		// var_dump($temp_data);
- 
-		// $data['item_name'] = $paypalInfo['item_name']; 
-		// $data['txn_id'] = $paypalInfo["txn_id"];
-		// $data['amount'] = $paypalInfo["amount"];
-		// $data['currency_code'] = $paypalInfo["mc_currency"];
-		// $data['payer_status'] = $paypalInfo["payer_status"];
-		// $data['payment_status'] = $paypalInfo["payment_status"];
-		// $data['coupon_rate'] = $paypalInfo["coupon_rate"]; 
-		// $data['item_desc'] = $paypalInfo["item_desc"];
-		// pass the transaction data to view
-		// $this->load->view('paypal/success', $data);
+		$this->session_check();
 
-		// $data['payment_content']= $data;
-		// $data['content_view']='frontend_account/payment-success-page';
+		$temp_data = $this->session->userdata('temp_data');
+		$data['user_id'] = $_POST['custom']; 
+		$data['txn_id']    = $_POST["txn_id"];
+		$data['payment_gross'] = $_POST["mc_gross"];
+		$data['currency_code'] = $_POST["mc_currency"];
+		$data['payer_email'] = $_POST["payer_email"];
+		$data['payment_status']    = $_POST["payment_status"];
+		$paypalURL = $this->common->paypal_url; 
+		$result = $this->common->curlPost($paypalURL,$_POST);
 		
-		// $this->frontend_templates->inner($data, $this->settings());
+		if(preg_match("/VERIFIED/i", $result)){
+			 
+			$records= $this->frontend_account_m->save_paypal_data($_POST, $temp_data);
+			
+		}
+
+		if($temp_data['user_bidcoupon_id'] != '' && $records == "success") {
+
+			
+			$bidcoupons = $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $temp_data['user_bidcoupon_id']);		
+			$emailcontent = $this->frontend_templates_m->emaildata('gift_coupon_email');
+			 
+			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+			$text = $emailcontent['content_emails'][0]['user_emails_body'];
+	
+			$reciverusername = ucfirst($bidcoupons[0]['name']);
+			$message = $bidcoupons[0]['message'];
+			$couponcode = $bidcoupons[0]['coupon_code'];
+			$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
+
+			$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+			$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
+
+			 
+			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
+			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+			$sitenamenew= $this->config->item('sitename');
+			
+			$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
+			$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
+	
+			$textnew = str_replace($activeword, $replacedword, $text);
+			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
+			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+			 
+
+		}
+
+		
+		if( $records == "success") { 
+
+			$this->session->set_flashdata('pay_success', 'success');
+			redirect( base_url().'user/account_details'); 
+			
+		} else { 
+			
+			
+			$this->session->set_flashdata('pay_error', 'error');
+			redirect( base_url().'user/account_details');
+			 
+		}
+	 
 
 	}
 	
 	
-	public function ipn(){
+	// public function ipn(){
 		//paypal return transaction details array
 		// $paypalInfo = $this->input->post();
 		// $paypalURL = $this->paypal_lib->paypal_url; 
@@ -441,20 +487,17 @@ class Frontend_account extends Frontend_Controller {
 		// $data['payment_status']    = $paypalInfo["payment_status"];
 		// $paypalURL = $this->paypal_lib->paypal_url;        
 		// $result = $this->paypal_lib->curlPost($paypalURL,$paypalInfo);
-		
-	 		
-
-		//check whether the payment is verified
-	// 	if(preg_match("/VERIFIED/i",$result)){
-	// 		//insert the transaction data into the database
-	// 		$this->frontend_account_m->save_stripe_data($data);
-	// 		// $this->product->storeTransaction($data);
-	// 	}
-	}
+	 
+		// // check whether the payment is verified
+		// if(preg_match("/VERIFIED/i", $result)){
+		// 	//insert the transaction data into the database 
+		// 	$this->frontend_account_m->save_paypal_data($data);
+		// }
+	// }
 
 
 	public function cancel(){
-	 
+		$this->session_check();
 		$data['content_account']=$this->frontend_templates_m->get_records('user_register', 'email', $_SESSION['email']);
 		$data['content_view']='frontend_users_account/accountdetails-v';
 		

@@ -33,8 +33,11 @@
 															<th></th>
 														</tr>
 														<?php
-															if(count($content_auction)>0){
 
+														var_dump($content_auction);
+
+															if(count($content_auction)>0){
+															
 																for($i=0;$i<count($content_auction);$i++){
 														?>
 														<tr>

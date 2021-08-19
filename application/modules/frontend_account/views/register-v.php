@@ -8,7 +8,7 @@
 							$this->load->view('content-v');
 						?>
                     </div>
-
+   
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
                         <form action="#" name="register" id="register">
                             <div class="login-form">
@@ -17,9 +17,10 @@
 									<div class="col-md-12 col-12">
 										<p>A confirmation mail has been sent successfully to your email account. Please click on the link given in your email to make your account active.<br><br>
 
-										<span >Click <a href="<?php echo base_rul().'account/login.html';?>"><strong>here</strong></a> to login into your account.</span></p>
+										<span >Click <a href="<?php echo base_url().'account/login.html';?>"><strong>here</strong></a> to login into your account.</span></p>
 									</div>
 								</div>
+                               
                                 <div class="row" id="regform">
                                     <div class="col-md-6 col-12 mb--20">
                                         <label>First Name</label>
