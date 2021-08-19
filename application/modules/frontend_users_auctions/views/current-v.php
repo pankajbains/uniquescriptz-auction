@@ -34,7 +34,7 @@
 														</tr>
 														<?php
 
-														var_dump($content_auction);
+													 
 
 															if(count($content_auction)>0){
 															
