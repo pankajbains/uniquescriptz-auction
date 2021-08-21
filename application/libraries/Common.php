@@ -140,7 +140,7 @@
 					//return $mail;
 
 					$this->CI->load->library('email'); // Note: no $config param needed
-					$this->CI->email->from('pankajbains@gmail.com');
+					$this->CI->email->from('kishor4563@gmail.com');
 					$this->CI->email->to('dedesigns@gmail.com');
 					$this->CI->email->subject($text);
 					$this->CI->email->message($subject);

@@ -51,7 +51,7 @@
 															for($i=0;$i<count($content_gateway);$i++){
 																 
 															if($content_record[0]['coupon_rate']!=''){
-																$percent = $content_gateway[$i]['gateway_fee']*$content_record[0]['credit_rate']/100;
+																$percent = $content_gateway[$i]['gateway_fee']*$content_record[0]['coupon_rate']/100;
 																$price= number_format(($percent)+$content_gateway[$i]['gateway_other_fee']+$content_record[0]['coupon_rate'],'2','.',' ');
 																
 															}else{
@@ -90,7 +90,13 @@
 																
 															<?php } else  { ?>
 																  
-																<a href="<?php echo base_url().'paygateway/'.$url.'/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html" class="hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></a>
+																 
+																<form id="paypal_form" name="paypal_form" action="<?php echo base_url().'paygateway/'.$url.'/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html" method="POST"> 
+																	<input type="hidden" name="bidcoupon_id" id="bidcoupon_id" value="<?php echo $this->uri->segment(3);?>">
+																	<button type="submit" class="stripe-button hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></button>
+																</form>
+
+																<!-- <a href="<?php //echo base_url().'paygateway/'.$url.'/'.$content_gateway[$i]['id'].'/'.$content_record[0]['id'];?>.html" class="hiraola-btn hiraola-btn_dark hiraola-btn_sm"><span>Pay Now</span></a> -->
 																 
 
 															<?php } ?>

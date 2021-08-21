@@ -129,6 +129,76 @@ class frontend_account_m extends CI_Model {
 
 		}
 
+		public function save_paypal_data($data, $temp)
+		{
+			
+			
+			
+			if($temp['credit_pay'] == "credit_pay" && $data['payment_status'] == "Completed" ) {
+				
+				$content = $this->frontend_templates_m->get_records('user_bidcredit_rate','id',$temp['content_record']);
+
+				$datauser = array(
+
+					'user_id' =>  $_SESSION['user_id'], 
+					'amount' => $data['payment_gross'],
+					'purchase_date' => date('Y-m-d'),
+					'txn_id' => $data['txn_id'],
+					'plan_id' => $temp['content_record'],
+					'plan_type' => $temp['credit_pay'],
+					'paid_amount' => $content[0]['credit_rate'],
+					'paid_credit' => $content[0]['paid_credit'],
+					'free_credit' => $content[0]['free_credit'],
+
+				);
+				$this->db->select('*');
+				$this->db->from('user_credits');
+				$wharray = array('user_id' => $_SESSION['user_id']);
+				$this->db->where($wharray); 
+				$query = $this->db->get();
+				$datas = $query->result_array($query); 
+			
+				$this->db->set('paid_credit', $datauser['paid_credit']+$datas[0]['paid_credit']);
+				$this->db->set('free_credit', $datas[0]['free_credit']+$datauser['free_credit']);
+				$this->db->where('user_id', $_SESSION['user_id']);
+				$query=$this->db->update('user_credits');
+
+				$this->db->insert('user_payment', $datauser);
+				
+			} else {
+
+
+				$content = $this->frontend_templates_m->get_records('user_bidcoupon_rate','id', $temp['user_bidcoupon_id']);
+				
+				$datauser = array(
+
+					'user_id' =>  $_SESSION['user_id'], 
+					'amount' => $data['payment_gross'],
+					'purchase_date' => date('Y-m-d'),
+					'txn_id' => $data['txn_id'],
+					'plan_id' => $temp['user_bidcoupon_id'],
+					'plan_type' => "coupon_pay",
+					'paid_amount' => $content[0]['coupon_rate'],
+					'paid_credit' => $content[0]['coupon_credit'], 
+
+				);				
+
+				$coupon_datas = array(
+					'paid' => '1',
+					'txn_date'=>date('y-m-d')
+				);
+
+				$wharray = array('id' => $temp['user_bidcoupon_record_id']);
+				$this->db->where($wharray);
+				$result = $this->db->update('user_bidcoupon_records', $coupon_datas);
+				
+				$this->db->insert('user_payment', $datauser);
+				
+			}
+
+
+			return "success";
+		}
 
 		public function get_users($data){
 			

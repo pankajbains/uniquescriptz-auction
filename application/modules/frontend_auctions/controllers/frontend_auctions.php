@@ -145,7 +145,7 @@ class Frontend_auctions extends Frontend_Controller {
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);
 			$query = $this->db->get();
-			print_r($this->db->last_query());
+			//print_r($this->db->last_query());
 			//$user_count = $query->num_rows();
 			$user_result = $query->result_array();
 

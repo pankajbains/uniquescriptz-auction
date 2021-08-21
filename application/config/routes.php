@@ -69,9 +69,6 @@ $route['account/(:any)/(:any)/(:any)'] = 'frontend_account/$1/$2/$3';
 
 $route['paygateway/(:any)/(:any)/(:any)'] = 'frontend_account/paygateway/$1/$2/$3';
 $route['stripe-payment/(:any)/(:any)/(:any)'] = 'frontend_account/stripe_payment/$1/$2/$3';
-$route['paypal/cancel'] = 'frontend_account/cancel';
-$route['paypal/success'] = 'frontend_account/success';
-$route['paypal/ipn'] = 'frontend_account/ipn';
 
 /*-- for user area routes--*/
 $route['user/(:any)'] = 'frontend_users_account/$1';

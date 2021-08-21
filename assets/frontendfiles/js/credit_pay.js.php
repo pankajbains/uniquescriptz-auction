@@ -21,41 +21,30 @@
 ?>
 $(document).ready(function () {
 
-    /*
+     
+    $("#paypal_form").submit(function() {
 
-    $("#stripe-button-el").submit(function() {
+             
+            $('form#paypal_form').submit();
 
-            if($("input[type='radio']").is(':checked')){
-                var coupon=$("input[type='radio']:checked").val();
-            }else{
-                alert("Please Select Coupon Value!");
-                return false;  
 
-            }
-
-            // ------------------- pay with stripe card
-            $('form#stripe-button-el').submit();
-
-           
-            var datastring = $("#stripe-button-el").serialize();
+            var datastring = $("#paypal_form").serialize();
                 
                 $.ajax({
 
                     type: "POST",  
-                    url: "stripe-payment",  
+                    url: "paypalgateway",  
                     data: datastring,
                     success: function (html) {
- 
+
 
                     }
 
             });  
 
-                return false;  
-            });
+            return false;  
+    });
 
-
-            */
 
 });
 
