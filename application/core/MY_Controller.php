@@ -75,7 +75,7 @@ require APPPATH.'third_party/MX/PHPExcel.php';
 					//return $mail;
 
 					$this->load->library('email'); // Note: no $config param needed
-					$this->email->from('pankajbains@gmail.com');
+					$this->email->from('kishor4563@gmail.com');
 					$this->email->to('dedesigns@gmail.com');
 					$this->email->subject($text);
 					$this->email->message($subject);
