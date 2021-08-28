@@ -130,6 +130,7 @@ class frontend_users_m extends CI_Model {
 		public function get_payments($data){
 			
 			$this->db->select('*');
+			$this->db->join('manage_paymentgateway', 'manage_paymentgateway.id = user_payment.paymentgateway_id');
 			$this->db->from('user_payment');
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);

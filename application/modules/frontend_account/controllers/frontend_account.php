@@ -83,6 +83,14 @@ class Frontend_account extends Frontend_Controller {
 		
 	}
 
+	public function activate($slug=Null)
+	{
+		
+		$this->frontend_account_m->activate_account($slug);		 
+		$this->session->set_flashdata('content_message', '1');
+		redirect( base_url().'account/login.html'); 
+
+	}
 
 
 	public function gift_credits($slug=NULL)
@@ -277,8 +285,9 @@ class Frontend_account extends Frontend_Controller {
 		
 			$content_record=$this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(4));
 			$content_gateway=$this->frontend_templates_m->get_records('manage_paymentgateway','id', $this->uri->segment(3));
-			$data['content_data'] = $this->frontend_account_m->save_stripe_data($this->input->get(),$content_record, $content_gateway, $this->uri->segment(2));
+			$content_data = $this->frontend_account_m->save_stripe_data($this->input->get(),$content_record, $content_gateway, $this->uri->segment(2));
 	
+			$this->buy_credit_email($content_record);
 		} else { 
 
 			
@@ -287,43 +296,15 @@ class Frontend_account extends Frontend_Controller {
 			 
 			$content_data = $this->frontend_account_m->save_stripe_data($this->input->get(),$content_record, $content_gateway, $this->uri->segment(2));
 			 
-			if($content_data == 'success' ) {
-
-				$bidcoupon_id = $this->input->get('bidcoupon_id');
-				$bidcoupons = $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $bidcoupon_id);
-				
-				$emailcontent = $this->frontend_templates_m->emaildata('gift_coupon_email');
-				 
-				$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
-				$text = $emailcontent['content_emails'][0]['user_emails_body'];
-		
-				$reciverusername = ucfirst($bidcoupons[0]['name']);
-				$message = $bidcoupons[0]['message'];
-				$couponcode = $bidcoupons[0]['coupon_code'];
-				$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
-
-				$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
-				$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
-
-				 
-				$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
-				$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
-				$sitenamenew= $this->config->item('sitename');
-				
-				$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
-				$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
-		
-				$textnew = str_replace($activeword, $replacedword, $text);
-				$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-				$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
-				 
-				 
-			}
+			 
+			$bidcoupon_id = $this->input->get('bidcoupon_id'); 
+			$bidcoupons =  $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $bidcoupon_id);
+			$this->buy_gift_coupon_email($bidcoupons);
 			
 
-		} 
-		 
 
+		} 
+		
 		if( $content_data == "invalid_request_error") { 
 
 			$this->session->set_flashdata('pay_error', 'error');
@@ -356,7 +337,7 @@ class Frontend_account extends Frontend_Controller {
 		$returnURL = base_url().'frontend_account/success';
 		$notifyURL = base_url().'frontend_account/ipn';
 		$cancelURL = base_url().'user/account_details';
-	
+		// http://localhost/uniquescriptz-auction/frontend_account/ipn
 		$content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','id',$this->uri->segment(3));
 		
 		if($this->uri->segment(2) == "credit_pay"){
@@ -371,6 +352,7 @@ class Frontend_account extends Frontend_Controller {
 			$tempdatas = array( 
 				'content_record'=>  $this->uri->segment(4),
 				'credit_pay' => $this->uri->segment(2), 
+				'paymentgateway_id' => $content_gateway[0]['id'], 
 			);
 	
 			$this->session->set_userdata('temp_data', $tempdatas);
@@ -384,6 +366,7 @@ class Frontend_account extends Frontend_Controller {
 			$tempdatas = array( 
 				'user_bidcoupon_record_id'=>  $_POST['bidcoupon_id'],
 				'user_bidcoupon_id' => $this->uri->segment(4), 
+				'paymentgateway_id' => $content_gateway[0]['id'], 
 			);
 	
 			$this->session->set_userdata('temp_data', $tempdatas);
@@ -427,34 +410,14 @@ class Frontend_account extends Frontend_Controller {
 
 		if($temp_data['user_bidcoupon_id'] != '' && $records == "success") {
 
+			$bidcoupons =  $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $temp_data['user_bidcoupon_id']);
+		 	$this->buy_gift_coupon_email($bidcoupons);
 			
-			$bidcoupons = $this->frontend_templates_m->get_records('user_bidcoupon_records','id', $temp_data['user_bidcoupon_id']);		
-			$emailcontent = $this->frontend_templates_m->emaildata('gift_coupon_email');
-			 
-			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
-			$text = $emailcontent['content_emails'][0]['user_emails_body'];
-	
-			$reciverusername = ucfirst($bidcoupons[0]['name']);
-			$message = $bidcoupons[0]['message'];
-			$couponcode = $bidcoupons[0]['coupon_code'];
-			$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
-
-			$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
-			$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
-
-			 
-			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
-			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
-			$sitenamenew= $this->config->item('sitename');
+		} else {
+			$content_record=$this->frontend_templates_m->get_records('user_bidcredit_rate','id', $temp_data['content_record']);
 			
-			$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
-			$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
-	
-			$textnew = str_replace($activeword, $replacedword, $text);
-			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
-			 
-
+			$this->buy_credit_email($content_record);
+		
 		}
 
 		

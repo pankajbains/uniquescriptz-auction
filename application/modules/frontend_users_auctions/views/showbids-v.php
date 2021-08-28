@@ -42,7 +42,7 @@
 														?>
 														<tr>
 															<td><?php echo $content_data[$i]['bid_price']?></td>
-															<td><?php echo $content_data[$i]['bid_date']?></td>
+															<td><?php echo date("d-m-Y H:i:s", strtotime($content_data[$i]['bid_date']));?></td>
 															<td><?php 
 																	
 																	echo ($content_data[$i]['bid_status']==0)?'Lowest Unique Bid':'';

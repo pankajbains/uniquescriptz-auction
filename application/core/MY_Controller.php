@@ -62,9 +62,6 @@ require APPPATH.'third_party/MX/PHPExcel.php';
 
 		}
 
-		
-
-
 		public function send_email($emailto,$emailfrom,$name,$subject,$text){
 					
 					$header="MIME-Version: 1.0\r\n";
@@ -75,10 +72,10 @@ require APPPATH.'third_party/MX/PHPExcel.php';
 					//return $mail;
 
 					$this->load->library('email'); // Note: no $config param needed
-					$this->email->from('kishor4563@gmail.com');
-					$this->email->to('dedesigns@gmail.com');
-					$this->email->subject($text);
-					$this->email->message($subject);
+					$this->email->from($emailfrom);
+					$this->email->to($emailto);
+					$this->email->subject($subject);
+					$this->email->message($text);
 				
 					// Set to, from, message, etc.
 
@@ -86,6 +83,72 @@ require APPPATH.'third_party/MX/PHPExcel.php';
 					return $result;
 
 		}
+
+
+
+		public function buy_gift_coupon_email($bidcoupons)
+		{
+			
+			// var_dump($bidcoupons);
+			$emailcontent = $this->frontend_templates_m->emaildata('gift_coupon_email');
+				 
+			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+			$text = $emailcontent['content_emails'][0]['user_emails_body'];
+	
+			$reciverusername = ucfirst($bidcoupons[0]['name']);
+			$message = $bidcoupons[0]['message'];
+			$couponcode = $bidcoupons[0]['coupon_code'];
+			$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
+
+			$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+			$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
+
+			 
+			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
+			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+			$sitenamenew= $this->config->item('sitename');
+			
+			$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
+			$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
+	
+			$textnew = str_replace($activeword, $replacedword, $text);
+			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
+			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+
+
+		}
+
+
+		public function buy_credit_email($content_record)
+		{
+	
+			$emailcontent = $this->frontend_templates_m->emaildata('bid_credits');
+				 
+			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+			$text = $emailcontent['content_emails'][0]['user_emails_body'];
+	
+			$paid = $content_record[0]['paid_credit'];
+			$free = $content_record[0]['free_credit'] ;
+			
+			$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+			$emailto = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+			 
+			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
+			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+			$sitenamenew= $this->config->item('sitename');
+			
+			$activeword = array("[[NAME]]","[[SITENAME]]", "[[SITENAMELINK]]","[[PAID]]","[[FREE]]" );
+			$replacedword = array($sendername, $sitenamenew, $sitelinknew, $paid,  $free);
+	
+			$textnew = str_replace($activeword, $replacedword, $text);
+			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
+			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+
+		
+		
+		}
+
+
 
 		public function logout($data=NULL)
 		{

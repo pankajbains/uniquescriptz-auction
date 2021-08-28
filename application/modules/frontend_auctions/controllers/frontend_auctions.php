@@ -140,7 +140,7 @@ class Frontend_auctions extends Frontend_Controller {
 
 
 
-			$this->db->select('first_name', 'last_name', 'email');
+			$this->db->select('*');
 			$this->db->from('user_register');
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);
@@ -151,7 +151,7 @@ class Frontend_auctions extends Frontend_Controller {
 
 
 
-			$username=ucwords($user_result['first_name'].' '.$user_result['last_name']);
+			$username=ucwords($user_result[0]['first_name'].' '.$user_result[0]['last_name']);
 
 			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>";
 
@@ -166,9 +166,10 @@ class Frontend_auctions extends Frontend_Controller {
 
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-
-			$mail = 1;//$this->send_email($this->common-encrypt_decrypt('decrypt',$user_result['email']),$emailfrom,$sitenamenew,$subject,$textnew);
-
+		 
+			$this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+			$mail = 1;
+			 
 			if($mail){
 				echo 'You Bid of amount <strong>'.$_POST['bid_price'].'</strong> placed successfully. If was '.$placebid[2].'.-success';
 			}

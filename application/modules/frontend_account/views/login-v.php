@@ -6,12 +6,19 @@
                     <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6">
 
 						<?php
-							$this->load->view('content-v');
-						?>
-
-
+							$this->load->view('content-v'); 
+                        ?>
                     </div>
+                  
+                   
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+                    <?php
+                     if($this->session->flashdata('content_message') =="1") {
+                        ?> 
+                            <span style="color:red;">Your Account Activated Successfully.</span>
+                        <?php
+                        }
+                    ?>
                         <form action="#" id="login_form" name="login_form" method="post">
                             <div class="login-form">
                                 <h4 class="login-title">Login with <?php echo $this->config->item('sitename');?></h4>

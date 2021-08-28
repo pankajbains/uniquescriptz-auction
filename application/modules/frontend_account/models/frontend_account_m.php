@@ -12,22 +12,12 @@ class frontend_account_m extends CI_Model {
 		public function save_stripe_data($data,$content_record, $content_gateway, $uri)
 		{
 		
-		
-				// $this->db->select('*');
-				// $this->db->from('user_bidcoupon_records');
-				// $wharray = array('id' => $data['bidcoupon_id']);
-				// $this->db->where($wharray); 
-				// $query = $this->db->get();
-				// $content_bidcoupon = $query->result_array($query); 
-				// var_dump($data['bidcoupon_id'], $content_bidcoupon);
-
-
 
 				
 			require_once('application/third_party/MX/StripePhp/init.php');
 			
 			try {
-				$content_gateway = $this->frontend_templates_m->get_records('manage_paymentgateway','gateway_name','Stripe');
+			 
 				\Stripe\Stripe::setApiKey($content_gateway[0]['secret_key']);
 				$customer = \Stripe\Customer::create([
 					'name' => $_SESSION['first_name'],
@@ -65,6 +55,7 @@ class frontend_account_m extends CI_Model {
 						'paid_amount' => $content_record[0]['credit_rate'],
 						'paid_credit' => $content_record[0]['paid_credit'],
 						'free_credit' => $content_record[0]['free_credit'],
+						'paymentgateway_id' => $content_gateway[0]['id'],
 
 					);
 
@@ -92,6 +83,7 @@ class frontend_account_m extends CI_Model {
 						'plan_type' => $uri,
 						'paid_amount' => $content_record[0]['coupon_rate'],
 						'paid_credit' => $content_record[0]['coupon_credit'], 
+						'paymentgateway_id' => $content_gateway[0]['id'], 
 
 					);				
 
@@ -149,6 +141,7 @@ class frontend_account_m extends CI_Model {
 					'paid_amount' => $content[0]['credit_rate'],
 					'paid_credit' => $content[0]['paid_credit'],
 					'free_credit' => $content[0]['free_credit'],
+					'paymentgateway_id' => $temp['paymentgateway_id'],
 
 				);
 				$this->db->select('*');
@@ -164,12 +157,13 @@ class frontend_account_m extends CI_Model {
 				$query=$this->db->update('user_credits');
 
 				$this->db->insert('user_payment', $datauser);
-				
+				 
+
 			} else {
 
 
 				$content = $this->frontend_templates_m->get_records('user_bidcoupon_rate','id', $temp['user_bidcoupon_id']);
-				
+					
 				$datauser = array(
 
 					'user_id' =>  $_SESSION['user_id'], 
@@ -180,7 +174,7 @@ class frontend_account_m extends CI_Model {
 					'plan_type' => "coupon_pay",
 					'paid_amount' => $content[0]['coupon_rate'],
 					'paid_credit' => $content[0]['coupon_credit'], 
-
+					'paymentgateway_id' => $temp['paymentgateway_id'],
 				);				
 
 				$coupon_datas = array(
@@ -190,10 +184,10 @@ class frontend_account_m extends CI_Model {
 
 				$wharray = array('id' => $temp['user_bidcoupon_record_id']);
 				$this->db->where($wharray);
-				$result = $this->db->update('user_bidcoupon_records', $coupon_datas);
+				$this->db->update('user_bidcoupon_records', $coupon_datas);
 				
 				$this->db->insert('user_payment', $datauser);
-				
+			 
 			}
 
 
@@ -231,6 +225,15 @@ class frontend_account_m extends CI_Model {
 		}
 
 
+		public function activate_account($user_id)
+		{
+			
+			$this->db->set('active', '1');
+			$this->db->where('user_id',$user_id);
+			$this->db->update('user_register');
+			return "1";
+
+		}
 		public function get_page($data){
 
 			//print_r($data);
