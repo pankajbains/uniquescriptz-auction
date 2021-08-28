@@ -25,19 +25,21 @@
 												<table class="table table-bordered table-hover">
 													<tbody>
 														<tr>
+															<th>Payment Mode</th>
 															<th>Transaction ID</th>
 															<th>Transaction Date</th>
 															<th>Transaction Amount </th>
 															<th>Plan Purchased</th>
 														</tr>
 														<?php
-														
+															 
 															if(count($content_payments)>0){
 																for($i=0;$i<count($content_payments);$i++){
 																 
 																
 														?>
 														<tr>
+															<td><?php echo $content_payments[$i]['gateway_name']?></td>
 															<td><?php echo $content_payments[$i]['txn_id']?></td>
 															<td><?php echo date("d-m-Y", strtotime($content_payments[$i]['purchase_date'])); ?></td>
 															<td><?php echo  $this->frontend_templates->convert_currency_price('currency_price', $content_payments[$i]['amount']); ?> </td>

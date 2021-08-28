@@ -75,10 +75,10 @@ class Frontend_users_auctions extends Frontend_Controller {
 		$data['content_view']='frontend_users_auctions/current-v';
 
 		$data['content_auction']=$this->frontend_users_auctions_m->get_user_auctions(1,0,0);
+		// var_dump($data['content_auction']);
 
 		$this->frontend_templates->inner($data, $this->settings());
 		
-		//var_dump($data['content_auction']);
 
 	}
 

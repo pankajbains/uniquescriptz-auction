@@ -34,7 +34,7 @@
 														</tr>
 														<?php
 
-													 var_dump($content_auction);
+													 
 
 															if(count($content_auction)>0){
 															
@@ -43,7 +43,7 @@
 														<tr>
 															<td><a href="<?php echo base_url().'auction/showbids/'.$content_auction[$i]['auction_id'];?>.html"><?php echo $content_auction[$i]['auction_id']?></a></td>
 															<td><?php echo $content_auction[$i]['auction_name']?></td>
-															<td><?php echo $content_auction[$i]['auction_edate'].' '.$content_auction[$i]['auction_etime']?></td>
+															<td><?php echo date("d-m-Y H:i:s", strtotime($content_auction[$i]['auction_edate'].' '.$content_auction[$i]['auction_etime'])); ?></td>
 															<td><?php echo ($content_auction[$i]['auction_bid']>$content_auction[$i]['auction_max_bid'])?'Max Required Bid Reached':$content_auction[$i]['auction_bid'].'/'.$content_auction[$i]['auction_max_bid']?></a>
 															</td>
 															<td><a href="<?php echo base_url().'auction/showbids/'.$content_auction[$i]['auction_id'];?>.html"><i class="fa fa-eye"

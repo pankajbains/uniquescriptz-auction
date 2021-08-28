@@ -45,15 +45,15 @@ class frontend_users_auctions_m extends CI_Model {
 
 			$this->db->distinct();
 
-			if($won!=''){
-				$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid, auction_won.bid_price, auction_won.bid_id', false);
-			}else{
+			// if($won!=''){
+			// 	$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid, auction_won.bid_price, auction_won.bid_id', false);
+			// }else{
 				$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid', false);
-			}
+			// }
 			$this->db->from('auction_bids');
 			$this->db->where($wharray);
 			$this->db->join('auction_items', 'auction_bids.auction_id = auction_items.auction_id');
-			$this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
+			// $this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
 
 			$query=$this->db->get();
 			//var_dump($this->db->last_query());
@@ -80,8 +80,9 @@ class frontend_users_auctions_m extends CI_Model {
 
 		public function get_bids($data){
 
-			//print_r($data);
-			$this->db->select('auction_bids.auction_id, auction_bids.bid_price, auction_bids.bid_date, auction_bids.bid_status, auction_items.auction_name');
+			// print_r($data);
+			$this->db->select('*');
+			// $this->db->select('auction_bids.auction_id, auction_bids.bid_price, auction_bids.bid_date, auction_bids.bid_status, auction_items.auction_name');
 			$this->db->from('auction_bids');
 
 			$wharray = array('auction_bids.auction_id' => $data, 'user_id'=>$_SESSION['user_id']);
@@ -89,7 +90,7 @@ class frontend_users_auctions_m extends CI_Model {
 			
 			$this->db->join('auction_items', 'auction_bids.auction_id = auction_items.auction_id');
 			$query = $this->db->get();
-			//var_dump($this->db->last_query());
+			// var_dump($query->result_array());
 			return $query->result_array();
 
 		}

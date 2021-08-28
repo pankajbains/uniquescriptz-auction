@@ -84,11 +84,11 @@ class admin_auctions_m extends CI_Model {
 						//$this->db->join('auction_items', 'auction_items.auction_id = auction_invoice.auction_id');
 						$query=$this->db->get();
 						
-						//var_dump($this->db->last_query());
-						echo $num = $query->num_rows();
+						var_dump($this->db->last_query());
+						// echo $num = $query->num_rows();
 
 						//$query = $this->db->get_where('auction_items', array('auction_closed' => '1'));
-						return $query->result_array();
+						// return $query->result_array();
 
 				}
 

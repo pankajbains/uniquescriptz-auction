@@ -132,6 +132,7 @@ class Admin_auctions extends Backend_Controller {
 	
 		$data['inovice_list'] = $this->admin_auctions_m->get_auction_invoices(); // module call to list user from database
 		$data['content_view']='admin_auctions/auction_invoices';	 // view call to display user from database
+		var_dump($data['invoice_list']);
 		$this->admin_templates->inner($data);				// template call to display
 		
 	}
