@@ -12,7 +12,13 @@ class admin_users_m extends CI_Model {
 
 		public function get_users_list($slug = FALSE)
 		{
-
+ 
+			// $sp_read_users = "CALL sp_user_register()";
+			// $query = $this->db->query($sp_read_users);
+			// if ($query) {
+			// 	return $query->result_array();
+			// }
+			// return NULL;
 				if ($slug === FALSE)
 				{
 						$query = $this->db->get('user_register');

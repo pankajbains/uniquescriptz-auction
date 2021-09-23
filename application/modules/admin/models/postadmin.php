@@ -122,6 +122,9 @@ class postadmin extends CI_Model {
 
 					$this->db->where($wharray);
 					$query=$this->db->delete('auction_category');
+
+					$this->db->where($wharray);
+					$query=$this->db->delete('auction_media');
 					
 					
 				}

@@ -13,12 +13,15 @@ class admin_auctions_m extends CI_Model {
 
 				if ($slug === FALSE)
 				{
+				 
 						
-						$this->db->select('auction_features.featured, auction_items.auct_id, auction_items.auction_id, auction_items.auction_name, auction_items.auction_max_bid, auction_edate, auction_etime, auction_open', false);
+						$this->db->select('auction_features.featured, auction_items.auct_id, auction_items.auction_id, auction_items.auction_name, auction_items.auction_max_bid, auction_edate, auction_etime, auction_open', 'COUNT(auction_bids.auction_id) as total_bids','bid_status',false);
 						$this->db->from('auction_items');
-						$this->db->where('auction_closed', '0');
+						$this->db->where('auction_items.auction_closed', '0'); 
 						$this->db->join('auction_features', 'auction_features.auction_id = auction_items.auction_id');
+						// $this->db->join('auction_bids', 'auction_bids.auction_id = auction_items.auction_id')->group_by('auction_id');
 						$query=$this->db->get();
+					 
 						return $query->result_array();
 
 				}else{
@@ -30,20 +33,78 @@ class admin_auctions_m extends CI_Model {
 
 		}
 
+	 
+		
+		public function get_auctions_bids($slug = null)
+		{
+			$this->db->select('auction_bids.user_id,auction_bids.bid_date, auction_bids.bid_price, auction_bids.auction_id,user_register.first_name,user_register.last_name,user_register.email,auction_items.auction_name');
+			$this->db->from('auction_bids');
+			$this->db->where('auction_bids.auction_id', $slug);
+			$this->db->join('user_register', 'user_register.user_id = auction_bids.user_id');
+			$this->db->join('auction_items', 'auction_items.auction_id = auction_bids.auction_id');
+			$query=$this->db->get(); 
+
+			$records = $query->result_array(); 
+			$auction_count = $query->num_rows();
+			$auction_result = $query->result_array();
+
+			foreach ($query->result_array() as $auction_details){
+
+				if($auction_count > 0) {
+
+					foreach($auction_result as $auctionresult) 
+					{
+						$auctionrow[] = $auctionresult['bid_price'];
+					}
+
+				}  
+				$auctionbidcount = array_count_values($auctionrow);
+
+				for($i=0; $i<count($auctionbidcount); $i++){
+
+					if($auctionbidcount[$auctionrow[$i]] == 1){
+						$single_bids[] = $auctionrow[$i];  // auction duplicate bids array
+					}else{
+						$duplicate_bids[] = $auctionrow[$i];   // Auction unique bids 
+					}
+					
+				}
+			 
+			}
+
+			$this->db->select('auction_type');
+			$this->db->from('admin_config_app');
+			$this->db->where('config_type', 'site_settings'); 
+			$q= $this->db->get();  
+			$auction_type = $q->result_array(); 
+			$unique = ($auction_type[0]['auction_type'] == 'lowest')?min($single_bids):max($single_bids);
+
+			$bid_views = array(
+				'user_id' => $records[0]['user_id'],
+				'bid_date' => $records[0]['bid_date'],
+				'bid_price' => $records[0]['bid_price'],
+				'auction_id' => $records[0]['auction_id'],
+				'auction_name' => $records[0]['auction_name'],
+				'first_name' => $records[0]['first_name'],
+				'last_name' => $records[0]['last_name'],
+				'email' => $records[0]['email'],
+				'total_bids' => count($records),
+				'auction_type' => $auction_type[0]['auction_type'],
+				'unique' => $unique,
+				'records' => $records,
+			);
+			 
+			return $bid_views;
+		}
 		
 		public function get_auctions_closed($slug = FALSE)
 		{
 
 				if ($slug === FALSE)
 				{
-						$this->db->select('auction_items.*,auction_won.bid_price', false);
-						$this->db->from('auction_items');
-						$this->db->where('auction_closed', '1');
-						$this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
-						$query=$this->db->get();
+		 
 
-
-						//$query = $this->db->get_where('auction_items', array('auction_closed' => '1'));
+						$query = $this->db->get_where('auction_items', array('auction_closed' => '1'));
 						return $query->result_array();
 
 				}
@@ -63,34 +124,51 @@ class admin_auctions_m extends CI_Model {
 						$this->db->join('auction_items', 'auction_items.auction_id = auction_won.auction_id');
 						$query=$this->db->get();
 						
-						//var_dump($this->db->last_query());
-
-						//$query = $this->db->get_where('auction_items', array('auction_closed' => '1'));
 						return $query->result_array();
 
-				}
+				} 
 
+		}
+		public function getauction_bid_type()
+		{
+			$this->db->select('auction_type');
+			$this->db->from('admin_config_app');
+			$this->db->where('config_type', 'site_settings'); 
+			$query=$this->db->get();  
+			return $query->result_array(); 
 		}
 
 		public function get_auction_invoices($slug = FALSE)
 		{
 
-				if ($slug === FALSE)
-				{
-						$this->db->select('auction_won.auction_id, auction_won.payment, auction_won.won_date, auction_won.bid_price, auction_won.payment, auction_won.delivered, user_register.reg_id, user_register.first_name, user_register.last_name, user_register.email, auction_items.auction_name', false);
-						$this->db->from('auction_invoice');
-						//$this->db->where('auction_closed', '1');
-						$this->db->join('user_register', 'auction_invoice.user_id = user_register.user_id');
-						//$this->db->join('auction_items', 'auction_items.auction_id = auction_invoice.auction_id');
-						$query=$this->db->get();
+			$this->db->select('auction_invoice.user_id, auction_invoice.auction_id,user_register.first_name,user_register.last_name,user_register.email,user_register.reg_id,auction_invoice.invoice_no,auction_won.payment,auction_won.invoicesent, auction_won.delivered,auction_items.auction_name');
+			$this->db->from('auction_invoice'); 
+			$this->db->join('auction_won', 'auction_won.auction_id = auction_invoice.auction_id');
+			$this->db->join('user_register', 'auction_invoice.user_id = user_register.user_id');
+			$this->db->join('auction_items', 'auction_items.auction_id = auction_invoice.auction_id');
+			$query=$this->db->get();
+			return $query->result_array();
+			
+				// if ($slug === FALSE)
+				// {
+				// 		$this->db->select('auction_won.auction_id, auction_won.payment, auction_won.won_date, auction_won.bid_price, auction_won.payment, auction_won.delivered, user_register.reg_id, user_register.first_name, user_register.last_name, user_register.email, auction_items.auction_name', false);
+				// 		$this->db->from('auction_invoice');
+				// 		// $this->db->where('auction_closed', '1');
+				// 		$this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
+				// 		$this->db->join('user_register', 'auction_invoice.user_id = user_register.user_id');
+				// 		$this->db->join('auction_items', 'auction_items.auction_id = auction_invoice.auction_id');
+				// 		$query=$this->db->get();
 						
-						var_dump($this->db->last_query());
-						// echo $num = $query->num_rows();
+				// 		return $query->result_array();
 
-						//$query = $this->db->get_where('auction_items', array('auction_closed' => '1'));
-						// return $query->result_array();
+				// } else { 
 
-				}
+				// 	$query = $this->db->get_where('auction_invoice', array('auction_id' => $slug));
+					
+					
+
+				// 	return $query->result_array();
+				// }
 
 		}
 
@@ -149,6 +227,7 @@ class admin_auctions_m extends CI_Model {
 		
 		public function get_duplicate($data){
 
+				
 			$this->db->select("*")->from("auction_items")->where('auction_id', $_POST['auction_id']);
 			$query = $this->db->get();
 			$result = $query->result_array();
@@ -206,7 +285,7 @@ class admin_auctions_m extends CI_Model {
 
 
 						$auctmedia = array(
-							'auction_name' => $_POST['auction_name'],
+							'auction_name' => $result[0]['auction_name'],
 							'auction_id' =>  $auctionid
 						);
 

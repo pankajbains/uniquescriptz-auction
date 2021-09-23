@@ -25,6 +25,7 @@ class Frontend_auctions extends Frontend_Controller {
 		$this->load->database();
 		$this->load->model('frontend_auctions_m');
 		//$this->load->model('post_m');
+		$this->load->library('pdf');
 		//$this->load->model('common');
 		//$this->load->helper('url_helper');
 		
@@ -80,6 +81,7 @@ class Frontend_auctions extends Frontend_Controller {
 		//var_dump($data['content_data'][0]['auction_category']);
 	}
 
+
 	public function winners($slug=NULL)
 	{
 		
@@ -115,11 +117,11 @@ class Frontend_auctions extends Frontend_Controller {
 
 	}
 
-
+	
 	public function place_now($slug=NULL)
 	{
-		
-		//var_dump($_POST);
+		 
+		// var_dump($_POST);
 		$this->session_check();
 
 		$placebid=explode('-',$this->frontend_auctions_m->post_now($_POST, $this->settings()));
@@ -144,9 +146,7 @@ class Frontend_auctions extends Frontend_Controller {
 			$this->db->from('user_register');
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);
-			$query = $this->db->get();
-			//print_r($this->db->last_query());
-			//$user_count = $query->num_rows();
+			$query = $this->db->get(); 
 			$user_result = $query->result_array();
 
 
@@ -167,9 +167,10 @@ class Frontend_auctions extends Frontend_Controller {
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
 		 
-			$this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
-			$mail = 1;
+			$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+			// $mail = 1;
 			 
+
 			if($mail){
 				echo 'You Bid of amount <strong>'.$_POST['bid_price'].'</strong> placed successfully. If was '.$placebid[2].'.-success';
 			}
@@ -179,6 +180,34 @@ class Frontend_auctions extends Frontend_Controller {
 		
 	}
 
+	public function get_prod_desc($slug = null)
+	{
+		$this->session_check();
+		// var_dump($_POST['auction_id']);
+		$auction_details = $this->frontend_auctions_m->get_details($_POST['auction_id']);
+		// print_r($auction_details); 
+		var_dump( $auction_details);
+		// return $auction_details; 
+		// return  $auction_details;
+		// return $auction_details;
+		// $this->db->select('*');
+		// $this->db->from('auction_items');
+		// $wharray = array('auction_id' => $_POST['auction_id']);
+		// $this->db->where($wharray);
+		// $query = $this->db->get(); 
+		// $user_result = $query->result_array();
+
+		// $this->db->select('*');
+		// $this->db->from('auction_features');
+
+		// $wharray = array('auction_id'=>$data);
+		// $this->db->where($wharray);
+
+		// $query = $this->db->get();
+		// //var_dump($this->db->last_query());
+		// return $query->result_array($query);
+
+	}
 
 /* ------------- Auto email functions ------------- */
 
@@ -195,6 +224,14 @@ class Frontend_auctions extends Frontend_Controller {
 
 		$select_winner=$this->frontend_auctions_m->select_now();
 		//var_dump($select_winner);
+
+	}
+
+	public function invoice_now($slug=NULL)
+	{
+
+		$select_invoice = $this->frontend_auctions_m->invoice_now();
+		// var_dump($select_invoice);
 
 	}
 

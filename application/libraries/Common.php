@@ -130,7 +130,7 @@
 
 		}
 
-		public function send_email($emailto,$emailfrom,$name,$subject,$text){
+		public function send_email($emailto,$emailfrom,$name,$subject,$text, $domdpf=null){
 
 					$header="MIME-Version: 1.0\r\n";
 					$header.= "Content-type: text/html; charset=iso-8859-1\r\n";
@@ -140,11 +140,12 @@
 					//return $mail;
 
 					$this->CI->load->library('email'); // Note: no $config param needed
-					$this->CI->email->from('kishor4563@gmail.com');
-					$this->CI->email->to('dedesigns@gmail.com');
-					$this->CI->email->subject($text);
-					$this->CI->email->message($subject);
-				
+					$this->CI->email->from($emailfrom);
+					$this->CI->email->to($emailto);
+					$this->CI->email->subject($subject);
+					$this->CI->email->message($text); 
+					// $this->CI->email->attach($domdpf); 
+					// $this->CI->email->string_attach($domdpf, 'base64.pdf', 'application/pdf');
 					// Set to, from, message, etc.
 
 					$result = $this->CI->email->send();
@@ -153,8 +154,7 @@
 		}
 
 
-	
-
+		
 		// paypal gateway functions
 
 	 

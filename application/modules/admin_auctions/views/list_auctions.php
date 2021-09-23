@@ -137,7 +137,7 @@
 														
 															<?php if(in_array('write', $permissions)){ ?>
 															<li>
-																<a href="add_coupons/<?php echo $auctions_list[$i]['auction_id'];?>.html" class="tooltip-success" data-rel="tooltip" title="Edit">
+																<a href="add_auctions/<?php echo $auctions_list[$i]['auction_id'];?>.html" class="tooltip-success" data-rel="tooltip" title="Edit">
 																	<span class="green">
 																		<i class="icon-edit bigger-120"></i>
 																	</span>

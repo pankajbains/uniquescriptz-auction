@@ -63,8 +63,10 @@
 
 									<tbody>
 										<?php 
-										for($i=0;$i<count($auctions_list);$i++){?>
-										<tr id="<?php echo $auctions_list[$i]['auction_id'];?>">
+										// var_dump($invoice_list);
+										for($i=0;$i<count($invoice_list);$i++){ 
+										?>
+										<tr id="<?php echo $invoice_list[$i]['auction_id'];?>">
 											<td class="center">
 												<label>
 													<input type="checkbox" />
@@ -73,56 +75,39 @@
 											</td>
 
 											<td>
-												<a href="view_bids/<?php echo $auctions_list[$i]['auction_id'];?>.html"><?php echo $auctions_list[$i]['auction_name'];?></a>
+												<a href="view_bids/<?php echo $invoice_list[$i]['auction_id'];?>.html"><?php echo $invoice_list[$i]['auction_name'];?> / <?php echo $invoice_list[$i]['auction_id'];?></a>
 											</td>
 											<td>
-												<a href="view_bids/<?php echo $auctions_list[$i]['auction_id'];?>.html"><?php echo $auctions_list[$i]['auction_id'];?></a>
+												<a href="<?php echo base_url();?>admin_users/add_users/<?php echo $invoice_list[$i]['reg_id'];?>.html"><?php echo $invoice_list[$i]['first_name'].' '.$invoice_list[$i]['last_name'];?></a>
 											</td>
-											<td><?php ?> </td>
-											<td><?php echo $auctions_list[$i]['auction_edate'].' '.$auctions_list[$i]['auction_etime'];?></td>
-											<td>
-											<?php if($auctions_list[$i]['auction_winner']==1){?>
-											<span class="label label-success">Winner Selected</span>
-											<?php }else{ ?>
-											
-											<span class="label label-warning">Winner Not Selected</span>
-											<?php } ?>
-											</td>
+											<td><?php echo $this->common->encrypt_decrypt('decrypt',$invoice_list[$i]['email']);?> </td>
+											<td><?php echo $invoice_list[$i]['invoice_no'];?></td> 
 											 	
-											<th></th>
-											<th class="hidden"></th>
-
+											<td> <?php echo ($invoice_list[$i]['payment']==0)?'Not Paid':'Paid';?> </th>
+											<td> <?php echo ($invoice_list[$i]['delivered']==0)?'Not Delivered':'Delivered';?> </td>
 											<td class="td-actions">
 												<div class="hidden-phone visible-desktop action-buttons">
-
-													<a class="green" style="cursor:pointer;" onclick="createnew('auction_items','bid_id','<?php echo $auctions_list[$i]['auction_id'];?>')" title="copy">
-														<i class="icon-retweet bigger-130"></i>
+													 
+													<a class="green" href="view_invoices/<?php echo $invoice_list[$i]['auction_id'];?>.html">
+														<i class="icon-envelope bigger-130"></i>
 													</a>
-
+													<a class="green" href="view_invoices/<?php echo $invoice_list[$i]['auction_id'];?>.html">
+														<i class="icon-truck bigger-130"></i>
+													</a>
+													 
+													 
+													<a id="delrec" name="delrec" value="<?php echo $invoice_list[$i]['auction_id'].'|auction_items|auction_id';?>"  >
+														<i class="icon-trash bigger-130"></i>
+													</a>
+													 
 												</div>
 
 												<div class="hidden-desktop visible-phone">
-													<div class="inline position-relative">
-														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
-															<i class="icon-caret-down icon-only bigger-120"></i>
-														</button>
-
-														<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
-
-															<li>
-																<a style="cursor:pointer;" onclick="createnew('auction_items','auction_id','<?php echo $auctions_list[$i]['auction_id'];?>')" class="tooltip-success" data-rel="tooltip" title="Copy">
-																	<span class="green">
-																		<i class="icon-retweet bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-
-														</ul>
-													</div>
+													 
 												</div>
+
 											</td>
 										</tr>
-
 										<?php
 											}
 

@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require APPPATH.'third_party/MX/PHPExcel.php'; 
+require APPPATH.'third_party/MX/Dompdf/autoload.inc.php'; 
 
 	class Common_Controller extends MX_Controller{
 
@@ -16,7 +17,17 @@ require APPPATH.'third_party/MX/PHPExcel.php';
 			parent::__construct();
 		}
 	}
-	
+
+
+	use Dompdf\Dompdf;
+	class Pdf extends Dompdf    
+	{
+		public function __construct()
+		{
+			parent::__construct();      
+			$dompdf = new Dompdf(); 
+		}
+	}
 
 
 	class Frontend_Controller extends Common_Controller{

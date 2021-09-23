@@ -80,16 +80,34 @@ class Admin_auctions extends Backend_Controller {
 
 	}
 
+	public function view_bids($slug)
+	{
+		$this->session_check(); 
+		$data['v_auctions_bids'] = $this->admin_auctions_m->get_auctions_bids($slug);  
+		$data['content_view']= 'admin_auctions/closed_bids_view'; 
+		$this->admin_templates->inner($data);
+	}
 
-	public function list_auctions($slug=NULL) // function call with page name
+	public function list_auctions($slug=NULL) 
 	{
 		
 		$this->session_check();
 	
-		$data['auctions_list'] = $this->admin_auctions_m->get_auctions_list(); // module call to list user from database
-		$data['content_view']='admin_auctions/list_auctions';	 // view call to display user from database
-		$this->admin_templates->inner($data);				// template call to display
+		$data['auctions_list'] = $this->admin_auctions_m->get_auctions_list();
+		$data['content_view']='admin_auctions/list_auctions';	
+		 
+		$this->admin_templates->inner($data);				
 		
+	}
+
+	public function view_invoices($slug=NULL)
+	{
+		$this->session_check(); 
+		$data['invoice_list'] = $this->admin_auctions_m->get_auction_invoices($slug);
+		$data['content_view']='admin_auctions/auction_invoices';	
+		// var_dump($data['auction_format']);
+		$this->admin_templates->inner($data);	
+
 	}
 
 	public function auction_media($slug=NULL) // function call with page name
@@ -130,9 +148,8 @@ class Admin_auctions extends Backend_Controller {
 		
 		$this->session_check();
 	
-		$data['inovice_list'] = $this->admin_auctions_m->get_auction_invoices(); // module call to list user from database
-		$data['content_view']='admin_auctions/auction_invoices';	 // view call to display user from database
-		var_dump($data['invoice_list']);
+		$data['invoice_list'] = $this->admin_auctions_m->get_auction_invoices($slug);  
+		$data['content_view']='admin_auctions/auction_invoices'; 
 		$this->admin_templates->inner($data);				// template call to display
 		
 	}
