@@ -55,7 +55,7 @@
 											<th>Payment Delivery Status</th>
 											<th class="hidden"></th>
 											<th class="hidden"></th>
-											
+											<th></th>
 											
 										</tr>
 									</thead>
@@ -85,10 +85,20 @@
 											</td>
 											 	
 											<td> <?php echo ($winner_list[$i]['payment']==0)?'Not Paid':'Paid';?> / <?php echo ($winner_list[$i]['delivered']==0)?'Not Delivered':'Delivered';?></th>
-											<th class="hidden"></td>
-
-											<td class="td-actions hidden">
-												
+											<th class="hidden"></td> 
+											<td class="td-actions">
+												<div class="hidden-phone visible-desktop action-buttons">
+													 
+													<a class="green" href="view_invoices/<?php echo $winner_list[$i]['auction_id'];?>.html">
+														<i class="icon-cogs  bigger-130"></i>
+													</a>
+													 
+													 
+													<a id="delrec" name="delrec" value="<?php echo $winner_list[$i]['auction_id'].'|auction_items|auction_id';?>"  >
+														<i class="icon-trash bigger-130"></i>
+													</a>
+													 
+												</div> 
 											</td>
 										</tr>
 

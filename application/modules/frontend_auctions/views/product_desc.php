@@ -11,7 +11,7 @@
                                         <li>Bid Required: <a name="#"><?php echo $content_data[0]['auction_max_bid'];?> Bids</a></li>
 										<?php } ?>
 										<?php if($content_featured[0]['stotal_bids']==1){?>
-										<li>Bid Placed: <a name="#"><?php echo $content_data[0]['auction_bid'];?> Bids</a></li>
+										<li>Bid Placed: <a name="#" id="bid_placed"><?php echo $content_data[0]['auction_bid'];?> Bids</a></li>
 										<?php } ?>
 										<?php if($content_featured[0]['sremaining_bids']==1){?>
 										<li>Remaining Bids: <a name="#">

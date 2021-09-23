@@ -40,6 +40,8 @@ $(document).ready(function () {
 				var paid_credit = $('#paid_credit').val();
 				
 				var free_credit = $('#free_credit').val();
+				var auction_id = $('#auction_id').val();
+				var auction_name = $('#auction_name').val();
 				var auction_format = $('#auction_format').val();
 
 
@@ -84,36 +86,40 @@ $(document).ready(function () {
 				}
 				
 				var datastring = $("#bid_form").serialize();
-
+				
 				$.ajax({
 
 						type: "POST",  
 						url: "../place_now",  
 						data: datastring,  
 						success: function (html) {	
-
 							if (html!='') {
 								
 								var msg = html.split("-");
+								var price = html.split("--");
+				 
+							 
 
 								if(msg[1]=='success'){
 
 									$("#success").removeClass("alert-danger").addClass("alert-success");
 
 									$('#bid_price').val("");
-
+									
 									if (auction_type==0) { 
 
-										$('#free_credit').val(free_credit-1);
+										$('#dfreecredits').val(free_credit-auction_credits);
 
 									}
 
 									if (auction_type==1) { 
-
-										$('#paid_credit').val(paid_credit-1);
+										
+										$('#dpaidcredits').val(Number(paid_credit)-Number(auction_credits));
 
 									}
-
+									 
+								
+									prod_desc(auction_id);
 									//latest(bid_id,regid);
 									//proditem(bid_id,regid);
 
@@ -138,6 +144,27 @@ $(document).ready(function () {
 
 		});
 
+
+		function prod_desc(auction_id) { 
+			
+			$.ajax({
+				type: "POST",  
+				url: "../get_prod_desc",  
+				data: {
+					'auction_id' :auction_id,
+				},   
+
+				success: function(response) {
+					 
+					alert("hi");
+					$('#bid_placed').html(response[0]['auction_bid']);
+				 
+				}				
+			 
+
+			});
+
+		}
 
 /*
 		$("#submit_bid").click(function () {

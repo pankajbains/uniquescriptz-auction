@@ -224,6 +224,7 @@ class frontend_auctions_m extends CI_Model {
 		}
 --*/
 
+
 		public function post_now($data, $settings){
 
 
@@ -485,7 +486,7 @@ class frontend_auctions_m extends CI_Model {
 			$wharray = array('auction_open' => 1, 'auction_closed' => 1, 'auction_winner' => 0);
 			$this->db->where($wharray);
 			$query = $this->db->get();
-			//print_r($this->db->last_query());
+			// print_r($this->db->last_query());
 
 			$auction_detail_count = $query->num_rows();
 			
@@ -500,7 +501,7 @@ class frontend_auctions_m extends CI_Model {
 					$wharray = array('auction_id' => $auction_details['auction_id']);
 					$this->db->where($wharray);
 					$query = $this->db->get();
-					//print_r($this->db->last_query());
+					// print_r($this->db->last_query());
 					$auction_count = $query->num_rows();
 					$auction_result = $query->result_array();
 					
@@ -562,6 +563,23 @@ class frontend_auctions_m extends CI_Model {
 					$this->db->set('auction_winner', '1');
 					$this->db->where('auction_id',$auction_details['auction_id']);
 					$this->db->update('auction_items');
+
+
+					/* invoice query */
+					$auctioninvoice = array( 
+						'user_id' => $auction_result[0]['user_id'],
+						'auction_id' => $auction_details['auction_id'],
+						'auction_name' => $auction_details['auction_name'],
+						'invoice_no' => "",
+						'invoice_amount' => $unique,
+						'invoice_date' => date('Y-m-d H:i:s'),
+						'auction_plateform' => $auction_format,
+						'status' => "0",
+						'delmark' => "0",
+					);
+
+					$this->db->insert('auction_invoice', $auctioninvoice);
+
 			
 				}
 
@@ -719,6 +737,154 @@ class frontend_auctions_m extends CI_Model {
 
 
 
+		public function invoice_now()
+		{
+			$this->db->select('auction_invoice.*, auction_items.auction_name');
+			$this->db->from('auction_invoice');
+			$this->db->join('auction_items', 'auction_items.auction_id = auction_invoice.auction_id');
+			$this->db->join('auction_won', 'auction_won.auction_id = auction_invoice.auction_id');
+			$wharray = array('auction_invoice.invoice_no' => "", 'auction_won.invoicesent' => 0);
+			$this->db->where($wharray);
+			$query = $this->db->get();
 
+			// var_dump($query->result_array());
+
+			
+			$auction_invoice_count = $query->num_rows();
+			
+			if($auction_invoice_count>0){
+				
+
+
+				foreach ($query->result_array() as $auction_invoice){
+					
+
+					$this->db->select('*');
+					$this->db->from('user_register');
+					$wharray = array('user_id' => $auction_invoice['user_id']);
+					$this->db->where($wharray);
+					$query = $this->db->get();
+				 
+					$user_count = $query->num_rows();
+					$user_invoice_result = $query->result_array();
+
+
+					/*-------- Send Invoice Email -----------------*/
+
+					$emailcontent = $this->frontend_templates_m->emaildata('auction_invoice');
+					 
+					$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+				 
+					$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+					$text = $emailcontent['content_emails'][0]['user_emails_body'];
+					 
+
+					$username=ucwords($user_invoice_result[0]['first_name'].' '.$user_invoice_result[0]['last_name']);
+
+					$sitelinknew="<a href='".base_url()."'>".base_url()."</a>";
+					
+					// $auctionlink="<a href='".base_url()."/product/".str_replace(' ','-',$auction_invoice['auction_name'])."/".$auction_invoice['auction_id']."'>".$auction_invoice['auction_name']."</a>";
+
+					// $bidamount= $auction_invoice['invoice_amount'];
+					$invoice_no = 'UIN'.$auction_invoice['id'].'-'.date('y');
+					
+					$sitenamenew=$this->config->item('sitename');
+
+					$activeword = array("[[USERNAME]]", "[[SITENAME]]", "[[INVOICENO]]");
+					$replacedword = array($username, $sitelinknew,  $invoice_no);
+
+					$textnew = str_replace($activeword, $replacedword, $text);
+					$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
+
+					// $mailwon = 1; 
+					$user_details = 'Dear  '.$username.'  </br></br>
+					Thank you for your bids in our auction.</br></br>
+					We request that you transfer the total amount due to our account at the ___________ bank:
+					</br></br>
+					* Account number: _____________ </br></br>
+
+					* On behalf of: ___________.</br></br>
+
+					* IBAN:                  </br></br>
+
+					* BIC/SWIFT:           </br></br>
+
+					* Reference number:'.$invoice_no.' </br></br></br></br></br></br>   ';
+
+					$pdf = '
+					'.$user_details.' 
+					</br></br></br>
+						<div class="table-responsive">
+						<table class="table table-striped table-bordered" style="width:100%;">
+							<thead>
+							<tr>
+								<th>Auction Name/ID	</th>
+								<th>Winner Name</th>
+								<th>Email</th>
+								<th>Invoice No</th>
+								<th>Payment</th>
+							</tr>
+							</thead>
+					';  
+					$pdf .= '
+					<tbody>   
+						<tr>
+							<td>'.$auction_invoice['auction_name'].'/'.$auction_invoice['auction_id'].'</td>
+							<td>'.$username.'</td>
+							<td>'.$this->common->encrypt_decrypt('decrypt',$auction_invoice['email']).'</td>
+							<td>'.$invoice_no.'</td>
+							<td>'.$auction_invoice["invoice_amount"].'</td>
+						</tr>
+						</tbody>   '; 
+					$pdf .= '
+						</table>
+					   	</div>
+					</br></br></br></br></br>
+					'.$user_details2.'  
+					';
+
+
+					$user_details2 = 
+					   'Please note that no transfers are made between banks on weekends (Friday from 16.00 hrs).
+
+					   We thank you for the confidence shown in our company.
+					   
+					   Yours sincerely,
+					   Administrator
+					   
+					   Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at '.$sitelinknew.' 
+					';
+					
+					// $this->pdf->loadHtml($pdf);
+					// $this->pdf->setPaper('A4','portrait');//landscape 
+					// $pdf_name = "invoice".$invoice_no."pdf";
+					// $domdpf = $this->pdf->stream($pdf_name, array('Attachment'=>false));  
+					$mailinvoice = $this->common->send_email($this->common->encrypt_decrypt('decrypt', $user_invoice_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+					 
+					if($mailinvoice  != false){
+ 
+						$this->db->set('invoicesent', '1');
+						$this->db->where('auction_id',$auction_invoice['auction_id']);
+						$this->db->update('auction_won');
+						
+						$this->db->set('invoice_no', $invoice_no);
+						$this->db->where('auction_id',$auction_invoice['auction_id']);
+						$this->db->update('auction_invoice');
+						
+
+					}
+				}
+				
+			
+
+				
+				return true;
+			} else {
+				return false;
+
+			}
+
+			// return $query->result_array();
+		}
 
 }
