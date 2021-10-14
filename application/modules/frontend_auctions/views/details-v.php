@@ -229,26 +229,69 @@
 				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
-
+                // var_dump($datagraph);
 		?>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/amcharts.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/serial.js" type="text/javascript"></script>
-
+		
+        <?php //echo $dataprovider; ?>
+        <script src="<?php echo base_url();?>assets/frontendfiles/linecharts/core.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>assets/frontendfiles/linecharts/themes/material.js" type="text/javascript"></script>
+		<script src="<?php echo base_url();?>assets/frontendfiles/linecharts/charts.js" type="text/javascript"></script>
+       
+        <style>
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+        </style>
 		<script>
 
-            AmCharts.makeChart("chartdiv", {
+        // am4core.ready(function() {
 
+            // Themes begin
+            // am4core.useTheme(am4themes_material);
+            // // Themes end
+
+            // // Create chart instance
+            // chart = am4core.create("chartdiv", am4charts.XYChart);
+
+            // // Add data
+             
+            // chart.data  = [ <?php //echo $datagraph; ?> ];
+ 
+
+            // // Create axes
+            // dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+
+            // // Create value axis
+            // valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+            // // Create series
+            // lineSeries = chart.series.push(new am4charts.LineSeries());
+            // lineSeries.dataFields.valueY = "Bid";
+            // lineSeries.dataFields.dateX = "value";
+            // lineSeries.name = "Sales";
+            // lineSeries.strokeWidth = 0.1;
+
+            // // Add simple bullet
+            // bullet = lineSeries.bullets.push(new am4charts.Bullet());
+            // image = bullet.createChild(am4core.Image);
+            // image.href = "https://www.amcharts.com/lib/images/star.svg";
+            // image.width = 30;
+            // image.height = 30;
+            // image.horizontalCenter = "middle";
+            // image.verticalCenter = "middle";
+            // }); 
+            // end am4core.ready()
+            
+            AmCharts.makeChart("chartdiv", {
                 type: "serial",
                 dataProvider: [
-
 					<?php echo $datagraph;?>
-					
 				],
-
                 //dataDateFormat: "YYYY-MM-DD",
                 categoryField: "Bid",
-
-
                 categoryAxis: {
                     //parseDates: true,
                     //minPeriod: "DD",
@@ -259,15 +302,12 @@
                     inside: false,
 					title: "Random Bid Value"
                 },
-
                 valueAxes: [{
-
                     tickLength: 0,
                     axisAlpha: 0,
                     showFirstLabel: true,
                     showLastLabel: true,
 					title: "Total Bids",
-
                     guides: [{
                         value: 10,
                         toValue: 20,
@@ -276,10 +316,7 @@
                         fillAlpha: 0.2,
                         lineAlpha: 0
                     }]
-
                 }],
-
-
                 graphs: [{
                     lineColor: "#D8E63C",
                     valueField: "value",
@@ -290,11 +327,8 @@
 					customBulletField: "customBullet",
                     balloonText: "Current Bid Value Between:<br> [[Between]],<br><b><span style='font-size:14px;'>Total Bids: [[value]]</span></b><br>[[message]]"
                 }],
-
                 //chartCursor: {},
                 chartScrollbar: {},
-
                 mouseWheelZoomEnabled:true,
-
             });
         </script>

@@ -66,6 +66,8 @@ class Frontend_auctions extends Frontend_Controller {
 	{
 		//var_dump($slugid);
 		$data['content_data']=$this->frontend_auctions_m->get_details($slugid);
+		
+		$data['content_bidunique_data']=$this->frontend_auctions_m->get_bids_uniquedetails($slugid);
 
 		$data['content_featured']=$this->frontend_auctions_m->get_features($slugid);
 
@@ -99,9 +101,11 @@ class Frontend_auctions extends Frontend_Controller {
 	public function latestbids($auction, $user=0)
 	{
 		$data['content_latest'] = $this->frontend_auctions_m->latestbids($auction, $user);
-		
+		// $data['content_leaderboard'] = $this->frontend_auctions_m->latestbidsauction($auction, $user);
+		$data['content_bidunique']=$this->frontend_auctions_m->get_bids_uniquedetails($auction);	
 		$data['content_view']='frontend_auctions/latestbidder-v';
-		//var_dump($data);
+		// echo json_encode($data); 
+		// var_dump($data['content_leaderboard'], $data['unique']);
 		$this->frontend_templates->latestbidder($data);
 
 	}
@@ -126,6 +130,7 @@ class Frontend_auctions extends Frontend_Controller {
 
 		$placebid=explode('-',$this->frontend_auctions_m->post_now($_POST, $this->settings()));
 
+
 		if($placebid[1]=='error'){
 
 			echo $placebid[0].'-error';
@@ -133,40 +138,30 @@ class Frontend_auctions extends Frontend_Controller {
 		}else if($placebid[1]=='success'){
 
 			/*-------- Send Bid Email -----------------*/
-			$emailcontent = $this->frontend_templates_m->emaildata($placebid[0]);
-			//var_dump($emailcontent);
-			$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
-			//var_dump($emailfrom);
+			
+			$emailcontent = $this->frontend_templates_m->emaildata($placebid[0]); 
+
+			$emailfrom = $emailcontent['emailsetting'][0]['email_auto']; 
 			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
 			$text = $emailcontent['content_emails'][0]['user_emails_body'];
 
-
-
-			$this->db->select('*');
+			$this->db->select('first_name,last_name,email');
 			$this->db->from('user_register');
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);
 			$query = $this->db->get(); 
 			$user_result = $query->result_array();
-
-
-
+			
 			$username=ucwords($user_result[0]['first_name'].' '.$user_result[0]['last_name']);
-
 			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>";
-
 			$auctionlink="<a href='".base_url()."/product/".str_replace(' ','-',$_POST['auction_name'])."/".$_POST['auction_id']."'>".$_POST['auction_name']."</a>";
-
 			$bidamount=$_POST['bid_price'];
-
 			$sitenamenew=$this->config->item('sitename');
-
 			$activeword = array("[[USERNAME]]", "[[SITENAMELINK]]", "[[SITENAME]]", "[[BIDAMOUNT]]", "[[AUCTIONNAMELINK]]");
 			$replacedword = array($user_name, $sitelinknew, $sitenamenew, $bidamount, $auctionlink);
-
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-		 
+			
 			$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
 			// $mail = 1;
 			 
@@ -183,30 +178,8 @@ class Frontend_auctions extends Frontend_Controller {
 	public function get_prod_desc($slug = null)
 	{
 		$this->session_check();
-		// var_dump($_POST['auction_id']);
-		$auction_details = $this->frontend_auctions_m->get_details($_POST['auction_id']);
-		// print_r($auction_details); 
-		var_dump( $auction_details);
-		// return $auction_details; 
-		// return  $auction_details;
-		// return $auction_details;
-		// $this->db->select('*');
-		// $this->db->from('auction_items');
-		// $wharray = array('auction_id' => $_POST['auction_id']);
-		// $this->db->where($wharray);
-		// $query = $this->db->get(); 
-		// $user_result = $query->result_array();
-
-		// $this->db->select('*');
-		// $this->db->from('auction_features');
-
-		// $wharray = array('auction_id'=>$data);
-		// $this->db->where($wharray);
-
-		// $query = $this->db->get();
-		// //var_dump($this->db->last_query());
-		// return $query->result_array($query);
-
+		$auction_details = $this->frontend_auctions_m->get_auctiondetails($_POST['auction_id']);
+		echo json_encode($auction_details); 
 	}
 
 /* ------------- Auto email functions ------------- */
