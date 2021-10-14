@@ -95,17 +95,14 @@ $(document).ready(function () {
 						success: function (html) {	
 							if (html!='') {
 								
-								var msg = html.split("-");
-								var price = html.split("--");
-				 
-							 
+								var msg = html.split("-");  
 
 								if(msg[1]=='success'){
 
 									$("#success").removeClass("alert-danger").addClass("alert-success");
 
 									$('#bid_price').val("");
-									
+									/*
 									if (auction_type==0) { 
 
 										$('#dfreecredits').val(free_credit-auction_credits);
@@ -117,7 +114,7 @@ $(document).ready(function () {
 										$('#dpaidcredits').val(Number(paid_credit)-Number(auction_credits));
 
 									}
-									 
+									 */
 								
 									prod_desc(auction_id);
 									//latest(bid_id,regid);
@@ -146,18 +143,40 @@ $(document).ready(function () {
 
 
 		function prod_desc(auction_id) { 
-			
+
+			var paid_credit = $('#paid_credit').val();
+			var free_credit = $('#free_credit').val();
+			var amount=$('#bid_price').val().replace(/,/g,'.');
 			$.ajax({
 				type: "POST",  
 				url: "../get_prod_desc",  
 				data: {
-					'auction_id' :auction_id,
+					'auction_id':auction_id,
 				},   
 
 				success: function(response) {
 					 
-					alert("hi");
-					$('#bid_placed').html(response[0]['auction_bid']);
+				 
+					var dataret = jQuery.parseJSON(response);
+				  
+					$('#bid_placed').html(dataret.auction_bid+" Bids"); 
+					
+				
+					var start_bid =  parseFloat(dataret.unique)-parseFloat(dataret.auction_price);
+					var end_bid =  parseFloat(dataret.unique)+parseFloat(dataret.auction_price);
+				
+					//alert('--'+start_bid+'++'+end_bid+'--'+start_bid.toFixed(2)+'++'+end_bid.toFixed(2));
+					 
+					$('#start_bids_price').html('$'+start_bid.toFixed(2)); 
+					$('#end_bids_price').html('$'+end_bid.toFixed(2)); 
+					
+					if(dataret.auction_type==0) {
+						$('#dfreecredits').html(free_credit-dataret.auction_credits); 
+					}
+					if(dataret.auction_type==1) {
+						$('#dpaidcredits').html(paid_credit-dataret.auction_credits); 
+					}
+					
 				 
 				}				
 			 

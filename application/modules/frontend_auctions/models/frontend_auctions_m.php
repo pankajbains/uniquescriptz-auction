@@ -69,6 +69,120 @@ class frontend_auctions_m extends CI_Model {
 
 		}
 
+		public function get_bids_uniquedetails($data)
+		{
+			// find unique bids
+			$this->db->select('*');
+			$this->db->from('auction_bids');
+			$wharray = array('auction_id' => $data);
+			$this->db->where($wharray);
+			$query = $this->db->get();
+			
+			$auction_count = $query->num_rows();
+			$auction_totalcount = $query->num_rows();
+			$auction_result = $query->result_array();
+		  
+			if($auction_totalcount >0) {
+				if($auction_count > 0) {
+
+					foreach($auction_result as $auctionresult) 
+					{
+						$auctionrow[] = $auctionresult['bid_price'];
+					}
+
+				} 
+
+
+			// --- Check and create array for auciton bids unique and duplicate ----------/
+				$auctionbidcount = array_count_values($auctionrow);
+
+				for($i=0; $i<count($auctionbidcount); $i++){
+
+					if($auctionbidcount[$auctionrow[$i]] == 1){
+						$single_bids[] = $auctionrow[$i];  // auction duplicate bids array
+					}else{
+						$duplicate_bids[] = $auctionrow[$i];   // Auction unique bids 
+					}
+					
+				}
+				
+
+			// get  min and max bid from auciton bids 
+				$this->db->select('auction_type');
+				$this->db->from('admin_config_app');
+				$this->db->where('config_type', 'site_settings'); 
+				$q = $this->db->get();  
+				$auction_type = $q->result_array(); 
+				$unique = ($auction_type[0]['auction_type'] == 'lowest')?min($single_bids):max($single_bids);
+
+				return $unique;
+			}
+		}
+
+
+		public function get_auctiondetails($data){
+			
+			$this->db->select('auction_items.auction_id,auction_items.auction_closed,auction_items.auction_open,auction_items.auction_bid,auction_items.auction_credits,auction_features.scurrent_bids,auction_items.auction_type,auction_items.auction_price');
+			$this->db->from('auction_items');
+			$this->db->join('auction_features', 'auction_items.auction_id = auction_features.auction_id');
+			$wherearray = array('auction_items.auction_id'=>$data, 'auction_closed' => '0', 'auction_open' => '1');
+			$this->db->where($wherearray);
+			$queries = $this->db->get();
+
+			$details = $queries->result_array($queries);
+			
+			// find unique bids
+			$this->db->select('*');
+			$this->db->from('auction_bids');
+			$wharray = array('auction_id' => $data);
+			$this->db->where($wharray);
+			$query = $this->db->get();
+			
+			$auction_count = $query->num_rows();
+			$auction_result = $query->result_array();
+			
+			if($auction_count > 0) {
+
+			  foreach($auction_result as $auctionresult) 
+			  {
+				 $auctionrow[] = $auctionresult['bid_price'];
+			  }
+
+			} 
+
+
+			// // --- Check and create array for auciton bids unique and duplicate ----------/
+			$auctionbidcount = array_count_values($auctionrow);
+
+			for($i=0; $i<count($auctionbidcount); $i++){
+
+				if($auctionbidcount[$auctionrow[$i]] == 1){
+					$single_bids[] = $auctionrow[$i];  // auction duplicate bids array
+				}else{
+					$duplicate_bids[] = $auctionrow[$i];   // Auction unique bids 
+				}
+				
+			}
+			
+
+			// get  min and max bid from auciton bids 
+			$this->db->select('auction_type');
+			$this->db->from('admin_config_app');
+			$this->db->where('config_type', 'site_settings'); 
+			$q = $this->db->get();  
+			$auction_type = $q->result_array(); 
+			$unique = ($auction_type[0]['auction_type'] == 'lowest')?min($single_bids):max($single_bids);
+
+
+			foreach($details as $dt) {
+				$dt['unique'] = $unique;
+			 
+			}
+			return $dt; 
+			 
+		 
+		}
+
 		public function get_features($data){
 			
 			$this->db->select('*');
@@ -139,7 +253,7 @@ class frontend_auctions_m extends CI_Model {
 		public function latestbids($auction, $user){
 			
 			$this->db->distinct();
-			$this->db->select('auction_bids.bid_price, auction_bids.bid_status, auction_bids.user_id, auction_items.auction_name, user_register.user_name');
+			$this->db->select('auction_bids.bid_price, auction_bids.bid_status, auction_bids.user_id, auction_items.auction_name, user_register.user_name, user_register.first_name,user_register.last_name');
 			$this->db->from('auction_bids');
 			$this->db->join('auction_items', 'auction_items.auction_id = auction_bids.auction_id');
 			$this->db->join('user_register', 'auction_bids.user_id = user_register.user_id');
@@ -235,8 +349,7 @@ class frontend_auctions_m extends CI_Model {
 			$query = $this->db->get();
 			//$auction_detail_count = $query->num_rows();
 			$auction_details = $query->result_array();
-
-			$this->db->select('*');
+			$this->db->select('paid_credit,free_credit');
 			$this->db->from('user_credits');
 			$wharray = array('user_id' => $_SESSION['user_id']);
 			$this->db->where($wharray);

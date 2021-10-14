@@ -11,8 +11,7 @@
 															
 
 														</tr>
-														<?php
-													
+														<?php 
 															if(count($content_latest)>0){
 
 																for($i=0;$i<count($content_latest);$i++){
@@ -20,9 +19,8 @@
 														<tr>
 															<td><?php echo $this->common->encrypt_decrypt('decrypt',$content_latest[$i]['user_name']);?></td>
 															<td><?php 
-																	echo ($content_latest[$i]['bid_status']==0)?'Lowest Unique Bid':'';
-																	echo ($content_latest[$i]['bid_status']==1)?'Unique Bid':'';
-																	echo ($content_latest[$i]['bid_status']==2)?'Duplicate Bid':'';
+																	echo ($content_latest[$i]['bid_price']==$content_bidunique)?'Lowest Unique Bid':'Unique Bid';
+																	 
 																?>
 															</td>
 															<td><?php 
