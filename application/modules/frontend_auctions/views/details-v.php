@@ -229,7 +229,7 @@
 				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
-                // var_dump($datagraph);
+                var_dump($dataprovider);
 		?>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/amcharts.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/serial.js" type="text/javascript"></script>
@@ -239,6 +239,12 @@
 		<script src="<?php echo base_url();?>assets/frontendfiles/linecharts/themes/material.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>assets/frontendfiles/linecharts/charts.js" type="text/javascript"></script>
        
+
+       <!-- different chart -->
+       <!-- <script src="//cdn.amcharts.com/lib/5/index.js"></script>
+        <script src="//cdn.amcharts.com/lib/5/xy.js"></script>
+        <script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+          -->
         <style>
         #chartdiv {
             width: 100%;
@@ -247,44 +253,148 @@
         </style>
 		<script>
 
-        // am4core.ready(function() {
+        
 
-            // Themes begin
-            // am4core.useTheme(am4themes_material);
-            // // Themes end
+        // Create root element 
+        // var root = am5.Root.new("chartdiv");
 
-            // // Create chart instance
-            // chart = am4core.create("chartdiv", am4charts.XYChart);
+        // // Set themes 
+        // root.setThemes([
+        //     am5themes_Animated.new(root)
+        // ]); 
 
-            // // Add data
-             
-            // chart.data  = [ <?php //echo $datagraph; ?> ];
- 
+        // // Create chart 
+        // var chart = root.container.children.push(am5xy.XYChart.new(root, {
+        //     panX: false,
+        //     panY: false,
+        //     wheelY: "zoomXY"
+        // })); 
 
-            // // Create axes
-            // dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+        // Create axes 
+        // var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+        //     baseInterval: { timeUnit: "day", count: 1 },
+        //     renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 5 }),
+        //     tooltip: am5.Tooltip.new(root, {})
+        // }));
+        // var xAxis = chart.yAxes.push(
+        //     am5xy.CategoryAxis.new(root, {
+        //         categoryField: "bid",
+        //         renderer: am5xy.AxisRendererX.new(root, {}),
+        //         tooltip: am5.Tooltip.new(root, {})
+        //     })
+        // );
 
-            // // Create value axis
-            // valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        // var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        //     renderer: am5xy.AxisRendererY.new(root, {}),
+        //     tooltip: am5.Tooltip.new(root, {}),
+        //     min: 1,
+        //     max: 10,
+        //     strictMinMax: true, 
+        //     text: "Random Bid Value",         
+        // }));  
+        
+        // // Create second series 
+        // var series1 = chart.series.push(am5xy.LineSeries.new(root, {
+        // calculateAggregates: true,
+        //     xAxis: xAxis,
+        //     yAxis: yAxis,
+        //     valueYField: "by",
+        //     // categoryXField: "bid",
+        //     valueXField: "bid",
+        //     valueField: "bValue",
+        // }));
 
-            // // Create series
-            // lineSeries = chart.series.push(new am4charts.LineSeries());
-            // lineSeries.dataFields.valueY = "Bid";
-            // lineSeries.dataFields.dateX = "value";
-            // lineSeries.name = "Sales";
-            // lineSeries.strokeWidth = 0.1;
+        // var tooltip1 = series1.set("tooltip", am5.Tooltip.new(root, {}));
+        // tooltip1.label.set("text", "helo, y: {valueY}, value: {value}")
 
-            // // Add simple bullet
-            // bullet = lineSeries.bullets.push(new am4charts.Bullet());
-            // image = bullet.createChild(am4core.Image);
-            // image.href = "https://www.amcharts.com/lib/images/star.svg";
-            // image.width = 30;
-            // image.height = 30;
-            // image.horizontalCenter = "middle";
-            // image.verticalCenter = "middle";
-            // }); 
-            // end am4core.ready()
-            
+      
+        // series1.bullets.push(function () {
+        //     return am5.Bullet.new(root, {
+        //         locationY: 1,
+        //         locationX: 0.5,
+        //         sprite: am5.Circle.new(root, {
+        //         radius: 4,
+        //         fill: series1.get("fill")
+        //         })
+        //     });
+        // });
+        
+        // series1.strokes.template.set("strokeOpacity", 0);  
+        //     series1.data.processor = am5.DataProcessor.new(root, {
+        //         CategoryAxis:["bid"]
+        //     // dateFields: ["date"], dateFormat: "yyyy-MM-dd"
+        // });
+
+        // // Add cursor 
+        // chart.set("cursor", am5xy.XYCursor.new(root, {
+        //     xAxis: xAxis,
+        //     yAxis: yAxis,
+        //     behavior:"zoomXY",
+        //     snapToSeries: [ series1]
+        // }));
+
+      
+
+        // // var data1 =  <?php //echo $datagraph; ?> ;
+        // var data = [{
+        //     "bid":"10",
+        //     // "date": "2015-01-01",
+        //     "ay": 6.5,
+        //     "by": 2.2,
+        //     "aValue": 15,
+        //     "bValue": 10
+        //     }, {
+        //     "bid":"11",
+        //     // "date": "2015-01-02",
+        //     "ay": 12.3,
+        //     "by": 4.9,
+        //     "aValue": 8,
+        //     "bValue": 3
+        //     }, {
+        //     "bid":"12",
+        //     // "date": "2015-01-03",
+        //     "ay": 12.3,
+        //     "by": 5.1,
+        //     "aValue": 16,
+        //     "bValue": 4
+        //     }, {
+        //     "bid":"13",
+        //    // "date": "2015-01-04",
+        //     "ay": 2.8,
+        //     "by": 13.3,
+        //     "aValue": 9,
+        //     "bValue": 13
+        //     }, {
+        //     "bid":"14",
+        //     // "date": "2015-01-05",
+        //     "ay": 3.5,
+        //     "by": 6.1,
+        //     "aValue": 5,
+        //     "bValue": 2
+        //     }, {
+        //     "bid":"15",
+        //     // "date": "2015-01-06",
+        //     "ay": 5.1,
+        //     "by": 8.3,
+        //     "aValue": 10,
+        //     "bValue": 17
+        //     },    
+        // ]
+
+    
+        // series1.data.setAll(data); 
+        // series1.appear(1000); 
+        // chart.appear(1000, 100);
+
+         // Add scrollbars
+        // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+        // chart.set("scrollbarX", am5.Scrollbar.new(root, {
+        // orientation: "horizontal"
+        // }));
+
+        // chart.set("scrollbarY", am5.Scrollbar.new(root, {
+        // orientation: "vertical"
+        // }));
             AmCharts.makeChart("chartdiv", {
                 type: "serial",
                 dataProvider: [
