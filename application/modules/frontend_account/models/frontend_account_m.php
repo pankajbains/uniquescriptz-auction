@@ -336,6 +336,26 @@ class frontend_account_m extends CI_Model {
 				$this->db->insert('user_credits', $datacredit);
 				return $user_id;
 
+				$this->session->set_userdata($sessiondata);
+				$whishlist_cookie_data=$this->input->cookie('wishlist_cookie',true);
+			//print_r(json_decode($whishlist_cookie_data)); die;
+			$temp_data=array();
+			$wdata=json_decode($whishlist_cookie_data);
+			//print_r($wdata); die;
+			$i=0;
+			if(isset($wdata) && !empty($wdata)){
+			foreach($wdata as $val){
+				//$temp_data[$i]['auction_id']=$val;
+				if($val != 1){
+				$datauser=array('user_id'=>$userlogin[0]['user_id'], 'auction_id'=>$val);
+				$this->db->insert('auction_wishlist', $datauser);
+				$id = $this->db->insert_id();
+				}
+				$i++;
+			}
+			delete_cookie('wishlist_cookie');
+		}
+
 			}
 
 		}
@@ -370,6 +390,29 @@ class frontend_account_m extends CI_Model {
 				);
 
 				$this->session->set_userdata($sessiondata);
+				$whishlist_cookie_data=$this->input->cookie('wishlist_cookie',true);
+			//print_r(json_decode($whishlist_cookie_data)); die;
+			$temp_data=array();
+			$wdata=json_decode($whishlist_cookie_data);
+			//print_r($wdata); die;
+			$i=0;
+			if(isset($wdata) && !empty($wdata)){
+			foreach($wdata as $val){
+				//$temp_data[$i]['auction_id']=$val;
+				if($val != 1){
+				$datauser=array('user_id'=>$userlogin[0]['user_id'], 'auction_id'=>$val);
+				$this->db->insert('auction_wishlist', $datauser);
+				$id = $this->db->insert_id();
+				}
+				$i++;
+			}
+			delete_cookie('wishlist_cookie');
+		}
+					// $data = array('user_id' => $userlogin[0]['user_id']);
+					// $wharray = array('ip_address'=> $ipaddress);
+					// $this->db->where($wharray);
+					// $result = $this->db->update('auction_wishlist', $data);
+    
 
 				return true;
 

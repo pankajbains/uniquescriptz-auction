@@ -40,10 +40,13 @@
 
 																for($i=0;$i<count($content_data);$i++){
 														?>
-														<tr>
+														<tr <?php if($content_data[$i]['bid_status']==0){
+															?>style='background-color:#cda55740;'<?php
+														} ?>>
 															<td><?php echo $content_data[$i]['bid_price']?></td>
 															<td><?php echo date("d-m-Y H:i:s", strtotime($content_data[$i]['bid_date']));?></td>
-															<td><?php 
+															<td>
+																<?php 
 																	
 																	echo ($content_data[$i]['bid_status']==0)?'Lowest Unique Bid':'';
 																	echo ($content_data[$i]['bid_status']==1)?'Unique Bid':'';

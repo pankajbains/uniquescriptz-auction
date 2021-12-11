@@ -100,3 +100,5 @@ $route['backend_admin_users/(:any)'] = 'backend_admin_users/$1';
 $route['manage-auction'] = 'admin';
 $route['manage-auction/(:any)'] = '$1';
 $route['manage-auction/(:any)/(:any)'] = '$1/$2';
+$route['invoice/(:any)'] = 'frontend_users_auctions/winner_invoice/$1';
+$route['generatepdf/(:any)'] = 'frontend_users_auctions/generatepdfdata/$1';

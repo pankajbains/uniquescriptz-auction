@@ -56,11 +56,12 @@ class frontend_users_auctions_m extends CI_Model {
 			// $this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
 
 			$query=$this->db->get();
-			//var_dump($this->db->last_query());
+			//var_dump($this->db->last_query()); die;
 			return $query->result_array();
 
 		}
 
+		
 
 		public function get_user_winner($delmark){
 
@@ -77,6 +78,102 @@ class frontend_users_auctions_m extends CI_Model {
 			return $query->result_array();
 
 		}
+
+
+		public function get_winner_invoice($auctionid){
+
+			$wharray = array('auction_won.auction_id' => $auctionid);
+			//$this->db->distinct();
+			$this->db->select('auction_won.user_id,auction_won.auction_id,auction_items.auction_name,auction_items.auction_desc,auction_items.auction_nprice,auction_won.bid_price');
+			$this->db->from('auction_won');
+			$this->db->where($wharray);
+
+			$this->db->join('auction_items', 'auction_won.auction_id = auction_items.auction_id');
+			$query=$this->db->get();
+			//var_dump($this->db->last_query());
+			
+			return $query->result_array();
+
+		}
+
+		public function get_show_wishlist($userid){
+
+			$wharray = array('auction_wishlist.user_id' => $userid);
+			//$this->db->distinct();
+			$this->db->select('auction_wishlist.auction_id,auction_items.auction_name,auction_items.auction_edate AS end_date,auction_items.auction_etime AS end_time,auction_items.auction_max_bid,auction_items.auction_bid');
+			$this->db->from('auction_wishlist');
+			
+			$this->db->where($wharray);
+			$this->db->join('auction_items', 'auction_wishlist.auction_id = auction_items.auction_id');
+			$this->db->group_by('auction_wishlist.auction_id');
+			
+			$query=$this->db->get();
+			
+			//print_r($query->result_array());die;
+			//var_dump($this->db->last_query());
+			if($query && !empty($query)){
+				return $query->result_array();
+			}else{
+				return array();
+			}
+			
+
+		}
+
+
+		public function get_user_data($user_id){
+
+			$wharray = array('user_id' => $user_id);
+			//$this->db->distinct();
+			$this->db->select('*');
+			$this->db->from('user_register');
+			$this->db->where($wharray);
+
+			//$this->db->join('auction_items', 'auction_won.auction_id = auction_items.auction_id');
+			$query=$this->db->get();
+			
+			//var_dump($this->db->last_query());
+			return $query->result_array();
+			
+
+		}
+
+		public function get_user_address($user_id){
+
+			$wharray = array('user_id' => $user_id);
+			//$this->db->distinct();
+			$this->db->select('*');
+			$this->db->from('user_address');
+			$this->db->where($wharray);
+
+			//$this->db->join('auction_items', 'auction_won.auction_id = auction_items.auction_id');
+			$query=$this->db->get();
+			
+			//var_dump($this->db->last_query());
+			return $query->result_array();
+			
+
+		}
+
+		public function get_admin_user($config_type){
+
+			$wharray = array('config_type' => $config_type);
+			//$this->db->distinct();
+			$this->db->select('*');
+			$this->db->from('admin_config_app');
+			$this->db->where($wharray);
+
+			//$this->db->join('auction_items', 'auction_won.auction_id = auction_items.auction_id');
+			$query=$this->db->get();
+			
+			//var_dump($this->db->last_query());
+			return $query->result_array();
+			
+
+		}
+
+	
+
 
 		public function get_bids($data){
 
@@ -125,6 +222,60 @@ class frontend_users_auctions_m extends CI_Model {
 
 
 		}
+
+		public function save_wishlist($user_id, $auction_id, $status){
+			if($status==1){
+			$datauser = array(
+				'user_id' => $user_id,
+				'auction_id' => $auction_id
+			);
+		
+			$this->db->insert('auction_wishlist', $datauser);
+			//print_r($this->db->last_query());
+			return 1;
+
+		}else{
+			$datauser = array(
+				'user_id' => $user_id,
+				'auction_id' => $auction_id
+			);
+			$this->db->where($datauser);
+			$this->db->delete('auction_wishlist');
+			
+			//print_r($this->db->last_query());
+			return 0;
+		}
+
+
+	}
+
+	public function save_wishlist_ip($ipaddress, $auction_id, $status){
+		if($status==1){
+		$datauser = array(
+			'ip_address' => $ipaddress,
+			'auction_id' => $auction_id
+		);
+	
+		$this->db->insert('auction_wishlist', $datauser);
+		//print_r($this->db->last_query());
+		return 1;
+
+	}else{
+		$datauser = array(
+			'ip_address' => $ipaddress,
+			'auction_id' => $auction_id
+		);
+		$this->db->where($datauser);
+		$this->db->delete('auction_wishlist');
+		
+		//print_r($this->db->last_query());
+		return 0;
+	}
+
+
+}
+
+	
 
 
 }

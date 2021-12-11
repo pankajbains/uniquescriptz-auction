@@ -59,7 +59,13 @@ class frontend_users_m extends CI_Model {
 				'country' => $_POST['country']
 
 			);
-			
+			$dataAddress = array(
+				'address' => $_POST['address'],
+				'city' => $_POST['city'],
+				'state' => $_POST['state'],
+				'pin' => $_POST['pin'],
+				'country' => $_POST['country']
+			);
 			if($_POST['npassword']!=""){
 					
 					$datauser['password'] = $this->common->encrypt_decrypt('encrypt',$_POST['npassword']);
@@ -82,7 +88,28 @@ class frontend_users_m extends CI_Model {
 				$wharray = array('email' => $email, 'user_name' => $username);
 				$this->db->where($wharray);
 				$this->db->update('user_register', $datauser);
+				//print_r($this->db->last_query());die;
+				//adding user address data in address table
+				$u_data = $query->result_array();
+				
+				$this->db->select('*');
+				$this->db->from('user_address');
+				$wharray_add_data = array('user_id' => $u_data[0]['user_id']);
+				$this->db->where($wharray_add_data);
+				$query_add_data = $this->db->get();
 				//print_r($this->db->last_query());
+				$num_add_data = $query_add_data->num_rows();
+				if($num_add_data > 0){
+					//update data in usere address table
+					$wharray = array('user_id' => $u_data[0]['user_id']);
+					$this->db->where($wharray);
+					$this->db->update('user_address', $dataAddress);
+					$u_data = $query->result_array();
+				} else {
+					//add data to user address table
+					$dataAddress['user_id']=$u_data[0]['user_id'];
+					$this->db->insert('user_address', $dataAddress);
+				}
 				return true;
 
 			}else{
@@ -90,7 +117,7 @@ class frontend_users_m extends CI_Model {
 				$this->db->error(); // Has keys 'code' and 'message'
 
 			}
-
+			
 		}
 
 
