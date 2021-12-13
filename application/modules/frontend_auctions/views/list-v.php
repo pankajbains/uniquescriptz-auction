@@ -15,6 +15,8 @@
     
 </style>
 <?php
+$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+//print_r($uriSegments); die;
 //print_r($wishlist_data); die;
 $i=0;
 $wData=array(1,2);
@@ -136,7 +138,10 @@ $i++;
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <ul class="hiraola-pagination-box">
                                             
-                                            <?php $page_count= ceil($total_item/20);
+                                            <?php
+                                            //print_r($total_item); die;
+                                            if(isset($total_item) && $total_item>20){
+                                            $page_count= ceil($total_item/20);
                                             
                                             if(isset($_GET['page'])){
                                                 $page=$_GET['page'];
@@ -150,49 +155,63 @@ $i++;
 
                                             if($page==1){
                                                 $mainNext=$page+1;
-                                                $urlNext=base_url()."category/Mobiles.html?page=".$mainNext;
+                                                $urlNext=base_url()."category/".$uriSegments[3]."?page=".$mainNext;
                                                 $mainPrev="javascript:void(0)";
                                                 $urlPrev=$mainPrev;
                                             }
                                             elseif($page==$page_count){
                                                 $mainNext=$page-1;
                                                 $urlNext="javascript:void(0)";
-                                                $mainPrev=base_url()."category/Mobiles.html?page=".$mainNext;
+                                                $mainPrev=base_url()."category/".$uriSegments[3]."?page=".$mainNext;
                                                 $urlPrev=$mainPrev;
 
                                             }else{
                                                 $mainNext=$page+1;
                                                 $mainPrev=$page-1;
-                                                $urlNext=base_url()."category/Mobiles.html?page=".$mainNext;
-                                                $mainPrev=base_url()."category/Mobiles.html?page=".$mainPrev;
+                                                $urlNext=base_url()."category/".$uriSegments[3]."?page=".$mainNext;
+                                                $mainPrev=base_url()."category/".$uriSegments[3]."?page=".$mainPrev;
                                                 $urlPrev=$mainPrev;
 
                                             }
                                           
 
                                             if($page==1){
-                                           $dataFirst="<li class='active'><a href=".base_url()."category/Mobiles.html>1</a></li>";
-                                           $dataMiddle="<li><a href=".base_url()."category/Mobiles.html?page=2>2</a></li>";
-                                           $dataLast="<li><a href=".base_url()."category/Mobiles.html?page=3>3</a></li>";
+                                                if($total_item>20 && $total_item<=40){
+                                                    $dataFirst="<li class='active'><a href=".base_url()."category/".$uriSegments[3].">1</a></li>";
+                                           $dataMiddle="<li><a href=".base_url()."category/".$uriSegments[3]."?page=2>2</a></li>";
+                                           
+                                                }elseif($total_item>40){    
+                                                    $dataFirst="<li class='active'><a href=".base_url()."category/".$uriSegments[3].">1</a></li>";
+                                           $dataMiddle="<li><a href=".base_url()."category/".$uriSegments[3]."?page=2>2</a></li>";
+                                           $dataLast="<li><a href=".base_url()."category/".$uriSegments[3]."?page=3>3</a></li>";
+                                                }
+                                           
                                             }
                                             elseif($page==$page_count){
-                                                $prePage=$page-1;
+                                                if($total_item>20 && $total_item<=40){
+                                                    $prePage=$page-1;
                                                 $nextPage=$page-2;
-                                                $dataFirst="<li ><a href=".base_url()."category/Mobiles.html?page=$nextPage>$nextPage</a></li>";
-                                           $dataMiddle="<li><a href=".base_url()."category/Mobiles.html?page=$prePage>$prePage</a></li>";
-                                           $dataLast="<li  class='active'><a href=".base_url()."category/Mobiles.html?page=$page>$page</a></li>";
-
+                                                $dataFirst="<li ><a href=".base_url()."category/".$uriSegments[3]."?page=$prePage>$prePage</a></li>";
+                                                $dataMiddle="<li class='active'><a href=".base_url()."category/".$uriSegments[3]."?page=$page>$page</a></li>";
+                                                //$dataLast="<li  class='active'><a href=".base_url()."category/".$uriSegments[3]."?page=$page>$page</a></li>";
+                                                }elseif($total_item>40){
+                                                    $prePage=$page-1;
+                                                $nextPage=$page-2;
+                                                $dataFirst="<li ><a href=".base_url()."category/".$uriSegments[3]."?page=$nextPage>$nextPage</a></li>";
+                                                $dataMiddle="<li><a href=".base_url()."category/".$uriSegments[3]."?page=$prePage>$prePage</a></li>";
+                                                $dataLast="<li  class='active'><a href=".base_url()."category/".$uriSegments[3]."?page=$page>$page</a></li>";
+                                                }
                                             }
                                             else{
                                                 $prePage=$page-1;
                                                 $nextPage=$page+1;
-                                                $dataFirst="<li ><a href=".base_url()."category/Mobiles.html?page=$prePage>$prePage</a></li>";
-                                           $dataMiddle="<li class='active'><a href=".base_url()."category/Mobiles.html?page=$page>$page</a></li>";
-                                           $dataLast="<li><a href=".base_url()."category/Mobiles.html?page=$nextPage>$nextPage</a></li>";
+                                                $dataFirst="<li ><a href=".base_url()."category/".$uriSegments[3]."?page=$prePage>$prePage</a></li>";
+                                           $dataMiddle="<li class='active'><a href=".base_url()."category/".$uriSegments[3]."?page=$page>$page</a></li>";
+                                           $dataLast="<li><a href=".base_url()."category/".$uriSegments[3]."?page=$nextPage>$nextPage</a></li>";
 
                                             }
                                             ?>
-                                            <li><a class="Next" href="<?php echo base_url().'category/Mobiles.html'?>">|<<</a></li>
+                                            <li><a class="Next" href="<?php echo base_url().'category/'.$uriSegments[3].''?>">|<<</a></li>
                                             <li><a class="Next" href="<?php echo $urlPrev;?>"><i
                                                         class="ion-ios-arrow-left"></i></a></li>
                                             <?php
@@ -203,9 +222,9 @@ $i++;
                                             <li><a class="Next" href="<?php echo $urlNext;?>"><i
                                                         class="ion-ios-arrow-right"></i></a></li>
                                             
-                                            <li><a class="Next"  href="<?php echo base_url().'category/Mobiles.html?page='.$page_count;?>">>>|</a></li>
+                                            <li><a class="Next"  href="<?php echo base_url().'category/'.$uriSegments[3].'?page='.$page_count;?>">>>|</a></li>
                                             
-                                                <!-- <li class="active"><a href="<?php echo base_url().'category/Mobiles.html';?>">1</a></li>
+                                                <!-- <li class="active"><a href="<?php echo base_url().'category/'.$uriSegments[3].'';?>">1</a></li>
                                                 <li><a href="javascript:void(0)">2</a></li>
                                                 <li><a href="javascript:void(0)">3</a></li>
                                                 <li><a class="Next" href="javascript:void(0)"><i
@@ -225,9 +244,10 @@ $i++;
                                                         $to=$from+count($content_data[0])-1;
                                                     }
                                                     
-                                                   
+                                                    
                                                     ?>Showing <?php echo $from;?> to <?php echo $to;?> of <?php echo $total;?> (<?php echo ceil($total/20);?> Pages)</p>
-                                                </div>
+                                            <?php } ?>   
+                                            </div>
                                             </div>
                                         </div>
                                     </div>

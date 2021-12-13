@@ -30,9 +30,12 @@
 															<th>Item Name</th>
 															<th>End Time</th>
 															<th>Bid Remains</th>
-															<th>Remove</th>
+															<th>Action</th>
 														</tr>
 														<?php 
+														if(count($wishlist_data)==0){
+															echo"<tr><td colspan='5'>There is no data in your wishlist</td></tr>";
+														}else{
 														foreach($wishlist_data as $data){
 														 ?>
 														 
@@ -50,9 +53,10 @@
 															<td><?php echo $data['end_date']." ".$data['end_time']?></td>
 															<td><?php echo $data['auction_max_bid']-$data['auction_bid']?></a>
 															</td>
-															<td style="cursor:pointer;"onclick="add_wishlist('<?php echo $data['auction_id'];?>','0')">Delete</td>
+															<td id="delete_wishlist" style="cursor:pointer;"onclick="add_wishlist2('<?php echo $data['auction_id'];?>','0')"><i class="icon-trash bigger-130"></i></td>
 														</tr>
 														<?php
+														}
 														}
 														?>
 
@@ -97,4 +101,15 @@
 
               
             }
+
+			function add_wishlist2(id, status){
+				
+				var value=$(this).attr('value');
+
+				if(confirm("Are you sure you want to remove this auction from your wishlist? \nThere is NO undo!")){
+					add_wishlist(id,status)		
+
+				}
+			
+		}
 </script>

@@ -84,6 +84,7 @@ class Frontend_auctions extends Frontend_Controller {
 		$data['total_item']=$this->frontend_auctions_m->get_item_count($slug);
 	
 		$data['total_item']=count($data['total_item'][0]);
+		//print_r($data['total_item']); die;
 
 		$data['content_view']='frontend_auctions/list-v';
 
