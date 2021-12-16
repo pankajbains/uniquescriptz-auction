@@ -34,7 +34,7 @@
 														</tr>
 														<?php 
 														if(count($wishlist_data)==0){
-															echo"<tr><td colspan='5'>There is no data in your wishlist</td></tr>";
+															echo"<tr><td colspan='5'>Your aution wishlist is empty</td></tr>";
 														}else{
 														foreach($wishlist_data as $data){
 														 ?>
@@ -50,10 +50,10 @@
 																	<?php echo $data['auction_name']?>
 																</a>
 															</td>
-															<td><?php echo $data['end_date']." ".$data['end_time']?></td>
+															<td><?php echo date("d-m-Y h:s:i", strtotime($data['end_date']." ".$data['end_time']))?></td>
 															<td><?php echo $data['auction_max_bid']-$data['auction_bid']?></a>
 															</td>
-															<td id="delete_wishlist" style="cursor:pointer;"onclick="add_wishlist2('<?php echo $data['auction_id'];?>','0')"><i class="icon-trash bigger-130"></i></td>
+															<td data-toggle="modal" data-target="#exampleModal" id="delete_wishlist" style="cursor:pointer;"onclick="add_wishlist2('<?php echo $data['auction_id'];?>','0')"><i class="icon-trash bigger-130"></i></td>
 														</tr>
 														<?php
 														}
@@ -69,6 +69,29 @@
 					
                 </div>
             </div>
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Remove Wishlist</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<input type='hidden' id='statusM'>
+					<input type='hidden' id='auction_idM'>
+					Are you sure you want to remove this auction from your wishlist?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick='delete_auction()'>Delete</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+				</div>
+			</div>
+			</div>
+			<!-- Modal End-->
         </div>
         <!-- Hiraola's Page Area  End Here -->
 		<script>
@@ -90,6 +113,7 @@
                             
                             if(html==0){
                                 console.log('Deleted')
+								$('#exampleModal').modal('toggle');
 								location.reload()    
                             }else{
                                 console.log('Added')  
@@ -103,13 +127,18 @@
             }
 
 			function add_wishlist2(id, status){
-				
-				var value=$(this).attr('value');
+				console.log('id');
+				console.log('status');
+				$('#auction_idM').val(id);
+				$('#statusM').val(status)
+		
+		}
 
-				if(confirm("Are you sure you want to remove this auction from your wishlist? \nThere is NO undo!")){
-					add_wishlist(id,status)		
-
-				}
+		function delete_auction(){
+			var auction_id = $('#auction_idM').val()
+			var status = $('#statusM').val()
+			add_wishlist(auction_id,status)
 			
 		}
+
 </script>

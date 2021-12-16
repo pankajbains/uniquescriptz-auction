@@ -287,7 +287,35 @@ $i++;
         }
         </style>
 		<script>
+            function add_wishlist(auction_id,status){
+               var status = $('#wishlist').val();
+              $.ajax({
 
+                        type: "POST",  
+                        url: "<?php echo base_url();?>/auction/add_wishlist",
+                        data: {
+					    'auction_id':auction_id, 'status':status
+				        },   
+                        success: function (html) {
+                            console.log(html);
+                            
+                            if(html==0){
+                                console.log('Deleted')
+                                $("#add_wishlist").attr("class", "ion-android-favorite-outline");
+                                $('#wishlist').val('1');
+                                //$('#anchor_wishlist').attr("title",'Hello2')
+                            }else{
+                                console.log('Added')
+                                $("#add_wishlist").attr("class", "ion-android-favorite");
+                                $('#wishlist').val('0');
+                               // $('#anchor_wishlist').attr("title",'Hello1')
+                            }
+
+                        }
+                });  
+
+              
+            }
         
 
         // Create root element 
