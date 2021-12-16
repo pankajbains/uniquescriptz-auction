@@ -45,7 +45,7 @@
 															$pay='<a href="'.base_url().'Payment/'.$rowcur['auction_id'].'.html">Pay Now</a>';
 															echo ($content_auction[$i]['payment']==0)?$pay:'Paid';?></a></td>
 															<td><?php 
-															$showinvoice='<a href="'.base_url().'invoice/'.$rowcur['auction_id'].'.html">Show Invoice</a>';
+															$showinvoice='<a href="'.base_url().'invoice/'.$content_auction[$i]['auction_id'].'.html">Show Invoice</a>';
 															echo ($content_auction[$i]['invoicesent']==0)?$showinvoice:$showinvoice?></a></td>
 															<td><?php echo ($content_auction[$i]['delivered']==0)?'Processing':'Delivered';?></a></td>
 															<td><a href="javascript:void(0)" id="remove" value="<?php echo $content_auction[$i]['auction_id'];?>"><i class="fa fa-trash" title="Remove"></i></a></td>

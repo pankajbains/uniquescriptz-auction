@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>assets/frontendfiles/images/<?php echo $sitesetting[0]['site_favicon'];?>">
-
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/backendfiles/css/font-awesome.min.css" />
     <!-- CSS
 	============================================ -->
 

@@ -1,4 +1,4 @@
-						<div class="overview-content">
+<div class="overview-content">
                         <!-- Login Content-->
 							<?php echo $content_data[0]['cms_page_heading1']?>
 							<?php echo ($content_data[0]['cms_page_heading2']!='')?$content_data[0]['cms_page_heading2']:'';?>

@@ -72,6 +72,26 @@
                                                     <input type="number" id="mobile" name="mobile" value="<?php echo $content_account[0]['mobile']?>">
                                                 </div>
 
+                                                <div class="single-input single-input-half">
+                                                    <label for="account-details-mobile">Address*</label>
+                                                    <input type="text" id="address" name="address" value="<?php echo $content_address[0]['address']?>">
+                                                </div>
+
+                                                <div class="single-input single-input-half">
+                                                    <label for="account-details-mobile">City*</label>
+                                                    <input type="text" id="city" name="city" value="<?php echo $content_address[0]['city']?>">
+                                                </div>
+
+                                                <div class="single-input single-input-half">
+                                                    <label for="account-details-mobile">State*</label>
+                                                    <input type="text" id="state" name="state" value="<?php echo $content_address[0]['state']?>">
+                                                </div>
+
+                                                <div class="single-input single-input-half">
+                                                    <label for="account-details-mobile">Pincode*</label>
+                                                    <input type="number" id="pin" name="pin" value="<?php echo $content_address[0]['pin']?>">
+                                                </div>
+
 												<div class="single-input single-input-half">
                                                     <label for="account-details-country">Country*</label>
                                                     <select class="nice-select wide" id="country" name="country">

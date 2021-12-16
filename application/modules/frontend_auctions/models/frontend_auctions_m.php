@@ -24,11 +24,15 @@ class frontend_auctions_m extends CI_Model {
 
 		}
 
-		public function get_items($data){
+		public function get_items($data,$page){
 
 			$this->db->select('category_id');
 			$wharray = array('category_slug' => $data, 'status' => '1');
-			$query = $this->db->get_where('manage_categories', $wharray);
+			$this->db->order_by("id", "asc");
+			$query = $this->db->get_where('manage_categories', $wharray); 
+			$limit=20;
+			$start=20*($page-1);
+			$this->db->limit($limit,$start);
 			$category = $query->result_array($query);
 
 			for($i=0;$i<count($category);$i++){
@@ -36,6 +40,51 @@ class frontend_auctions_m extends CI_Model {
 			}
 
 			return $items;
+
+		}
+
+		public function get_item_count($data){
+
+			$this->db->select('*');
+			//$this->db->from('manage_categories');
+			$wharray = array('category_slug' => $data, 'status' => '1');
+			$query = $this->db->get_where('manage_categories', $wharray); 
+			//$query=$this->db->get();
+			$category = $query->result_array($query);
+			//print_r($category); die;
+			for($i=0;$i<count($category);$i++){
+				$items[] = $this->get_products($category[$i]['category_id']);
+			}
+			return $items;
+
+		}
+
+
+		public function get_wishlist($user_id){
+
+			$this->db->select('auction_id');
+			$wharray = array('user_id' => $user_id);
+			$query = $this->db->get_where('auction_wishlist', $wharray);
+			if(!empty($query)){
+			$result = $query->result_array($query);
+			return $result;
+			}else{
+				return array();
+			}
+
+		}
+
+		
+		public function get_wishlist_ip($user_ip){
+
+			$this->db->select('auction_id');
+			$wharray = array('ip_address' => $user_ip);
+			$query = $this->db->get_where('auction_wishlist', $wharray);
+			$result = $query->result_array($query);
+
+			
+
+			return $result;
 
 		}
 
@@ -301,15 +350,17 @@ class frontend_auctions_m extends CI_Model {
 				foreach($categories_all as $catid){
 					$cat_id[]="'".$catid['category_id']."'";
 				}
-
-				$whereitem = array('auction_items.auction_category IN ('.implode(',',$cat_id).')', 'auction_closed' => '0', 'auction_open' => '1');
+				if(!empty($cat_id)){
+					$whereitem = array('auction_items.auction_category IN ('.implode(',',$cat_id).')', 'auction_closed' => '0', 'auction_open' => '1');
+				}
+				
 
 				$this->db->select('*');
 				$this->db->from('auction_items');
 
 				$this->db->join('auction_media', 'auction_items.auction_id = auction_media.auction_id');
 
-				$this->db->where($whereitem);
+				//$this->db->where($whereitem);
 				$this->db->limit(4, 0);
 				$this->db->order_by('rand()');
 				$query = $this->db->get();
@@ -410,6 +461,121 @@ class frontend_auctions_m extends CI_Model {
 
 			
 			// ---------------------- Prepare to Insert Bid on Database ------------------------//
+			$this->db->select('*');
+					$this->db->from('auction_bids');
+					$wharray = array('bid_price' => $_POST['bid_price'], 'auction_id' => $_POST['auction_id']);
+					$this->db->where($wharray);
+					$query = $this->db->get();
+					//print_r($this->db->last_query());
+					$auction_count = $query->num_rows();
+					$auction_result = $query->result_array();
+					//print_r($auction_result);
+					if(count($auction_result)>0){
+							// data already available
+							//echo "duplicate bid";
+							$userbid = array(
+								'user_id' => $_SESSION['user_id'],
+								'auction_id' => $_POST['auction_id'],
+								'bid_price' => $_POST['bid_price'],
+								'bid_credit' => $auction_details[0]['auction_credits'],
+								'bid_status' => 2
+								
+								
+							);
+				
+							$insertbid = $this->db->insert('auction_bids', $userbid);
+							$bid_id = $this->db->insert_id();
+							$userbidstatus = array(
+								'bid_status' => 2
+							);
+							$wharray = array('bid_price' =>  $_POST['bid_price'],'auction_id' => $_POST['auction_id']);
+									$this->db->where($wharray);
+									$this->db->update('auction_bids', $userbidstatus);
+
+							$mailtype = "successful_not_unique_bid";
+									$bidsuccess = "duplicate";
+
+									$this->db->set('auction_bid', 'auction_bid +1', FALSE);
+					$this->db->where('auction_id', $_POST['auction_id']);
+					$query=$this->db->update('auction_items');
+					}
+					else{
+						//unique bid
+						$this->db->select('*');
+						$this->db->from('auction_bids');
+						$auction_format = $settings['sitesetting']['0']['auction_type'];
+						if($auction_format == 'lowest'){
+
+							$wharray = array('bid_price < ' => $_POST['bid_price'], 'auction_id' => $_POST['auction_id']);
+						}else{
+							$wharray = array('bid_price > ' => $_POST['bid_price'], 'auction_id' => $_POST['auction_id']);
+						}
+						
+						$this->db->where($wharray);
+						$query = $this->db->get();
+						//print_r($this->db->last_query());
+						$auction_count = $query->num_rows();
+						$auction_result = $query->result_array();
+						//print_r($auction_result);die;
+						if(count($auction_result)>0){
+							// unique bid
+							//echo "uniques bid";
+							$userbid = array(
+								'user_id' => $_SESSION['user_id'],
+								'auction_id' => $_POST['auction_id'],
+								'bid_price' => $_POST['bid_price'],
+								'bid_credit' => $auction_details[0]['auction_credits'],
+								'bid_status' => 1
+							);
+				
+							$insertbid = $this->db->insert('auction_bids', $userbid);
+							$bid_id = $this->db->insert_id();
+							$mailtype = "successful_unique_bid";
+							$bidsuccess = "unique bid";
+
+							$this->db->set('auction_bid', 'auction_bid +1', FALSE);
+					$this->db->where('auction_id', $_POST['auction_id']);
+					$query=$this->db->update('auction_items');
+							
+							
+						}
+						else{
+							// min uniques bid
+							//echo "min uniques bid";
+							$userbid = array(
+								'user_id' => $_SESSION['user_id'],
+								'auction_id' => $_POST['auction_id'],
+								'bid_price' => $_POST['bid_price'],
+								'bid_credit' => $auction_details[0]['auction_credits'],
+								'bid_status' => 0
+							);
+							$this->db->select_min('bid_price');
+							$this->db->from('auction_bids');
+							$query = $this->db->get();
+							$min_bid = $query->result_array();
+							$userbidstatus = array(
+								'bid_status' => 1
+							);
+							$wharray = array('bid_price>=' =>  $min_bid[0]['bid_price'],'bid_status'=>0,'auction_id' => $_POST['auction_id']);
+									$this->db->where($wharray);
+									$this->db->update('auction_bids', $userbidstatus);
+								//echo "<pre>"; print_r($min_bid);
+							//print_r($wharray); die;
+
+				
+							$insertbid = $this->db->insert('auction_bids', $userbid);
+							$bid_id = $this->db->insert_id();
+							$mailtype = "successful_unique_lowest_bid";
+							$bidsuccess = "lowest and unique bid";
+
+							$this->db->set('auction_bid', 'auction_bid +1', FALSE);
+					$this->db->where('auction_id', $_POST['auction_id']);
+					$query=$this->db->update('auction_items');
+						}
+					}
+					/*
+					die;
+					
 
 			$userbid = array(
 				'user_id' => $_SESSION['user_id'],
@@ -420,6 +586,7 @@ class frontend_auctions_m extends CI_Model {
 
 			$insertbid = $this->db->insert('auction_bids', $userbid);
 			$bid_id = $this->db->insert_id();
+die;
 
 			//print_r($this->db->last_query());
 
@@ -452,7 +619,7 @@ class frontend_auctions_m extends CI_Model {
 
 					$this->db->select('*');
 					$this->db->from('auction_bids');
-					$wharray = array('auction_id' => $_POST['auction_id']);
+					$wharray = array('auction_id' => $_POST['auction_id'], 'bid_id !=' => $bid_id);
 					$this->db->where($wharray);
 					$query = $this->db->get();
 					//print_r($this->db->last_query());
@@ -480,12 +647,12 @@ class frontend_auctions_m extends CI_Model {
 						}
 						
 					}
-					
-					if(in_array($_POST['bid_price'], $single_bids)){
+					$bid_status=1;
+					if(!empty($single_bids) && in_array($_POST['bid_price'], $single_bids)){
 
-						$bid_status = 1;
+						$bid_status = 2;
 					
-					}else if(in_array($_POST['bid_price'], $duplicate_bids)){
+					}else if(!empty($duplicate_bids) && in_array($_POST['bid_price'], $duplicate_bids)){
 						
 						$bid_status = 2;
 
@@ -496,12 +663,32 @@ class frontend_auctions_m extends CI_Model {
 
 					$unique = ($auction_format == 'lowest')?min($single_bids):max($single_bids);
 
-					//echo $unique.' - '.$bid_status;
+					//echo $unique.' - '.$bid_status; die;
+
+					if(($_POST['bid_price']<$unique) && ($bid_status==1) ){
+						$mailtype = "successful_unique_lowest_bid";
+						$bidsuccess = "lowest and unique bid";
+						$bid_status = 1;
+						$userbidstatus = array(
+							'bid_status' => $bid_status
+						);
+						$wharray = array('bid_price' => $unique);
+						$this->db->where($wharray);
+						$this->db->update('auction_bids', $userbidstatus);
+						
+					}
 
 					if(($_POST['bid_price']==$unique) && ($bid_status==1) ){
 						$mailtype = "successful_unique_lowest_bid";
 						$bidsuccess = "lowest and unique bid";
-						$bid_status = 0;
+						$bid_status = 2;
+						$userbidstatus = array(
+							'bid_status' => $bid_status
+						);
+						$wharray = array('bid_price' => $_POST['bid_price']);
+						$this->db->where($wharray);
+						$this->db->update('auction_bids', $userbidstatus);
+						
 					}
 
 					if(($_POST['bid_price']!=$unique) && ($bid_status==1) ){
@@ -515,6 +702,12 @@ class frontend_auctions_m extends CI_Model {
 						$mailtype = "successful_not_unique_bid";
 						$bidsuccess = "duplicate";
 						$bid_status = 2;
+						$userbidstatus = array(
+							'bid_status' => $bid_status
+						);
+						$wharray = array('bid_price' => $_POST['bid_price']);
+						$this->db->where($wharray);
+						$this->db->update('auction_bids', $userbidstatus);
 						
 					}
 
@@ -527,11 +720,12 @@ class frontend_auctions_m extends CI_Model {
 					$this->db->update('auction_bids', $userbidstatus);
 
 					// $halfbids = ($auction_count==($auction_details[0]['auction_max_bid']/2))?1:0;
+					*/
 
 					return $mailtype.'-success-'.$bidsuccess;
 
 
-			}
+		
 
 
 

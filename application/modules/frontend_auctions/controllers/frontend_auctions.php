@@ -28,6 +28,7 @@ class Frontend_auctions extends Frontend_Controller {
 		$this->load->library('pdf');
 		//$this->load->model('common');
 		//$this->load->helper('url_helper');
+		$this->load->helper('cookie');
 		
 	}
 
@@ -53,8 +54,37 @@ class Frontend_auctions extends Frontend_Controller {
 
 	public function category($slug=NULL)
 	{
-
-		$data['content_data']=$this->frontend_auctions_m->get_items($slug);
+		if(isset($_GET['page'])){
+			$page=$_GET['page'];
+		}else{
+			$page=1;
+		}
+		//delete_cookie('wishlist_cookie');
+		if(isset($_SESSION['user_id'])){
+			$data['wishlist_data']=$this->frontend_auctions_m->get_wishlist($_SESSION['user_id']);
+		}else{
+			$whishlist_cookie_data=$this->input->cookie('wishlist_cookie',true);
+			
+			$temp_data=array();
+			$wdata=json_decode($whishlist_cookie_data);
+			
+			$i=0;
+			if(isset($wdata) && !empty($wdata)){
+			foreach($wdata as $val){
+				$temp_data[$i]['auction_id']=$val;
+				$i++;
+			}
+		}
+		
+		$data['wishlist_data']=$temp_data;
+		
+		}
+		$data['content_data']=$this->frontend_auctions_m->get_items($slug,$page);
+		
+		$data['total_item']=$this->frontend_auctions_m->get_item_count($slug);
+	
+		$data['total_item']=count($data['total_item'][0]);
+		//print_r($data['total_item']); die;
 
 		$data['content_view']='frontend_auctions/list-v';
 
@@ -78,6 +108,8 @@ class Frontend_auctions extends Frontend_Controller {
 		$data['content_related'] = $this->frontend_auctions_m->related($data['content_data'][0]['auction_category']);
 
 		$data['content_view']='frontend_auctions/details-v';
+
+		$data['wishlist_data']=$this->frontend_auctions_m->get_wishlist($_SESSION['user_id']);
 
 		$this->frontend_templates->inner($data, $this->settings());
 		//var_dump($data['content_data'][0]['auction_category']);
@@ -105,7 +137,7 @@ class Frontend_auctions extends Frontend_Controller {
 		$data['content_bidunique']=$this->frontend_auctions_m->get_bids_uniquedetails($auction);	
 		$data['content_view']='frontend_auctions/latestbidder-v';
 		// echo json_encode($data); 
-		// var_dump($data['content_leaderboard'], $data['unique']);
+		//var_dump($data['content_leaderboard']);
 		$this->frontend_templates->latestbidder($data);
 
 	}

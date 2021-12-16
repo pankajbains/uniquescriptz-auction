@@ -71,6 +71,9 @@ class Frontend_users_account extends Frontend_Controller {
 
 		$data['content_account']=$this->frontend_templates_m->get_records('user_register', 'email', $_SESSION['email']);
 
+		$data['content_address']=$this->frontend_templates_m->get_records('user_address', 'user_id', $_SESSION['user_id']);
+		
+
 		$this->frontend_templates->inner($data, $this->settings());
 
 	}
@@ -152,6 +155,9 @@ class Frontend_users_account extends Frontend_Controller {
 		$this->frontend_templates->inner($data, $this->settings());
 		
 	}
+
+
+	
 
 
 

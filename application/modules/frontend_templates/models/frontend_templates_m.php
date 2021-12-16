@@ -145,6 +145,8 @@ class frontend_templates_m extends CI_Model {
 			return $query->result_array();
 
 		}
+		
+
 /* load from common
 		public function couponcode(){
 

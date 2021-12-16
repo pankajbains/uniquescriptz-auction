@@ -2,6 +2,24 @@
 
 		<!-- Begin Hiraola's Page Area -->
 
+        <style>
+    .ion-android-favorite{
+        color:red;
+    }
+</style>
+
+<?php
+$i=0;
+$wData=array(1,2);
+if($wishlist_data && count($wishlist_data)>1){
+foreach($wishlist_data as $data){ 
+//$wdata[$i]=$data['auction_id'];
+array_push($wData,$data['auction_id']);
+$i++;
+}
+}
+//print_r($wdata);
+?>
 
 		<div class="sp-area ">
             <div class="container">
@@ -113,7 +131,24 @@
 									</form>
 									
 									<ul>
-                                        <li class="pl-3"><a class="qty-wishlist_btn" href="wishlist.html" data-toggle="tooltip" title="Add To Wishlist"><i class="ion-android-favorite-outline"></i></a></li>
+                                    <?php if(isset($_SESSION['user_id'])){$tmpusername = $_SESSION['user_id'];} $auction_id = $content_data[0]['auction_id']?>
+
+                                        <!-- <li class="pl-3"><a class="qty-wishlist_btn" href="javascript:void(0)" data-toggle="tooltip" title="Add To Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','<?php echo $tmpusername;?>')" class="ion-android-favorite-outline" id="add_wishlist"></i></a></li> -->
+
+                                        <?php if(in_array($auction_id,$wData)){?>
+                                                    
+                                                        <li class="pl-3">
+                                                                <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Remove From Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','0')" class="ion-android-favorite" id="add_wishlist"></i></a>
+                                                                <input type="hidden" id="wishlist" value="0">
+                                                        </li>
+                                                    <?php } else{?>
+                                                        <li class="pl-3">
+                                                        <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','1')" class="ion-android-favorite-outline" id="add_wishlist"></i></a>
+                                                        <input type="hidden" id="wishlist" value="1">
+                                                    </li>
+ 
+                                                        <?php }?>
+
                                     </ul>
 									
                                 </div>

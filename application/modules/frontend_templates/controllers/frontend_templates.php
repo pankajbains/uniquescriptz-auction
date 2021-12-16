@@ -1,5 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+// defined('BASEPATH') OR exit('No direct script access allowed');
+// use Dompdf\Dompdf;
+
+// require APPPATH.'third_party/MX/Dompdf/autoload.inc.php'; 
 
 class Frontend_templates extends Frontend_Controller {
 
@@ -45,6 +48,34 @@ class Frontend_templates extends Frontend_Controller {
 		$this->load->view('frontend_templates/inner_footers_v', $slug);
 
 	}
+
+	// public function invoice($data=NULL, $slug=NULL)
+	// {
+		
+	// 	$this->load->view('frontend_templates/inner_headers_v', $slug);
+	// 	//$this->load->view('frontend_templates/breadcrumb_v');
+	// 	$this->load->view('frontend_templates/invoice',$data);
+	// 	$this->load->view('frontend_templates/inner_footers_v', $slug);
+
+	// }
+
+	// public function generatepdf($data=Null,$slug=NULL){
+
+		
+
+    //     $dompdf = new Dompdf();
+	// 	$html=$this->load->view('frontend_templates/download_invoice',$data,TRUE);
+	// 	$dompdf->loadHtml($html);
+	// 	$dompdf->setPaper('A4', 'landscape');
+	// 	// Render the HTML as PDF
+	// 	$dompdf->render();
+	// 	$time =  $data['content_auction'][0]['auction_id'];
+		
+	// 	// Output the generated PDF to Browser
+	// 	$dompdf->stream("invoice-". $time);
+
+
+    // }
 	
 	public function latestbidder($data=NULL, $slug=NULL)
 	{
