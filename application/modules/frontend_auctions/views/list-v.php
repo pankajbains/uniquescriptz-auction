@@ -61,6 +61,9 @@ $i++;
 						<div class="shop-product-wrap grid gridview-4 row">
 						<?php
 							//echo count($content_data[0]);
+                            if(count($content_data[0])==0){
+                                echo "<div style='text-align: center; width:100%; Font-size:larger'>No Record Found</div>";    
+                            }else{
 							for($i=0;$i<count($content_data[0]);$i++){
                                 $auction_id=$content_data[0][$i]['auction_id'];
 						?>
@@ -126,7 +129,8 @@ $i++;
                         
 
 						<?php
-							}	
+							}
+                        }	
 						?>
 						</div>
 						<!-- Product Grid End Here -->
