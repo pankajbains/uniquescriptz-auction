@@ -43,7 +43,7 @@
 											<span id="msg"><strong>Well done!</strong> Records are updated successfully!</span>
 										</div>
 
-										<form id="account_form" name="account_form" method="post" class="hiraola-form">
+										<form autocomplete="off" id="account_form" name="account_form" method="post" class="hiraola-form">
 
                                             <div class="hiraola-form-inner">
 
@@ -116,7 +116,7 @@
                                                 <div class="single-input">
                                                     <label for="npassword">New Password (leave blank to leave
                                                         unchanged)</label>
-                                                    <input type="password" name="npassword" id="npassword">
+                                                    <input type="password" name="npassword" id="npassword" placeholder="&nbsp" autocomplete="off">
                                                 </div>
 
                                                 <div class="single-input">

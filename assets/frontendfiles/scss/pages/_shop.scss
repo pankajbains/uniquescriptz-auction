@@ -205,6 +205,7 @@
 		.slide-item {
 			display: block;
 			.single_product {
+				height: 250px !important;
 				margin-top: 30px;
 				overflow: hidden;
 				.product-img {
@@ -266,6 +267,7 @@
 			.list-slide_item {
 				display: block;
 				.single_product {
+					height: 250px !important;
 					background-color: $bg-white_color;
 					margin-top: 30px;
 					padding: 25px;
@@ -304,6 +306,9 @@
 						}
 					}
 					.hiraola-product_content {
+						position: absolute;
+						bottom: 0;
+						margin: 0 auto;
 						flex-basis: 66.666%;
 						width: 66.666%;
 						padding-left: 30px;

@@ -131,19 +131,22 @@ $i++;
 									</form>
 									
 									<ul>
-                                    <?php if(isset($_SESSION['user_id'])){$tmpusername = $_SESSION['user_id'];} $auction_id = $content_data[0]['auction_id']?>
+                                    <?php if(isset($_SESSION['user_id'])){$tmpusername = $_SESSION['user_id'];} 
+                                    $auction_id = $content_data[0]['auction_id'];
+                                    $auction_name = $content_data[0]['auction_name']
+                                    ?>
 
                                         <!-- <li class="pl-3"><a class="qty-wishlist_btn" href="javascript:void(0)" data-toggle="tooltip" title="Add To Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','<?php echo $tmpusername;?>')" class="ion-android-favorite-outline" id="add_wishlist"></i></a></li> -->
 
                                         <?php if(in_array($auction_id,$wData)){?>
                                                     
                                                         <li class="pl-3">
-                                                                <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Remove From Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','0')" class="ion-android-favorite" id="add_wishlist"></i></a>
+                                                                <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Remove From Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','0','<?php echo $auction_name;?>')" class="ion-android-favorite" id="add_wishlist"></i></a>
                                                                 <input type="hidden" id="wishlist" value="0">
                                                         </li>
                                                     <?php } else{?>
                                                         <li class="pl-3">
-                                                        <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','1')" class="ion-android-favorite-outline" id="add_wishlist"></i></a>
+                                                        <a id="anchor_wishlist" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i onclick="add_wishlist('<?php echo $auction_id;?>','1','<?php echo $auction_name;?>')" class="ion-android-favorite-outline" id="add_wishlist"></i></a>
                                                         <input type="hidden" id="wishlist" value="1">
                                                     </li>
  
@@ -264,7 +267,7 @@ $i++;
 				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
-                var_dump($dataprovider);
+                //var_dump($dataprovider);
 		?>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/amcharts.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/serial.js" type="text/javascript"></script>
@@ -286,8 +289,9 @@ $i++;
             height: 500px;
         }
         </style>
+        <script src="<?php echo base_url();?>assets/frontendfiles/js/vendor/sweetalert.min.js"></script>
 		<script>
-            function add_wishlist(auction_id,status){
+            function add_wishlist(auction_id,status,auction_name){
                var status = $('#wishlist').val();
               $.ajax({
 
@@ -303,11 +307,13 @@ $i++;
                                 console.log('Deleted')
                                 $("#add_wishlist").attr("class", "ion-android-favorite-outline");
                                 $('#wishlist').val('1');
+                                swal("Your auction '"+auction_name+"' has been removed from your wishlist successfully.");
                                 //$('#anchor_wishlist').attr("title",'Hello2')
                             }else{
                                 console.log('Added')
                                 $("#add_wishlist").attr("class", "ion-android-favorite");
                                 $('#wishlist').val('0');
+                                swal("Your auction '"+auction_name+"' has been added in your wishlist successfully.");
                                // $('#anchor_wishlist').attr("title",'Hello1')
                             }
 

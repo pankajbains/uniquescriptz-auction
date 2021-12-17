@@ -60,6 +60,11 @@ body {
   font-size: 16px;
   line-height: 24px;
 }
+.hiraola-product_content{
+  position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+}
 
 h1,
 h2,
@@ -734,6 +739,9 @@ button {
 
 .myniceselect.nice-select .list {
   width: 100%;
+}
+.single_product{
+  height: 250px !important;
 }
 
 /* ---Base Transition--- */

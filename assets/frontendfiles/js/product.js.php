@@ -32,7 +32,7 @@ $(document).ready(function () {
 						$("input#bid_price").focus();  
 						return false;
 				}
-
+				
 				var amount=$('#bid_price').val().replace(/,/g,'.');
 				var allowed_bid = $('#allowed_bid').val();
 				var auction_type = $('#auction_type').val();
@@ -102,6 +102,8 @@ $(document).ready(function () {
 									$("#success").removeClass("alert-danger").addClass("alert-success");
 
 									$('#bid_price').val("");
+									$("#add_wishlist").attr("class", "ion-android-favorite-outline");
+                                	$('#wishlist').val('1');
 									/*
 									if (auction_type==0) { 
 
@@ -128,6 +130,7 @@ $(document).ready(function () {
 
 								$('#success').html(msg[0]);
 								$('#success').show().delay(2000).fadeOut();
+								
 
 
 

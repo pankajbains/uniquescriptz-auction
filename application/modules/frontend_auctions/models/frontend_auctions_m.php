@@ -722,6 +722,15 @@ die;
 					// $halfbids = ($auction_count==($auction_details[0]['auction_max_bid']/2))?1:0;
 					*/
 
+					$user_id = $_SESSION['user_id'];
+					$auction_id = $_POST['auction_id'];
+					$datauser = array(
+						'user_id' => $user_id,
+						'auction_id' => $auction_id
+					);
+					$this->db->where($datauser);
+					$this->db->delete('auction_wishlist');
+
 					return $mailtype.'-success-'.$bidsuccess;
 
 
