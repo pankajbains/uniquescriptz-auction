@@ -145,6 +145,20 @@ class frontend_templates_m extends CI_Model {
 			return $query->result_array();
 
 		}
+
+		public function get_wishlist($user_id){
+
+			$this->db->select('auction_id');
+			$wharray = array('user_id' => $user_id);
+			$query = $this->db->get_where('auction_wishlist', $wharray);
+			if(!empty($query)){
+			$result = $query->result_array($query);
+			return $result;
+			}else{
+				return array();
+			}
+
+		}
 		
 
 /* load from common

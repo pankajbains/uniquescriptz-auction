@@ -35,6 +35,27 @@ class Frontend_templates extends Frontend_Controller {
 	{
 		$this->load->view('frontend_templates/inner_headers_v', $slug);
 		//$this->load->view('frontend_templates/breadcrumb_v');
+		
+		if(isset($_SESSION['user_id'])){
+			$data['wishlist_data']=$this->frontend_templates_m->get_wishlist($_SESSION['user_id']);
+		}else{
+			$whishlist_cookie_data=$this->input->cookie('wishlist_cookie',true);
+			
+			$temp_data=array();
+			$wdata=json_decode($whishlist_cookie_data);
+			
+			$i=0;
+			if(isset($wdata) && !empty($wdata)){
+			foreach($wdata as $val){
+				$temp_data[$i]['auction_id']=$val;
+				$i++;
+			}
+		}
+		$data['wishlist_data']=$temp_data;
+	}
+		
+	$data['wishlist_data2']=$data['wishlist_data'];
+		//print_r($data['wishlist_data']); die;
 		$this->load->view('frontend_templates/index_v',$data);
 		$this->load->view('frontend_templates/inner_footers_v', $slug);
 
