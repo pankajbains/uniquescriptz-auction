@@ -267,6 +267,7 @@ $i++;
 				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
+                //print_r($datagraph);
                 //var_dump($dataprovider);
 		?>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/amcharts.js" type="text/javascript"></script>
@@ -291,6 +292,68 @@ $i++;
         </style>
         <script src="<?php echo base_url();?>assets/frontendfiles/js/vendor/sweetalert.min.js"></script>
 		<script>
+            var manual_graph_data = '';
+            function get_manual_graph_data(auction_id, status,amount){
+              $.ajax({
+
+                type: "POST",  
+                url: "<?php echo base_url();?>g_data",
+                data: {
+                'auction_id':auction_id, 'status':status
+                },   
+                success: function (html) {
+                   
+                   var jsonObj = $.parseJSON('[' + html + ']');
+                   
+                    AmCharts.makeChart("chartdiv", {
+                type: "serial",
+                dataProvider:jsonObj,
+                //dataDateFormat: "YYYY-MM-DD",
+                categoryField: "Bid",
+                categoryAxis: {
+                    //parseDates: true,
+                    //minPeriod: "DD",
+                    gridAlpha: 0.1,
+                    minorGridAlpha: 0.1,
+                    axisAlpha: 0,
+                    //minorGridEnabled: true,
+                    inside: false,
+					title: "Random Bid Value"
+                },
+                valueAxes: [{
+                    tickLength: 0,
+                    axisAlpha: 0,
+                    showFirstLabel: true,
+                    showLastLabel: true,
+					title: "Total Bids",
+                    guides: [{
+                        value: 10,
+                        toValue: 20,
+                        fillColor: "#00CC00",
+                        inside: true,
+                        fillAlpha: 0.2,
+                        lineAlpha: 0
+                    }]
+                }],
+                graphs: [{
+                    lineColor: "#D8E63C",
+                    valueField: "value",
+                    dashLength: 3,
+                    bullet: "round",
+					customBullet: "https://www.thestockmarket.guru/img/star.png",
+					bulletSize: 14,
+					customBulletField: "customBullet",
+                    balloonText: "Current Bid Value Between:<br> [[Between]],<br><b><span style='font-size:14px;'>Total Bids: [[value]]</span></b><br>[[message]]"
+                }],
+                //chartCursor: {},
+                chartScrollbar: {},
+                mouseWheelZoomEnabled:true,
+            });
+                }
+                });
+              
+              //$dataprovider[] = '{"Bid": "'.($content_bids[$i]['bid_price']+$randvalue).'","Between":"$'.($content_bids[$i]['bid_price']-$randvalueneg).' - $'.($content_bids[$i]['bid_price']+$randvalueplus).'","message": "'.$msg.'","value":'.$content_bids[$i]['total'].'}'; 
+            }
             function add_wishlist(auction_id,status,auction_name){
                var status = $('#wishlist').val();
               $.ajax({
@@ -301,16 +364,16 @@ $i++;
 					    'auction_id':auction_id, 'status':status
 				        },   
                         success: function (html) {
-                            console.log(html);
+                            // console.log(html);
                             
                             if(html==0){
-                                console.log('Deleted')
+                                //console.log('Deleted')
                                 $("#add_wishlist").attr("class", "ion-android-favorite-outline");
                                 $('#wishlist').val('1');
                                 swal("Your auction '"+auction_name+"' has been removed from your wishlist successfully.");
                                 //$('#anchor_wishlist').attr("title",'Hello2')
                             }else{
-                                console.log('Added')
+                                //console.log('Added')
                                 $("#add_wishlist").attr("class", "ion-android-favorite");
                                 $('#wishlist').val('0');
                                 swal("Your auction '"+auction_name+"' has been added in your wishlist successfully.");

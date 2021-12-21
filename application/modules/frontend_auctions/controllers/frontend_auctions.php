@@ -115,6 +115,41 @@ class Frontend_auctions extends Frontend_Controller {
 		//var_dump($data['content_data'][0]['auction_category']);
 	}
 
+	public function get_dynamic_chart_data($slug=NULL, $slugid=NULL){
+
+		
+
+				$auction_id = $_POST['auction_id'];
+
+				$content_bids = $this->frontend_auctions_m->bidchart($auction_id);
+
+				$randvalue=number_format($this->common->frand(.01, .07, 3), 2, '.', '');
+				$randvalueplus=number_format($this->common->frand(.01, .10, 3), 2, '.', '');
+				$randvalueneg=number_format($this->common->frand(.01, .10, 3), 2, '.', '');
+				
+				for($i=0;$i<count($content_bids);$i++){
+
+					//$bids[]=$content_bids[$i]['bid_price'];
+				//	$counts[]=$content_bids[$i]['total'];
+
+					if($content_bids[$i]['bid_status']==0){
+						$msg='Lowest Unique Bid';
+					}else if($content_bids[$i]['bid_status']==1){
+						$msg='Unique Bid';
+					}else if($content_bids[$i]['bid_status']==2){
+						$msg='Duplicate Bid';
+					} 
+
+					$dataprovider[] = '{"Bid": "'.($content_bids[$i]['bid_price']+$randvalue).'","Between":"$'.($content_bids[$i]['bid_price']-$randvalueneg).' - $'.($content_bids[$i]['bid_price']+$randvalueplus).'","message": "'.$msg.'","value":'.$content_bids[$i]['total'].'}';
+				}
+				
+				
+
+				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
+				echo $datagraph;
+
+	}
+
 
 	public function winners($slug=NULL)
 	{
@@ -199,7 +234,7 @@ class Frontend_auctions extends Frontend_Controller {
 			 
 
 			if($mail){
-				echo 'You Bid of amount <strong>'.$_POST['bid_price'].'</strong> placed successfully. If was '.$placebid[2].'.-success';
+				echo 'You Bid of amount <strong>'.$_POST['bid_price'].'</strong> placed successfully. It was '.$placebid[2].'.-success-'.$placebid[2];
 			}
 			
 

@@ -95,7 +95,8 @@ $(document).ready(function () {
 						success: function (html) {	
 							if (html!='') {
 								
-								var msg = html.split("-");  
+								var msg = html.split("-"); 
+								console.log(html); 
 
 								if(msg[1]=='success'){
 
@@ -104,6 +105,7 @@ $(document).ready(function () {
 									$('#bid_price').val("");
 									$("#add_wishlist").attr("class", "ion-android-favorite-outline");
                                 	$('#wishlist').val('1');
+									get_manual_graph_data(auction_id, msg[2],amount)
 									/*
 									if (auction_type==0) { 
 
