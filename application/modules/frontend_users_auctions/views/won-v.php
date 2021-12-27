@@ -42,7 +42,7 @@
 															<td><?php echo $content_auction[$i]['auction_name']?></td>
 															<td><?php echo $content_auction[$i]['bid_price']?></td>
 															<td><?php 
-															$pay='<a href="'.base_url().'Payment/'.$rowcur['auction_id'].'.html">Pay Now</a>';
+															$pay='<a href="'.base_url().'Payment/auction_pay/'.$content_auction[$i]['auction_id'].'.html">Pay Now</a>';
 															echo ($content_auction[$i]['payment']==0)?$pay:'Paid';?></a></td>
 															<td><?php 
 															$showinvoice='<a href="'.base_url().'invoice/'.$content_auction[$i]['auction_id'].'.html">Show Invoice</a>';

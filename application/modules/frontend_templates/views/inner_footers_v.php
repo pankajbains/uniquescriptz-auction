@@ -103,7 +103,7 @@
                                     <div class="col-lg-6">
                                         <div class="instagram-container footer-widgets_area">
                                             <div class="footer-widgets_title">
-                                                <h6>Sign Up For Newslatter</h6>
+                                                <h6>Sign Up For Newsletter</h6>
                                             </div>
                                             <div class="widget-short_desc">
                                                 <p>Subscribe to our newsletters now and stay up-to-date with new collections</p>

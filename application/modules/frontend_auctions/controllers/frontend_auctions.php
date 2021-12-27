@@ -234,7 +234,7 @@ class Frontend_auctions extends Frontend_Controller {
 			 
 
 			if($mail){
-				echo 'You Bid of amount <strong>'.$_POST['bid_price'].'</strong> placed successfully. It was '.$placebid[2].'.-success-'.$placebid[2];
+				echo 'You Bid of amount <strong>'.$this->frontend_templates->convert_currency_price('currency_price',$_POST['bid_price']).'</strong> placed successfully. It was '.$placebid[2].'.-success-'.$placebid[2];
 			}
 			
 

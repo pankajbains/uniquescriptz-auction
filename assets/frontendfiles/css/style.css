@@ -5628,7 +5628,7 @@ button.li-btn:hover {
 }
 
 .header-middle_area .select-search-category ul.list {
-  height: 440px;
+  max-height: 160px;
   overflow-y: auto;
   overscroll-behavior-x: none;
 }

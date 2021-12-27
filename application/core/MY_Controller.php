@@ -68,6 +68,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 				$data['currency'] = $this->frontend_templates_m->currency();
 
 				$data['category'] = $this->frontend_templates_m->category($slug=NULL);
+				//$data['category_list'] = $this->frontend_templates_m->category($slug=NULL);
 				//var_dump($data['category']);
 				return $data;
 
@@ -179,6 +180,10 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
 			$all_currency = $this->frontend_templates_m->currency(); 
 		 
+			$s_currency =  $this->session->userdata('currency_datas');
+
+			$get_current_currency = $this->frontend_templates_m->get_records('config_currency','currency', $s_currency[0]['currency']);
+
 			
 			if($action ==  "currency_price" ) {
 
@@ -186,7 +191,92 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 				// 	for($i=0; $i<count($all_currency); $i++) {
 					// if($get_basecurrency[0]['currency_code'] == $getcurrency[0]['currency_code'] ) {	
 
-					return $currency.($get_basecurrency[0]['coversion_rate'] * $price);			
+					return $currency.(number_format($get_current_currency[0]['coversion_rate'] * $price,2,'.',','));			
+					
+					// } 					 
+				// 	} 					
+				// }
+				//  else {					
+				// 	for($i=0; $i<count($all_currency); $i++) { 
+				// 		if($all_currency[$i]['currency_code'] == $get_basecurrency[0]['currency_code'] ) {		
+				// 			return $get_basecurrency[0]['currency_code'].number_format(($get_basecurrency[0]['coversion_rate'] * $price),'2','.',',');						
+				// 		}  					
+				// 	}		
+				// }
+			
+			} elseif($action == "base_currency" ) {
+
+				return $get_basecurrency[0]['currency']; 
+
+			}  elseif($action == "currency_code" ) {
+
+				if(isset($currency)){ 
+
+					return $currency; 
+					
+				} else {
+					
+					return $get_basecurrency[0]['currency_code']; 
+
+				}
+
+			} elseif($action == 'stripe_currency_price') {
+				
+				// if(isset($currency)){
+							
+				// 	for($i=0; $i<count($all_currency); $i++) {
+						
+						// if($all_currency[$i]['currency_code'] == $getcurrency[0]['currency_code'] ) {
+							
+							return (number_format($get_current_currency[0]['coversion_rate'] * $price,2,'.',','));	
+		
+					// 	} 
+					 
+					// } 	
+				
+				// }
+				//  else {
+					
+				// 	for($i=0; $i<count($all_currency); $i++) { 
+
+				// 		if($all_currency[$i]['currency_code'] == $get_basecurrency[0]['currency_code'] ) {
+							
+							
+				// 			return number_format(($get_basecurrency[0]['coversion_rate'] * $price),'2','.',',');	
+						
+				// 		}  
+					
+				// 	}
+		
+				// }
+			
+
+			}
+			  
+	
+		}
+
+		public function convert_currency_price_only($action, $price) 
+		{
+			$currency = $this->session->userdata('currency_datas')[0]['currency_code'];
+			// $getcurrency = $this->frontend_templates_m->get_records('config_currency','currency_code', $currency);
+			$get_basecurrency = $this->frontend_templates_m->get_records('config_currency','base_currency', '1');
+			// var_dump($price, $currency,  $get_basecurrency[0]['currency_code']);
+
+			$all_currency = $this->frontend_templates_m->currency(); 
+		 
+			$s_currency =  $this->session->userdata('currency_datas');
+
+			$get_current_currency = $this->frontend_templates_m->get_records('config_currency','currency', $s_currency[0]['currency']);
+
+			
+			if($action ==  "currency_price" ) {
+
+				// if(isset($currency)){				
+				// 	for($i=0; $i<count($all_currency); $i++) {
+					// if($get_basecurrency[0]['currency_code'] == $getcurrency[0]['currency_code'] ) {	
+
+					return (number_format($get_current_currency[0]['coversion_rate'] * $price,2,'.',','));			
 					
 					// } 					 
 				// 	} 					
@@ -253,6 +343,11 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
  
 	}
+
+
+	
+	
+
 
 	class Backend_Controller extends Common_Controller{
 

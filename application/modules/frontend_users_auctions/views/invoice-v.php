@@ -72,7 +72,7 @@
             </div>
             <div class="card-body">
                 <div class="row mb-4">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" >
                         <h6 class="mb-3">From:</h6>
                         <div>
                             <strong><?php echo $site_setting[0]['site_name'];?></strong>
@@ -96,7 +96,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="center">#</th>
+                                <th class="center">SNo.</th>
                                 <th>Item</th>
                                 <th>Description</th>
                                 <th class="right">Unit Cost</th>
@@ -187,7 +187,7 @@ Administrator <br><br>                    -->
 </div>
 <div>
     <a href="<?php echo base_url().'generatepdf/'.$content_auction[0]['auction_id'].'.html'?>">
-<button class="hiraola-btn hiraola-btn_dark" type="button" style='width:250px'> Download Invoice</button>
+<button class="hiraola-btn hiraola-btn_dark" type="button" style='width:250px; margin-left: 500px;'> Download Invoice</button>
                                             </a>
 </div>
 </div>

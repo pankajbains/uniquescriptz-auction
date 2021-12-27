@@ -217,11 +217,13 @@ class Frontend_users_auctions extends Frontend_Controller {
 
 
 		//$this->frontend_templates->generatepdf($data, $this->settings());
-
+		//$options = new Options();
+		//$options->set('isRemoteEnabled',true); 
+		
 		$dompdf = new Dompdf();
 		$html=$this->load->view('frontend_users_auctions/download_invoice-v',$data,TRUE);
 		$dompdf->loadHtml($html);
-		$dompdf->setPaper('A4', 'landscape');
+		$dompdf->setPaper('A4');
 		// Render the HTML as PDF
 		$dompdf->render();
 		$time =  $data['content_auction'][0]['auction_id'];

@@ -75,6 +75,14 @@ class frontend_templates_m extends CI_Model {
 					}
 
 		}
+
+		public function search_box(){
+			$this->db->select('*');
+			$this->db->from('manage_categories');
+			$this->db->where("'category_parent is NULL' => null, 'status'=>'1'");
+			$query = $this->db->get();
+			return $query->result_array();
+		}
 /* load from common
 		function encrypt_decrypt($action, $string) {
 

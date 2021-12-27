@@ -64,6 +64,7 @@ $route['cms/(:any)'] = 'frontend_home/cms/$1';
 $route['account/(:any)'] = 'frontend_account/$1';
 
 $route['account/(:any)/(:any)'] = 'frontend_account/$1/$2';
+$route['Payment/(:any)/(:any)'] = 'frontend_account/$1/$2';
 
 $route['account/(:any)/(:any)/(:any)'] = 'frontend_account/$1/$2/$3';
 

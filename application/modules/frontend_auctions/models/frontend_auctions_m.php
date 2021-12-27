@@ -425,6 +425,9 @@ class frontend_auctions_m extends CI_Model {
 				return $error_msg.'-error';
 			}
 
+			$s_currency =  $this->session->userdata('currency_datas');
+			$get_current_currency = $this->frontend_templates_m->get_records('config_currency','currency', $s_currency[0]['currency']);
+			$_POST['bid_price']=number_format($_POST['bid_price']/$get_current_currency[0]['coversion_rate'],2,'.',',');
 			if(($_POST['bid_price']<$auction_details[0]['auction_price']) || ($_POST['bid_price']=="")||($_POST['bid_price']==0)){
 				$error_msg = "Bid price is not valid.";
 				return $error_msg.'-error';

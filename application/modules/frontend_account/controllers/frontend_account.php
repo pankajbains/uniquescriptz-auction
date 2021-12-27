@@ -263,7 +263,7 @@ class Frontend_account extends Frontend_Controller {
 		$this->session_check();
 		if($this->uri->segment(3)!=''){
 			
-			$data['content_record']=$this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(3));
+			$data['content_record']=$this->frontend_templates_m->get_records('auct','id',$this->uri->segment(3));
 			$data['content_gateway']=$this->frontend_templates_m->get_records('manage_paymentgateway','status','1');
 
 			$data['content_view']='frontend_account/gateway-v';
@@ -271,6 +271,25 @@ class Frontend_account extends Frontend_Controller {
 			$this->frontend_templates->inner($data, $this->settings());
 
 		}
+
+
+	}
+
+	public function auction_pay(){
+		
+		
+		$this->session_check();
+		if($this->uri->segment(3)!=''){
+			//echo $auction_id = $this->uri->segment(3);
+			
+		$data['content_record']=$this->frontend_templates_m->get_records('auction_won','auction_id',$this->uri->segment(3));
+		$data['content_gateway']=$this->frontend_templates_m->get_records('manage_paymentgateway','status','1');
+
+		$data['content_view']='frontend_account/auction_pay-v';
+
+		$this->frontend_templates->inner($data, $this->settings());
+
+		 }
 
 
 	}

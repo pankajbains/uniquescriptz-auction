@@ -1,209 +1,116 @@
 <style>
-    .left{
-        text-align:left;
-    }
-    .right{
-        text-align:right;
-    }
-    .center{
-        text-align:center;
-    }
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    /* min-width: 400px; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table2{
+    border:2px solid; 
+    height:75px;
+    width:320px;
+    float:right;
+    margin-top: 120px;
+    
+}
+.styled-table thead tr {
+    background-color: #cda557;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table2 th,
+.styled-table2 td {
+    padding: 12px 15px;
+    text-align: center;
+} 
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.styled-table2 tr th{
+    background-color:#cda557;
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+#address{
+    display:flex;
+    padding: 12px 15px;
+}
 </style>
-		<!-- Begin Hiraola's Page Area -->
-        <div class="about-us-area account-page-area pb-5">
-            <div class="container">
-                <div class="row">
-					<div class="overview-content col-sm-12 col-md-12 col-xs-12 col-lg-12  pb-5">
-                    <div class="overview-content col-sm-12 col-md-12 col-xs-12 col-lg-12  pb-5">
-                            						<div class="overview-content">
-                        <!-- Login Content-->
-							<h2><strong>Payment <span>Invoice</span></strong></h2>
-														                            <!-- <p class="short_desc">Update your profile information now to get latest update and communications.<br></p> -->
-
-                            
-						</div> 
-                    <!-- <span> Your account has: <strong> 46</strong> Paid and <strong>60</strong> Free Credits</span>              -->
-                     </div>             
-                     </div>
-                        <div class="col-lg-3">
-						    <?php
-								//$this->load->view('frontend_templates/usernav_v');
-							?>
-
-                        </div>
-                       
-
-                        <div class="col-lg-9">
-                       
-                            <div class="tab-pane active" id="account-details">
-                                    <div class="myaccount-details">
-
-                                        <?php 
-                                            $msg=  $this->session->flashdata('pay_success');
-                                            if($msg == "success"){
-                                                ?>
-                                                <div class="alert alert-block alert-success"  id="p_success">
-                                                    <span id="msg"><strong>Well done!</strong> Payment successfully done please check the account credits!</span>
-                                                </div>    
-                                            <?php }  ?>
-
-                                        <?php 
-                                            $msg=  $this->session->flashdata('pay_error');
-                                            if($msg == "error"){  ?>
-                                                <div class="alert alert-block alert-danger" id="p_error" >
-                                                    <span id="msg"><strong>Ooops!</strong> Payment cancelled please check the account! if any  amount debited then within 24 hours will be back</span>
-                                                </div> 
-                                        <?php  }   ?>
-                                        
-										<div class="alert alert-block alert-success" id="success" style="display:none;">
-											<span id="msg"><strong>Well done!</strong> Records are updated successfully!</span>
-										</div>
-
-										<form id="account_form" name="account_form" method="post" class="hiraola-form">
-
-                                            <div class="hiraola-form-inner">
-
-                                            <div id='printInvoice' style='width: 100%;'>
-
-                                            <div class="card-header">
-                Invoice
-                <strong><?php echo $content_auction[0]['auction_id'];?></strong>
-                <span class="float-right"> <strong>Status:</strong> Pending</span>
-            </div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <h6 class="mb-3">From:</h6>
-                        <div>
-                            <strong><?php echo $site_setting[0]['site_name'];?></strong>
-                        </div>
-                        <div><?php echo $site_setting[0]['site_address'];?></div>
-                        <div>Email: <?php echo $email_setting[0]['email_support'];?></div>
-                        <div>Phone: <?php echo $site_setting[0]['site_phone'];?></div>
-                    </div>
-                    <div class="col-sm-6">
-                        <h6 class="mb-3">To:</h6>
-                        <div>
-                            <strong><?php  echo strtoupper($username);?></strong>
-                        </div>
-                        <div><?php echo $user_address[0]['address'];?></div>
-                        <div><?php echo $user_address[0]['city'];?></div>
-                        <div>Email: <?php echo $this->common->encrypt_decrypt('decrypt',$user_data[0]['email']);?></div>
-                        <div>Phone: <?php echo $user_data[0]['mobile'];?></div>
-                    </div>
-                </div>
-                <div class="table-responsive-sm">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th class="center">#</th>
-                                <th>Item</th>
-                                <th>Description</th>
-                                <th class="right">Unit Cost</th>
-                                <!-- <th class="center">Qty</th> -->
-                                <th class="right">Bid Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           
-                            <tr>
-                                <td class="center">1</td>
-                                <td class="left"><?php echo $content_auction[0]['auction_name'];?></td>
-                                <td class="left"><?php echo $content_auction[0]['auction_desc'];?></td>
-                                <td class="right"><?php echo $content_auction[0]['auction_nprice'];?></td>
-                                <!-- <td class="center">20</td> -->
-                                <td class="right">$<?php echo $content_auction[0]['bid_price'];?></td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-sm-5">
-                    </div>
-                    <div class="col-lg-4 col-sm-5 ml-auto">
-                        <table class="table table-clear">
-                            <tbody>
-                                <tr>
-                                    <td class="left">
-                                        <strong>Subtotal</strong>
-                                    </td>
-                                    <td class="right">$<?php echo $content_auction[0]['bid_price'];?></td>
-                                </tr>
-                                <!-- <tr>
-                                    <td class="left">
-                                        <strong>Discount (20%)</strong>
-                                    </td>
-                                    <td class="right">$1,699,40</td>
-                                </tr>
-                                <tr>
-                                    <td class="left">
-                                        <strong>VAT (10%)</strong>
-                                    </td>
-                                    <td class="right">$679,76</td>
-                                </tr> -->
-                                <tr>
-                                    <td class="left">
-                                        <strong>Total</strong>
-                                    </td>
-                                    <td class="right">
-                                        <strong>$<?php echo $content_auction[0]['bid_price'];?></strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-                                                                                    
-<!-- <span> Dear <?php  echo strtoupper($username);?>,</span><br><br>
-
-Thank you for your bids in our auction.<br><br>
-
-The document is also available under "My Account" in "Invoices" on the website of <a style="font-size: 15px;" href='<?php echo base_url();?>uniquescriptz-auction/' ><?php echo base_url();?>uniquescriptz-auction/</a>. </br>
-
-Payments<br><br>
-
-We request that you transfer the total amount due to our account at the _______________ bank.<br><br>
-
-* Account number: __________________<br><br>
-
-* On behalf of: _________________<br><br>
-
-* IBAN:<br><br>
-
-* BIC/SWIFT:<br><br>
-
-* Reference number: <?php echo $content_auction[0]['auction_id'];?><br><br>
-
-
-Please note that no transfers are made between banks on weekends (Friday from 16.00 hrs).<br><br>
-
-We thank you for the confidence shown in our company.<br><br>
-
-Yours sincerely,<br>
-Administrator <br><br>                    -->
+<div class="header-logo">
+    <!-- <p style="text-align:center; font-size: 35px; font-weight:bold;">Payment Invoice</span></p> -->
+    <!-- <img src="<?php echo base_url();?>assets/frontendfiles/images/uniquescriptz-logo2.png"> -->
+    <!-- <img src="https://cdn.logo.com/hotlink-ok/logo-social.png" alt="logo"> -->
+    <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(@<?php echo base_url();?>assets/frontendfiles/images/uniquescriptz-logo2.png))}}" alt="image" >
 </div>
-
+<div id="header1" style="display:flex; height:10px">
+    <p style="text-align:left;"><strong>Invoice: <?php echo $content_auction[0]['auction_id'];?></strong></p>
+    <p style="text-align:right;"><strong>Status: Pending</strong></p>
+    <!-- <p><?php echo base_url(); ?></p> -->
 </div>
-
-                                                
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-						
-                        </div>
-
-					
-                </div>
-            </div>
-        </div>
-        <!-- Hiraola's Page Area  End Here -->
-
-
-
-	
+<hr>
+<div id="address" style="height:220px;">
+    <div>
+<p style="text-align:right;"><strong>From:</strong></p>
+<p style="text-align:right;"><strong><?php echo $site_setting[0]['site_name'];?></strong></p>
+<p style="text-align:right;"><?php echo $site_setting[0]['site_address'];?></p>
+<p style="text-align:right;">Email: <?php echo $email_setting[0]['email_support'];?></p>
+<p style="text-align:right;">Phone: <?php echo $site_setting[0]['site_phone'];?></p>
+</div>
+    <div>
+<p style="text-align:left;"><strong>To:</strong></p>
+<p style="text-align:left;"><strong><?php  echo strtoupper($username);?></strong></p>
+<p style="text-align:left;"><?php echo $user_address[0]['address'];?></p>
+<p style="text-align:left;"><?php echo $user_address[0]['city'];?></p>
+<p style="text-align:left;">Email: <?php echo $this->common->encrypt_decrypt('decrypt',$user_data[0]['email']);?></p>
+<p style="text-align:left;">Phone: <?php echo $user_data[0]['mobile'];?></p>   
+    </div>
+</div>
+<hr>
+    <table class="styled-table" style="border:2px solid; height:75px;width:705px;float:center;">
+    <thead>
+        <tr style="text-align:center;">
+            <th>SNo.</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Unit Cost</th>
+            <th>Bid Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="text-align:center;">
+            <td>1</td>
+            <td><?php echo $content_auction[0]['auction_name'];?></td>
+            <td><?php echo $content_auction[0]['auction_desc'];?></td>
+            <td><?php echo $content_auction[0]['auction_nprice'];?></td>
+            <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+        </tr>
+    </tbody>
+    </table>
+    <table class="styled-table2">
+    <tbody>
+            <tr>
+                <th>Subtotal</th>
+                <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+            </tr>
+        </tbody>
+    </table>
+    

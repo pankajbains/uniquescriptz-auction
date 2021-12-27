@@ -33,6 +33,8 @@ class Frontend_templates extends Frontend_Controller {
 
 	public function index($data, $slug=NULL)
 	{
+		//$categorydata = $this->frontend_templates_m->search_box();
+		//print_r($slug); die;
 		$this->load->view('frontend_templates/inner_headers_v', $slug);
 		//$this->load->view('frontend_templates/breadcrumb_v');
 		
@@ -63,6 +65,8 @@ class Frontend_templates extends Frontend_Controller {
 
 	public function inner($data=NULL, $slug=NULL)
 	{
+		//$categorydata = $this->frontend_templates_m->search_box();
+		//print_r($categorydata); die;
 		$this->load->view('frontend_templates/inner_headers_v', $slug);
 		//$this->load->view('frontend_templates/breadcrumb_v');
 		$this->load->view('frontend_templates/inner_v',$data);
@@ -141,5 +145,7 @@ class Frontend_templates extends Frontend_Controller {
 			}
 			return $ip;
 		}
+
+	
 
 }

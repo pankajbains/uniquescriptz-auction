@@ -109,13 +109,14 @@ $i++;
 									<form class="form-group" id="bid_form" name="bid_form" method="POST">
 										<div class="coupon-all">
 											<div class="coupon">
-												<strong><?php echo $this->frontend_templates->convert_currency_price('currency_code', ''); ?></strong> <input id="bid_price" class="input-text" name="bid_price" value="" placeholder="1.65" type="text">&nbsp;&nbsp;
+												<strong><?php echo $this->frontend_templates->convert_currency_price('currency_code', ''); ?></strong> 
+                                                <input id="bid_price" class="input-text" name="bid_price" value="" placeholder="1.65" type="text">&nbsp;&nbsp;
 
 												<input id="auction_id" class="input-text" name="auction_id" value="<?php echo $content_data[0]['auction_id'];?>" type="hidden">
 
 												<input id="auction_name" class="input-text" name="auction_name" value="<?php echo $content_data[0]['auction_name'];?>" type="hidden">
 
-												<input id="allowed_bid" class="input-text" name="allowed_bid" value="<?php echo $content_data[0]['auction_price'];?>" type="hidden">
+												<input id="allowed_bid" class="input-text" name="allowed_bid" value="<?php echo $this->frontend_templates->convert_currency_price_only('currency_price',$content_data[0]['auction_price']);?>" type="hidden">
 
 												<input id="free_credit" class="input-text" name="free_credit" value="<?php echo $content_user[0]['free_credit'];?>" type="hidden">
 												<input id="paid_credit" class="input-text" name="paid_credit" value="<?php echo $content_user[0]['paid_credit'];?>" type="hidden">
