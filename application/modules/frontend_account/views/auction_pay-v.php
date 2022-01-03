@@ -46,7 +46,7 @@
 															<th>Bid Amount</th>
 															<th>Gateway Fee's</th>
 															<th>Total Amount</th>
-															<th></th>
+															<th>Action</th>
 														</tr>
 														<?php
 															for($i=0;$i<count($content_gateway);$i++){
@@ -64,9 +64,9 @@
 														<tr>
 														
 															<td><a href="#"><?php echo $content_gateway[$i]['gateway_name']?></a></td>
-															<td><?php echo '$'.$auction_won_amount; ?> </td>
-															<td><?php echo '$'.$content_gateway[$i]['gateway_fee']; ?> </td>
-															<td><?php  echo '$'.$price ?> </td>
+															<td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$auction_won_amount); ?> </td>
+															<td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_gateway[$i]['gateway_fee']); ?> </td>
+															<td><?php  echo $this->frontend_templates->convert_currency_price('currency_price',$price); ?> </td>
 															 
 															<td>
 															

@@ -110,9 +110,9 @@
                                 <td class="center">1</td>
                                 <td class="left"><?php echo $content_auction[0]['auction_name'];?></td>
                                 <td class="left"><?php echo $content_auction[0]['auction_desc'];?></td>
-                                <td class="right"><?php echo $content_auction[0]['auction_nprice'];?></td>
+                                <td class="right"><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['auction_nprice']);?></td>
                                 <!-- <td class="center">20</td> -->
-                                <td class="right">$<?php echo $content_auction[0]['bid_price'];?></td>
+                                <td class="right"><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></td>
                             </tr>
                             
                         </tbody>
@@ -128,7 +128,7 @@
                                     <td class="left">
                                         <strong>Subtotal</strong>
                                     </td>
-                                    <td class="right">$<?php echo $content_auction[0]['bid_price'];?></td>
+                                    <td class="right"><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></td>
                                 </tr>
                                 <!-- <tr>
                                     <td class="left">
@@ -147,7 +147,7 @@
                                         <strong>Total</strong>
                                     </td>
                                     <td class="right">
-                                        <strong>$<?php echo $content_auction[0]['bid_price'];?></strong>
+                                        <strong><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></strong>
                                     </td>
                                 </tr>
                             </tbody>

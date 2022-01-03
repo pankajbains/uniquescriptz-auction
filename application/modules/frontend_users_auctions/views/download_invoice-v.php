@@ -96,8 +96,8 @@
             <td>1</td>
             <td><?php echo $content_auction[0]['auction_name'];?></td>
             <td><?php echo $content_auction[0]['auction_desc'];?></td>
-            <td><?php echo $content_auction[0]['auction_nprice'];?></td>
-            <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+            <td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['auction_nprice']);?></td>
+            <td>$<?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></td>
         </tr>
     </tbody>
     </table>
@@ -105,11 +105,11 @@
     <tbody>
             <tr>
                 <th>Subtotal</th>
-                <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+                <td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></td>
             </tr>
             <tr>
                 <th>Total</th>
-                <td>$<?php echo $content_auction[0]['bid_price'];?></td>
+                <td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[0]['bid_price']);?></td>
             </tr>
         </tbody>
     </table>

@@ -41,20 +41,20 @@ class frontend_users_auctions_m extends CI_Model {
 
 		public function get_user_auctions($open,$closed,$won=NULL){
 
-			$wharray = array('auction_open' => $open, 'auction_closed' => $closed, 'auction_bids.user_id' => $_SESSION['user_id'], 'auction_winner' => $won);
+			$wharray = array('auction_open' => $open, 'auction_closed' => $closed, 'auction_bids.user_id' => $_SESSION['user_id'], 'auction_winner' => $won, 'auction_bids.bid_status' => 0);
 
 			$this->db->distinct();
 
 			// if($won!=''){
 			// 	$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid, auction_won.bid_price, auction_won.bid_id', false);
 			// }else{
-				$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid', false);
+				$this->db->select('auction_bids.auction_id, auction_items.auction_name, auction_items.auction_edate, auction_items.auction_etime, auction_items.auction_bid, auction_items.auction_max_bid, auction_bids.bid_price', false);
 			// }
 			$this->db->from('auction_bids');
 			$this->db->where($wharray);
 			$this->db->join('auction_items', 'auction_bids.auction_id = auction_items.auction_id');
 			// $this->db->join('auction_won', 'auction_won.auction_id = auction_items.auction_id');
-
+			$this->db->group_by('auction_bids.auction_id');
 			$query=$this->db->get();
 			//var_dump($this->db->last_query()); die;
 			return $query->result_array();

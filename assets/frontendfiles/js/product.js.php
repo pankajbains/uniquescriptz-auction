@@ -60,7 +60,7 @@ $(document).ready(function () {
 				}
 
 				if((amount < allowed_bid) || (amount == allowed_bid) && (auction_format == 'lowest')){
-
+					
 					alert("Please Enter Bid Amount Greater than Minimum Bid Amount "+allowed_bid+"!");
 					return false;
 				}

@@ -202,7 +202,7 @@
 
 											
 
-											<input name="featured" id="featured" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['featured'])==1){echo 'checked';}?>>
+											<input name="featured" id="featured" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['featured']) && $auction_items[0]['featured']==1){echo 'checked';}?>>
 
 											<span class="lbl">&nbsp;&nbsp;&nbsp;Featured Items</span>
 											</label>
@@ -213,7 +213,7 @@
 													<?php 
 														//echo form_input(array('type'=> 'checkbox', 'id' => 'sretail', 'name' => 'sretail', 'class'=> 'ace-switch ace-switch-6'));
 													?>
-													<input name="sretail" id="sretail" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sretail'])==1){echo 'checked';}?>>
+													<input name="sretail" id="sretail" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sretail']) && $auction_items[0]['sretail']==1){echo 'checked';}?>>
 
 													<span class="lbl">&nbsp;&nbsp;&nbsp;Show Retail Price</span>
 												</label>
@@ -224,7 +224,7 @@
 													<?php 
 														//echo form_input(array('type'=> 'checkbox', 'id' => 'sallowed_bids', 'name' => 'sallowed_bids', 'class'=> 'ace-switch ace-switch-6'));
 													?>
-													<input name="sallowed_bids" id="sallowed_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sallowed_bids'])==1){echo 'checked';}?>>
+													<input name="sallowed_bids" id="sallowed_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sallowed_bids']) && $auction_items[0]['sallowed_bids']==1){echo 'checked';}?>>
 
 													<span class="lbl">&nbsp;&nbsp;&nbsp;Show Allowed Bid/User</span>
 												</label>
@@ -236,7 +236,7 @@
 											<?php 
 												//echo form_input(array('type'=> 'checkbox', 'id' => 'sreq_bids', 'name' => 'sreq_bids', 'class'=> 'ace-switch ace-switch-6'));
 											?>
-											<input name="sreq_bids" id="sreq_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sreq_bids'])==1){echo 'checked';}?>>
+											<input name="sreq_bids" id="sreq_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sreq_bids']) && $auction_items[0]['sreq_bids']==1){echo 'checked';}?>>
 
 											<span class="lbl">&nbsp;&nbsp;&nbsp;Show Required Bids</span>
 											</label>
@@ -260,7 +260,7 @@
 											<?php 
 												//echo form_input(array('type'=> 'checkbox', 'id' => 'stotal_bids', 'name' => 'stotal_bids', 'class'=> 'ace-switch ace-switch-6'));
 											?>
-											<input name="stotal_bids" id="stotal_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['stotal_bids'])==1){echo 'checked';}?>>
+											<input name="stotal_bids" id="stotal_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['stotal_bids']) && $auction_items[0]['stotal_bids']==1){echo 'checked';}?>>
 
 											<span class="lbl">&nbsp;&nbsp;&nbsp;Show Total Bid Placed</span>
 											</label>
@@ -272,7 +272,7 @@
 											<?php 
 												//echo form_input(array('type'=> 'checkbox', 'id' => 'sremaining_bids', 'name' => 'sremaining_bids', 'class'=> 'ace-switch ace-switch-6'));
 											?>
-											<input name="sremaining_bids" id="sremaining_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sremaining_bids'])==1){echo 'checked';}?>>
+											<input name="sremaining_bids" id="sremaining_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['sremaining_bids']) && $auction_items[0]['sremaining_bids']==1){echo 'checked';}?>>
 
 										<span class="lbl">&nbsp;&nbsp;&nbsp;Show Remaining Bids</span>
 										</label>
@@ -283,7 +283,7 @@
 											<?php 
 												//echo form_input(array('type'=> 'checkbox', 'id' => 'scurrent_bids', 'name' => 'scurrent_bids', 'class'=> 'ace-switch ace-switch-6'));
 											?>
-											<input name="scurrent_bids" id="scurrent_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['scurrent_bids'])==1){echo 'checked';}?>>
+											<input name="scurrent_bids" id="scurrent_bids" class="ace-switch ace-switch-6" type="checkbox" <?php if(isset($auction_items[0]['scurrent_bids']) && $auction_items[0]['scurrent_bids']==1){echo 'checked';}?>>
 
 											<span class="lbl">&nbsp;&nbsp;&nbsp; Show Current Bid</span>
 											</label>

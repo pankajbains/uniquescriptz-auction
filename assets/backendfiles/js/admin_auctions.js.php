@@ -80,6 +80,7 @@ $(document).ready(function () {
 					$(window).scrollTop(0);
 					$('#success').show().delay(1000).fadeOut();
 					$('#formpages').trigger("reset");
+					location.reload();
 
 				}
 

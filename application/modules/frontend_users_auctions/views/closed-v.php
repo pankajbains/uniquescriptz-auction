@@ -40,7 +40,7 @@
 														<tr>
 															<td><a href="<?php echo base_url().'auction/showbids/'.$content_auction[$i]['auction_id'];?>.html"><?php echo $content_auction[$i]['auction_id']?></a></td>
 															<td><?php echo $content_auction[$i]['auction_name']?></td>
-															<td><?php echo $content_auction[$i]['bid_price']?></td>
+															<td><?php echo $this->frontend_templates->convert_currency_price('currency_price',$content_auction[$i]['bid_price'])?></td>
 															
 															<td><a href="<?php echo base_url().'auction/showbids/'.$content_auction[$i]['auction_id'];?>.html"><i class="fa fa-eye"
                                                 title="Remove"></i></a></td>

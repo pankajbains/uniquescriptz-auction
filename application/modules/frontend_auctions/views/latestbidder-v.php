@@ -24,7 +24,7 @@
 																?>
 															</td>
 															<td><?php 
-																	echo ($content_latest[$i]['user_id']==$_SESSION['user_id'])?$content_latest[$i]['bid_price']:'XXXXXX';
+																	echo ($content_latest[$i]['user_id']==$_SESSION['user_id'])?$this->frontend_templates->convert_currency_price('currency_price',$content_latest[$i]['bid_price']):'XXXXXX';
 																	//echo $content_latest[$i]['bid_price'];
 
 																?>
