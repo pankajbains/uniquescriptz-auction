@@ -262,7 +262,7 @@ $i++;
 						$msg='Duplicate Bid';
 					} 
 
-					$dataprovider[] = '{"Bid": "'.($content_bids[$i]['bid_price']+$randvalue).'","Between":"$'.($content_bids[$i]['bid_price']-$randvalueneg).' - $'.($content_bids[$i]['bid_price']+$randvalueplus).'","message": "'.$msg.'","value":'.$content_bids[$i]['total'].'}';
+					$dataprovider[] = '{"Bid": "'.($this->frontend_templates->convert_currency_price('currency_price',$content_bids[$i]['bid_price']+$randvalue)).'","Between":"'.($this->frontend_templates->convert_currency_price('currency_price',$content_bids[$i]['bid_price']-$randvalueneg)).' - '.($this->frontend_templates->convert_currency_price('currency_price',$content_bids[$i]['bid_price']+$randvalueplus)).'","message": "'.$msg.'","value":'.$content_bids[$i]['total'].'}';
 				}
 				
 				
