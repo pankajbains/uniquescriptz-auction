@@ -158,9 +158,9 @@
                         </div>
                         <div class="col-lg-9">
                             <div class="hm-form_area">
-                                <form action="#" class="hm-searchbox">
-                                    <select class="nice-select select-search-category">
-                                        <option value="0">All</option>
+                                <form action="<?php echo base_url().'search/auction-search/';?>" class="hm-searchbox">
+                                    <select class="nice-select select-search-category" name="category_name">
+                                        <option value="all">All</option>
                                         <?php
                                         if(isset($category)){
                                             foreach($category AS $category_data){
@@ -171,7 +171,7 @@
                                         }
                                         ?>
                                     </select>
-                                    <input type="text" placeholder="Enter your search key ...">
+                                    <input type="text" required name="keyword" placeholder="Enter your search key ...">
                                     <button class="li-btn" type="submit"><i class="fa fa-search"></i></button>
                                 </form>
                             </div>

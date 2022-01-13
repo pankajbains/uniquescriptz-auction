@@ -43,6 +43,28 @@ class frontend_auctions_m extends CI_Model {
 
 		}
 
+		public function get_items_keyword($category,$keyword){
+			if($category=='all'){
+				$items[] = $this->get_products_search($category,$keyword);
+			}else{
+				$this->db->select('category_id');
+				$wharray = array('category_name' => $category, 'status' => '1');
+				$this->db->order_by("id", "asc");
+				$query = $this->db->get_where('manage_categories', $wharray); 
+				$limit=20;
+				$start=20*($page-1);
+				//$this->db->limit($limit,$start);
+				$category = $query->result_array($query);
+				//print_r($category);die;
+
+				for($i=0;$i<count($category);$i++){
+					$items[] = $this->get_products_search($category[$i]['category_id'],$keyword);
+				}
+			}
+			return $items;
+
+		}
+
 		public function get_item_count($data){
 
 			$this->db->select('*');
@@ -96,6 +118,26 @@ class frontend_auctions_m extends CI_Model {
 
 			$wharray = array('auction_category'=>$data, 'auction_closed' => '0', 'auction_open' => '1');
 			$this->db->where($wharray);
+
+			$query = $this->db->get();
+			//var_dump($this->db->last_query());
+			return $query->result_array($query);
+
+		}
+
+		public function get_products_search($category,$keyword){
+			
+			$this->db->select('auction_items.auction_id, auction_media.auction_icon_img, auction_items.auction_name,auction_items.auction_category');
+			$this->db->from('auction_items');
+			$this->db->join('auction_media', 'auction_items.auction_id = auction_media.auction_id');
+			if($category=='all'){
+				$wharray = array('auction_closed' => '0', 'auction_open' => '1');
+			}else{
+				$wharray = array('auction_category'=>$category, 'auction_closed' => '0', 'auction_open' => '1');
+			}
+			
+			$this->db->where($wharray);
+			$this->db->like('auction_items.auction_name', $keyword);
 
 			$query = $this->db->get();
 			//var_dump($this->db->last_query());

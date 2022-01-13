@@ -82,6 +82,8 @@ $route['auction/(:any)'] = 'frontend_users_auctions/$1';
 
 $route['category/(:any)'] = 'frontend_auctions/category/$1';
 
+$route['search/(:any)'] = 'frontend_auctions/search_auction';
+
 $route['g_data'] = 'frontend_auctions/get_dynamic_chart_data';
 
 $route['product/latestbids/(:any)/(:any)'] = 'frontend_auctions/latestbids/$1/$2';

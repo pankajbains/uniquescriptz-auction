@@ -199,7 +199,7 @@ class Admin_auctions extends Backend_Controller {
     {
         $config = array(
             'upload_path' => $path,
-            'allowed_types' => 'jpg|gif|png|mpeg|mp4|3gp',
+            'allowed_types' => 'jpeg|jpg|gif|png|mpeg|mp4|3gp',
             'overwrite' => 1,  
 			'max_size' => '10000',
         );
@@ -216,6 +216,11 @@ class Admin_auctions extends Backend_Controller {
             $_FILES['images[]']['size']= $files['size'][$key];
 
             $fileName = $image;
+
+			$filename= $_FILES['images[]']['name'];
+			$file_ext = pathinfo($fileName,PATHINFO_EXTENSION);
+
+			$fileName = time().RAND(1111,9999).'auc_image.'.$file_ext;
 
             $images[] = $fileName;
 

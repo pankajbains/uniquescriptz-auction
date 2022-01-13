@@ -64,8 +64,10 @@ class backend_admin_users_m extends CI_Model {
 							'admin_role' => $_POST['admin_role'],
 							'admin_access' => json_encode($_POST['admin_access']),
 							'admin_permission' => json_encode($_POST['admin_permission']),
-							'admin_password' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']), 
-							'admin_cpassword' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']),
+							//'admin_password' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']), 
+							//'admin_cpassword' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']),
+							'admin_password' =>md5($_POST['admin_password']),
+							'admin_cpassword' =>md5($_POST['admin_password']),
 							'admin_status' => 1,  
 						);
 					// var_dump($datau);

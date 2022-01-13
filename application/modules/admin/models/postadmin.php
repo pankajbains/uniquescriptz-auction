@@ -12,7 +12,7 @@ class postadmin extends CI_Model {
 
 		function adminlogin($data){
 			
-			//print_r($data);
+			//print_r($data); die;
 			$this->db->select('*');
 			$this->db->from('admin_users');
 			$wharray = array('config_type' => $data['config_type'], 'admin_username' => $data['admin_username'], 'admin_password' => md5($data['admin_password']), 'admin_status' => '1');

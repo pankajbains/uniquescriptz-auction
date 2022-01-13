@@ -285,4 +285,15 @@ class Frontend_auctions extends Frontend_Controller {
 
 /* ------------- Auto email functions End ------------- */
 
+public function search_auction($slug=NULL)
+{
+	$category=$_GET['category_name'];
+	$keyword=$_GET['keyword'];
+	$data['content_data']=$this->frontend_auctions_m->get_items_keyword($category,$keyword);
+
+		$data['content_view']='frontend_auctions/list-v';
+
+		$this->frontend_templates->inner($data, $this->settings());
+
+}
 }
