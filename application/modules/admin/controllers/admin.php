@@ -47,6 +47,14 @@ class Admin extends Backend_Controller {
 
 	}
 
+	function add_user(){
+			
+			
+		$result=$this->postadmin->add_reg_user($_POST);
+		redirect('/manage-auction');
+		
+	}
+
 	public function poststatus($data=NULL)
 	{
 		//var_dump($_POST);

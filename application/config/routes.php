@@ -103,6 +103,7 @@ $route['change-currency/(:any)'] = 'frontend_account/change_currency/$1';
 $route['backend_admin_users/(:any)'] = 'backend_admin_users/$1';
 
 $route['manage-auction'] = 'admin';
+$route['reg-user/(:any)'] = 'admin/$1';
 $route['manage-auction/(:any)'] = '$1';
 $route['manage-auction/(:any)/(:any)'] = '$1/$2';
 $route['invoice/(:any)'] = 'frontend_users_auctions/winner_invoice/$1';

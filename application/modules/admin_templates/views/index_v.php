@@ -87,7 +87,8 @@
 															<span class="block input-icon input-icon-right">
 																<select type="select" class="span12" placeholder="" id="config_type" name="config_type"/>
 																	<option value="masteradmin">Master Admin</option>
-																	<option value="subadmin">Sub Admin</option>
+																	<option value="admin">Admin</option>
+																	<option value="staff">Staff</option>
 																</select>
 															</span>
 														</label>
@@ -198,35 +199,39 @@
 												<div class="space-6"></div>
 												<p> Enter your details to begin: </p>
 
-												<form />
+												<form method="POST" action="<?php echo base_url();?>reg-user/add_user.html"/>
+
 													<fieldset>
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="email" class="span12" placeholder="Email" />
+																<input type="email" name="email" class="span12" placeholder="Email" required />
 																<i class="icon-envelope"></i>
 															</span>
 														</label>
 
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="text" class="span12" placeholder="Username" />
+																<input type="text" name="username" class="span12" placeholder="Username" required />
 																<i class="icon-user"></i>
 															</span>
 														</label>
 
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="password" class="span12" placeholder="Password" />
+																<input type="password" name="password" id="password" class="span12" placeholder="Password" required/>
 																<i class="icon-lock"></i>
 															</span>
 														</label>
 
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="password" class="span12" placeholder="Repeat password" />
+																<input type="password" name="c_password" id="c_password" oninput="isPasswordMatch()" class="span12" placeholder="Repeat password" required/>
 																<i class="icon-retweet"></i>
 															</span>
 														</label>
+														<div id="divCheckPassword" style="margin-top: -15px">
+																
+														</div>
 
 														<label>
 															<input type="checkbox" />
@@ -244,10 +249,8 @@
 																Reset
 															</button>
 
-															<button onclick="return false;" class="width-65 pull-right btn btn-small btn-success">
-																Register
-																<i class="icon-arrow-right icon-on-right"></i>
-															</button>
+															<input type="submit" value="Register" name="submit" id="reg" class="width-65 pull-right btn btn-small btn-success">
+																
 														</div>
 													</fieldset>
 												</form>
@@ -314,6 +317,24 @@
 			 $('.widget-box.visible').removeClass('visible');
 			 $('#'+id).addClass('visible');
 			}
+
+			function isPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#c_password").val();
+
+    if (password != confirmPassword){
+	 $("#divCheckPassword").html("<span style='color:red'>Passwords do not match!<span>");
+	 $("#reg").prop('disabled', true);
+	}
+    else{ 
+		$("#divCheckPassword").html("<span style='color:green'>Password match.<span>");
+		$("#reg").prop('disabled', false);
+	}
+}
+
+$(document).ready(function () {
+    $("#txtConfirmPassword").keyup(isPasswordMatch);
+});
 		</script>
 	</body>
 </html>

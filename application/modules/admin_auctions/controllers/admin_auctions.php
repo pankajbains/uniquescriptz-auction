@@ -220,7 +220,7 @@ class Admin_auctions extends Backend_Controller {
 			$filename= $_FILES['images[]']['name'];
 			$file_ext = pathinfo($fileName,PATHINFO_EXTENSION);
 
-			$fileName = time().RAND(1111,9999).'auc_image.'.$file_ext;
+			$fileName = time().RAND(1111,9999).'auction_image.'.$file_ext;
 
             $images[] = $fileName;
 

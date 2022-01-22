@@ -10,6 +10,28 @@ class postadmin extends CI_Model {
 
         }
 
+		public function add_reg_user($data){
+		
+			$datau = array(
+								
+								
+				'config_type' => 'staff',
+				'admin_username' => $data['username'],
+				'admin_email' => $data['email'],
+				
+				'admin_role' => 'staff',
+				'admin_access' => '["manage_content","manage_users","manage_emails","manage_categories","manage_auctions","manage_credits","manage_payments","manage_coupons","manage_wallets","manage_affiliates"]',
+				'admin_permission' => '["read","write","create","delete"]',
+				//'admin_password' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']), 
+				//'admin_cpassword' =>$this->admin_templates->encrypt_decrypt('encrypt',$_POST['admin_password']),
+				'admin_password' =>md5($data['password']),
+				'admin_cpassword' =>md5($data['c_password']),
+				'admin_status' => 1,  
+			);
+			$query=$this->db->insert('admin_users', $datau);
+			
+		}
+
 		function adminlogin($data){
 			
 			//print_r($data); die;
