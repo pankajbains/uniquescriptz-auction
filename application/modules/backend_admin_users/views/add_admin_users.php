@@ -87,7 +87,7 @@
 												<option value="">Select Role</option>
 												<option value="masteradmin" <?php echo isset($admin_users[0]['admin_role']) ? (($admin_users[0]['admin_role']=='masteradmin')?'selected':'') : '';?>>Master Admin</option>
 												<option value="admin" <?php echo isset($admin_users[0]['admin_role']) ? (($admin_users[0]['admin_role']=='admin')?'selected':'') : '';?>>Admin</option>
-												<option value="role" <?php echo isset($admin_users[0]['admin_role']) ? (($admin_users[0]['admin_role']=='staff')?'selected':'') : '';?>>Staff</option>
+												<option value="staff" <?php echo isset($admin_users[0]['admin_role']) ? (($admin_users[0]['admin_role']=='staff')?'selected':'') : '';?>>Staff</option>
 												
 														
 										</SELECT>

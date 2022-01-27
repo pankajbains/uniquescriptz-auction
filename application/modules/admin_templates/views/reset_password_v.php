@@ -62,88 +62,60 @@
 											<div class="widget-main">
 												<h4 class="header blue lighter bigger">
 													<i class="icon-coffee green"></i>
-													Please Enter Your Information
+													Please Enter New Password
+                                                    <?php
+                                                    //print_r($result);
+                                                    ?>
 												</h4>
 
 												<div class="space-6"></div>
+                                                <?php
+                                                if($result == 'Link Expired'){
+                                                    echo 'Link is expired. Please try again.';
+                                                }elseif($result == 'Invalid Token'){
+                                                    echo 'Invalid Token. Please try again';
+                                                }else{
 
-												<?php echo form_open('',array('id'=>'formpages', 'name'=>'formpages', 'class'=>'form-horizontal')); ?>
+                                                
+                                                ?>
+												<form>
 													<fieldset>
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="text" class="span12" placeholder="Username" id="admin_username" name="admin_username"/>
+																<input type="password" class="span12" placeholder="New Password" id="password" name="password"/>
 																<i class="icon-user"></i>
 															</span>
 														</label>
 
 														<label>
 															<span class="block input-icon input-icon-right">
-																<input type="password" class="span12" placeholder="Password" id="admin_password" name="admin_password"/>
+																<input type="password" class="span12" placeholder="Confirm Password" id="c_password" name="c_password"/>
 																<i class="icon-lock"></i>
 															</span>
 														</label>
 
-														<label>
-															<span class="block input-icon input-icon-right">
-																<select type="select" class="span12" placeholder="" id="config_type" name="config_type"/>
-																	<option value="masteradmin">Master Admin</option>
-																	<option value="admin">Admin</option>
-																	<option value="staff">Staff</option>
-																</select>
-															</span>
-														</label>
+									
 
 														<div class="space"></div>
 
 														<div class="clearfix">
-															<label class="inline">
-																<input type="checkbox" />
-																<span class="lbl"> Remember Me</span>
-															</label>
+															<input type="hidden" id="token" value="<?php echo $result[0]['token']; ?>">
 
-															<button onclick="return false;" class="width-35 pull-right btn btn-small btn-primary" id="adlogin" name="adlogin">
+															<button onclick="reset_password(); return false;" class="width-50 pull-right btn btn-small btn-primary">
 																<i class="icon-key"></i>
-																Login
+																Reset Password
 															</button>
 														</div>
 
 														<div class="space-4"></div>
 													</fieldset>
-												<?php echo form_close();?>
-												<div class="social-or-login center">
-													<span class="bigger-110">Or Login Using</span>
-												</div>
-
-												<div class="social-login center">
-													<a class="btn btn-primary">
-														<i class="icon-facebook"></i>
-													</a>
-
-													<a class="btn btn-info">
-														<i class="icon-twitter"></i>
-													</a>
-
-													<a class="btn btn-danger">
-														<i class="icon-google-plus"></i>
-													</a>
-												</div>
+												<?php echo form_close();
+                                                }
+                                                ?>
+												
 											</div><!--/widget-main-->
 
-											<div class="toolbar clearfix">
-												<div>
-													<a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
-														<i class="icon-arrow-left"></i>
-														I forgot my password
-													</a>
-												</div>
-
-												<div>
-													<a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
-														I want to register
-														<i class="icon-arrow-right"></i>
-													</a>
-												</div>
-											</div>
+											
 										</div><!--/widget-body-->
 									</div><!--/login-box-->
 
@@ -340,32 +312,33 @@ $(document).ready(function () {
 });
 
 function reset_password(){
-	var email=$("#reset_password_email").val();
-	if(email==""){
-		$("#error_reset_password").html('Email is required');
-	}else{
-		$("#error_reset_password").html('');
-		$.ajax({
+	var password=$("#password").val();
+    var c_password=$("#c_password").val();
+    var token=$("#token").val();
+    if(password==c_password){
+        $.ajax({
 
-			type: "POST",  
-			url: "<?php echo base_url();?>/check-mail",
-			data: {
-			'email_id':email
-			},   
-			success: function (html) {
-			console.log(html);
-				if(html==1){
-					$("#error_reset_password").html("<span style='color:green !important'> Password Reset Email has been sent to your email address. Please follow steps in your email</span>");
-				}else{
-					$("#error_reset_password").html('Email is invalid');	
-				}
-				//location.reload();
-			}
-		});
-	}
-	console.log(email);
-
-	
+                type: "POST",  
+                url: "<?php echo base_url();?>/update-password",
+                data: {
+                'password':password,
+                'token': token
+                },   
+                success: function (html) {
+                console.log(html);
+            if(html==1){
+                var answer = confirm ("Your Password has been updated successfully. Please click OK to Login");
+                if (answer){
+                window.location="<?php echo base_url().'manage-auction.html'; ?>";
+                }	
+            }
+            //location.reload();
+        }
+        });
+    }else{
+        alert('password does not match')
+        return false;
+    }
 }
 		</script>
 	</body>

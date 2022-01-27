@@ -104,6 +104,9 @@ $route['backend_admin_users/(:any)'] = 'backend_admin_users/$1';
 
 $route['manage-auction'] = 'admin';
 $route['reg-user/(:any)'] = 'admin/$1';
+$route['reset-password'] = 'admin_templates/reset_password';
+$route['check-mail'] = 'admin_templates/check_email';
+$route['update-password'] = 'admin_templates/update_password';
 $route['manage-auction/(:any)'] = '$1';
 $route['manage-auction/(:any)/(:any)'] = '$1/$2';
 $route['invoice/(:any)'] = 'frontend_users_auctions/winner_invoice/$1';

@@ -18,12 +18,20 @@ class Admin_templates extends Backend_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	private $CI;
 	public function __construct()
 	{
 					
 		parent::__construct();
-		//$this->load->database();
-		//$this->load->model('home');
+		$this->load->database();
+		$this->CI = get_instance();
+
+			$this->CI =& get_instance();
+			$this->CI->load->helper('url');
+			$this->CI->load->helper('form');
+			$this->CI->load->config('paypallib_config');
+
+		$this->load->model('frontend_templates/frontend_templates_m');
 		//$this->load->model('common');
 		//$this->load->helper('url_helper');
 	}
@@ -109,7 +117,109 @@ class Admin_templates extends Backend_Controller {
 			return $ip;
 		}
 
-		
+		public function send_email($emailto,$emailfrom,$name,$subject,$text, $domdpf=null){
+
+			$header="MIME-Version: 1.0\r\n";
+			$header.= "Content-type: text/html; charset=iso-8859-1\r\n";
+			$header.="From: ".$name." <".$emailfrom.">\r\n";
+			$header.= "Reply-To: ".$emailfrom. "\r\n";
+			//$mail = mail($emailto,$subject,$text,$header);
+			//return $mail;
+
+			$this->CI->load->library('email'); // Note: no $config param needed
+			$this->CI->email->from($emailfrom);
+			$this->CI->email->to($emailto);
+			$this->CI->email->subject($subject);
+			$this->CI->email->message($text); 
+			// $this->CI->email->attach($domdpf); 
+			// $this->CI->email->string_attach($domdpf, 'base64.pdf', 'application/pdf');
+			// Set to, from, message, etc.
+
+			$result = $this->CI->email->send();
+			return $result;
+
+}
+		function update_password(){
+			$token=$_POST['token'];
+			$password=$_POST['password'];
+			$query = $this->db->get_where('password_reset', array('token' => $token));
+			$result2= $query->result_array();
+			$email = $result2[0]['email'];
+			$datau = array(
+				'admin_password' =>md5($password),
+				'admin_cpassword' =>md5($password)
+			);
+			$this->db->where('admin_email',$email);
+			$query=$this->db->update('admin_users', $datau);
+
+			$this->db->where('token',$token);
+			$datau = array('time'=>0);
+			$query=$this->db->update('password_reset', $datau);
+			echo 1;
+		}
+
+
+		function check_email(){
+			$email=$_POST['email_id'];
+			$query = $this->db->get_where('admin_users', array('admin_email' => $email));
+					$result= $query->result_array();
+					if(count($result)>0){
+						//var_dump($emailcontent);
+						$datau=array('email'=>$email, 'token'=>RAND(11111,99999), 'time'=>time());
+						$query=$this->db->insert('password_reset', $datau);
+						$this->db->order_by("id", "DESC");
+						$query = $this->db->get_where('password_reset', array('email' => $email));
+						
+						$result2= $query->result_array();
+						$emailcontent = $this->frontend_templates_m->emaildata('reset_password');
+						$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+						$text = $emailcontent['content_emails'][0]['user_emails_body'];
+						$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+						//var_dump($emailfrom);
+						$sitenamenew=$this->config->item('sitename');
+						
+						$activeword = array("[[USERSFIRSTNAME]]", "[[ACTIVATELINK]]", "[[SITENAMELINK]]", "[[USERNAME]]", "[[PASSWORD]]", "[[SITENAME]]");
+						$replacedword = array($usernamenew, $activelinknew, $sitelinknew, $usernamenew, $passwordnew, $sitenamenew);
+
+						$link = "<a href='".base_url()."reset-password.html?token=".$result2[0]['token']."'>Link</a>";
+						$textnew = str_replace('[[USER_NAME]]', $result[0]['admin_username'], $text);
+						$textnew = str_replace('[[LINK]]', $link, $textnew);
+						$subject = $subjectold;
+						$mail = $this->send_email($email,$emailfrom,$sitenamenew,$subject,$textnew);
+						//$emailto,$emailfrom,$name,$subject,$text
+						
+
+						echo 1;
+					}else{
+						echo 0;
+					}
+		}
+
+		function reset_password(){
+			$token = $_GET['token'];
+			$query = $this->db->get_where('password_reset', array('token' => $token));
+			$result2 = $query->result_array();
+			if(count($result2) > 0){
+
+			
+			$requestdate = $result2[0]['time'];
+			$currentTime = time();
+			$timediff = $currentTime - $requestdate;
+			if($timediff > 300){
+				$data['result'] = 'Link Expired'; 
+				$this->load->view('admin_templates/reset_password_v', $data);
+				
+			}else{
+				//echo 'Valid Link';
+				$data['result'] = $result2; 
+				$this->load->view('admin_templates/reset_password_v', $data);
+			}
+		}else{
+			$data['result'] = 'Invalid Token'; 
+				$this->load->view('admin_templates/reset_password_v', $data);
+		}
+			echo $timediff;
+		}
 
 
 

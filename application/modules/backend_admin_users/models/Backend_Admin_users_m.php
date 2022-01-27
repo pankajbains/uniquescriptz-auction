@@ -7,6 +7,7 @@ class backend_admin_users_m extends CI_Model {
               			 
 			parent::__construct();
 			$this->load->database();
+			
         }
 
 		function admin_users_list($slug=NULL)
