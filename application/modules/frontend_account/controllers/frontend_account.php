@@ -343,6 +343,54 @@ class Frontend_account extends Frontend_Controller {
 
 	}
 
+	function reset_user_password(){
+		$token = $_GET['token'];
+		$query = $this->db->get_where('password_reset', array('token' => $token));
+		$result2 = $query->result_array();
+		if(count($result2) > 0){
+
+		
+		$requestdate = $result2[0]['time'];
+		$currentTime = time();
+		$timediff = $currentTime - $requestdate;
+		if($timediff > 300){
+			$data['result'] = 'Link Expired'; 
+			$data['content_view']='frontend_account/update_user_password-v';
+			$this->frontend_templates->inner($data, $this->settings());
+			
+		}else{
+			//echo 'Valid Link';
+			$data['result'] = $result2; 
+			$data['content_view']='frontend_account/update_user_password-v';
+			$this->frontend_templates->inner($data, $this->settings());
+		}
+	}else{
+		$data['result'] = 'Invalid Token'; 
+		$data['content_view']='frontend_account/update_user_password-v';
+			$this->frontend_templates->inner($data, $this->settings());
+	}
+		 $timediff;
+	}
+
+	function update_user_password(){
+		$token=$_POST['token'];
+		$password=$_POST['password'];
+		$query = $this->db->get_where('password_reset', array('token' => $token));
+		$result2= $query->result_array();
+		$email2 = $result2[0]['email'];
+		$email = $this->common->encrypt_decrypt('encrypt',$email2);
+		$datau = array(
+			'password' =>$this->common->encrypt_decrypt('encrypt',$password)
+		);
+		$this->db->where('email',$email);
+		$query=$this->db->update('user_register', $datau);
+
+		$this->db->where('token',$token);
+		$datau = array('time'=>0);
+		$query=$this->db->update('password_reset', $datau);
+		echo 1;
+	}
+
 
 
 	public function paygateway()

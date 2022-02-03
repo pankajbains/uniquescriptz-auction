@@ -158,6 +158,25 @@ class Admin_templates extends Backend_Controller {
 			echo 1;
 		}
 
+		function update_user_password(){
+			$token=$_POST['token'];
+			$password=$_POST['password'];
+			$query = $this->db->get_where('password_reset', array('token' => $token));
+			$result2= $query->result_array();
+			$email2 = $result2[0]['email'];
+			$email = $this->common->encrypt_decrypt('encrypt',$email2);
+			$datau = array(
+				'password' =>$this->common->encrypt_decrypt('encrypt',$password)
+			);
+			$this->db->where('email',$email);
+			$query=$this->db->update('user_register', $datau);
+
+			$this->db->where('token',$token);
+			$datau = array('time'=>0);
+			$query=$this->db->update('password_reset', $datau);
+			echo 1;
+		}
+
 
 		function check_email(){
 			$email=$_POST['email_id'];
@@ -195,6 +214,43 @@ class Admin_templates extends Backend_Controller {
 					}
 		}
 
+		function check_user_email(){
+			$email2=$_POST['email_id'];
+			$email = $this->common->encrypt_decrypt('encrypt',$email2);
+			$query = $this->db->get_where('user_register', array('email' => $email));
+					$result= $query->result_array();
+					if(count($result)>0){
+						//var_dump($emailcontent);
+						$datau=array('email'=>$email2, 'token'=>RAND(11111,99999), 'time'=>time());
+						$query=$this->db->insert('password_reset', $datau);
+						$this->db->order_by("id", "DESC");
+						$query = $this->db->get_where('password_reset', array('email' => $email2));
+						
+						$result2= $query->result_array();
+						$emailcontent = $this->frontend_templates_m->emaildata('reset_password');
+						$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
+						$text = $emailcontent['content_emails'][0]['user_emails_body'];
+						$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+						//var_dump($emailfrom);
+						$sitenamenew=$this->config->item('sitename');
+						
+						$activeword = array("[[USERSFIRSTNAME]]", "[[ACTIVATELINK]]", "[[SITENAMELINK]]", "[[USERNAME]]", "[[PASSWORD]]", "[[SITENAME]]");
+						$replacedword = array($usernamenew, $activelinknew, $sitelinknew, $usernamenew, $passwordnew, $sitenamenew);
+
+						$link = "<a href='".base_url()."reset-user-password.html?token=".$result2[0]['token']."'>Link</a>";
+						$textnew = str_replace('[[USER_NAME]]', $result[0]['admin_username'], $text);
+						$textnew = str_replace('[[LINK]]', $link, $textnew);
+						$subject = $subjectold;
+						$mail = $this->send_email($email2,$emailfrom,$sitenamenew,$subject,$textnew);
+						//$emailto,$emailfrom,$name,$subject,$text
+						
+
+						echo 1;
+					}else{
+						echo 0;
+					}
+		}
+
 		function reset_password(){
 			$token = $_GET['token'];
 			$query = $this->db->get_where('password_reset', array('token' => $token));
@@ -220,6 +276,9 @@ class Admin_templates extends Backend_Controller {
 		}
 			echo $timediff;
 		}
+
+		
+
 
 
 

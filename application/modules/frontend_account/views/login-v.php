@@ -31,15 +31,15 @@
                                         <label>Password</label>
                                         <input type="password" placeholder="Password" name="password" id="password">
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <div class="check-box">
                                             <input type="checkbox" id="remember_me" name="remember_me">
                                             <label for="remember_me">Remember me</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-5">
                                         <div class="forgotton-password_info">
-                                            <a href="<?php echo base_url();?>account/forgot_password.html"> Forgotten pasward?</a>
+                                            <a href="<?php echo base_url();?>account/forgot_password.html"> Forgotten Password?</a>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
