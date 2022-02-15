@@ -296,4 +296,142 @@ public function search_auction($slug=NULL)
 		$this->frontend_templates->inner($data, $this->settings());
 
 }
+
+public function email_subscription(){
+	$apiKey = "a257277c1231894c54a0303384a3b633-us14"; // from mailchimp
+$listID = "bc669844ca"; // list id from Menyu email list
+ 
+/* form variables */
+
+$email  = $_POST['email_id'];
+ 
+// check post fields for errors, such as not being filled in
+ 
+/***************************************************************
+ * Programatically add info to our email list in mailchimp
+ ***************************************************************/
+  
+// $names      = explode(' ', $name, 2); // i.e. Jim L Ross = [0] Jim [1] L Ross
+ $memberID   = md5(strtolower($email));
+ $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
+ $url        = "https://".$dataCenter.'.api.mailchimp.com/3.0/lists/'.$listID.'/members/'.$memberID; // mailchimp api endpoint
+ 
+ $json = json_encode([
+    'email_address' => $email,
+    'status' => 'subscribed',
+    'merge_fields' => [
+        'EMAIL' => $email
+        
+    ]
+ ]);
+ 
+ $ch = curl_init($url);
+ 
+ curl_setopt($ch, CURLOPT_USERPWD, 'user:'.$apiKey);
+ curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+ 
+ $cresult = curl_exec($ch);
+ $response = json_decode($cresult);
+ //print_r($response);die;
+ if($response->status != 'subscribed'){
+	$datau = array(
+		'status'=>$response->status
+	);
+	$wharray = array('email_id'=>$email);
+	$this->db->where($wharray);
+			$query=$this->db->update('manage_subscriber', $datau);
+	echo 0;
+ }else{
+	//echo 2;
+	$this->db->select('*');
+			$this->db->from('manage_subscriber');
+			$wharray = array('email_id' => $email);
+			$this->db->where($wharray);
+
+			$query = $this->db->get();
+			$result = $query->result_array();
+			if(isset($result) && count($result)> 0){
+				$datau = array(
+					'status'=>$response->status
+				);
+				$wharray = array('email_id'=>$email);
+				$this->db->where($wharray);
+						$query=$this->db->update('manage_subscriber', $datau);
+				echo 1;
+			}else{
+				$datau = array(
+					'email_id'=>$email,
+					'subscriber_id'=>$memberID,
+					'status'=>$response->status
+				);
+				$query=$this->db->insert('manage_subscriber', $datau);
+				echo 2;
+			}
+ }
+ 
+
+}
+
+public function email_unsubscription(){
+	$apiKey = "a257277c1231894c54a0303384a3b633-us14"; // from mailchimp
+$listID = "bc669844ca"; // list id from Menyu email list
+ 
+/* form variables */
+
+$email  = $_POST['email_id'];
+ 
+// check post fields for errors, such as not being filled in
+ 
+/***************************************************************
+ * Programatically add info to our email list in mailchimp
+ ***************************************************************/
+  
+// $names      = explode(' ', $name, 2); // i.e. Jim L Ross = [0] Jim [1] L Ross
+ $memberID   = md5(strtolower($email));
+ $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
+ $url        = "https://".$dataCenter.'.api.mailchimp.com/3.0/lists/'.$listID.'/members/'.$memberID; // mailchimp api endpoint
+ 
+ $json = json_encode([
+    'email_address' => $email,
+    'status' => 'unsubscribed',
+    'merge_fields' => [
+        'EMAIL' => $email
+        
+    ]
+ ]);
+ 
+ $ch = curl_init($url);
+ 
+ curl_setopt($ch, CURLOPT_USERPWD, 'user:'.$apiKey);
+ curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+ 
+ $cresult = curl_exec($ch);
+ $response = json_decode($cresult);
+ //print_r($response);die;
+ if($response->status == 'unsubscribed'){
+	
+				$datau = array(
+					'status'=>$response->status
+				);
+				$wharray = array('email_id'=>$email);
+				$this->db->where($wharray);
+						$query=$this->db->update('manage_subscriber', $datau);
+				echo 2;
+			
+ }
+ 
+
+}
+
+
 }

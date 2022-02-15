@@ -46,6 +46,16 @@ class Admin_users extends Backend_Controller {
 		
 	}
 
+	public function update_credit(){
+		$user_id = $_POST['user_id'];
+		$paid_credit = $_POST['paid_credit'];
+		$free_credit = $_POST['free_credit'];
+		$upvalue= array('paid_credit' => $paid_credit,'free_credit' => $free_credit);
+		$wharray = array('user_id'=>$user_id);
+						$this->db->where($wharray);
+						$query=$this->db->update('user_credits', $upvalue);
+	}
+
 
 	public function add_users($slug=NULL)
 	{
@@ -81,6 +91,22 @@ class Admin_users extends Backend_Controller {
 		$data['user_list'] = $this->admin_users_m->get_subscriber_list(); // module call to list user from database
 		$data['content_view']='admin_users/subscribed_users';	 // view call to display user from database
 		$this->admin_templates->inner($data);				// template call to display
+		
+	}
+
+	public function banned_users() // function call with page name
+	{
+		$user_id = $_POST['user_id'];
+		echo $status = $_POST['status'];
+		$upvalue= array('banned' => $status);
+		$wharray = array('user_id'=>$user_id);
+						$this->db->where($wharray);
+						$query=$this->db->update('user_register', $upvalue);		
+		// $this->session_check();
+	
+		//$data['user_list'] = $this->admin_users_m->get_banned_users(); // module call to list user from database
+		// $data['content_view']='admin_users/subscribed_users';	 // view call to display user from database
+		// $this->admin_templates->inner($data);				// template call to display
 		
 	}
 

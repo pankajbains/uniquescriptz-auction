@@ -34,6 +34,7 @@ $(document).ready(function () {
 					success: function (html) {
 					
 						$('#success').show().delay(2000).fadeOut();
+						$(".even").removeClass('selected');
 						
 
 					}

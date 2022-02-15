@@ -97,6 +97,12 @@ class Frontend_users_account extends Frontend_Controller {
 
 		$data['content_preference']=$this->frontend_templates_m->get_records('user_register', 'email', $_SESSION['email']);
 
+		$data['email'] = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+
+		$subscription_data = $this->db->get_where('manage_subscriber', array('email_id' => $data['email']));
+
+		$data['subscription_data'] = $subscription_data->result_array();
+
 		$this->frontend_templates->inner($data, $this->settings());
 
 	}

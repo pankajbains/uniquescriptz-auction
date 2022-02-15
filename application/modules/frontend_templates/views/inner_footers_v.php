@@ -15,7 +15,7 @@
 
 
                                 <div class="widget-short_desc">
-                                    <p>We are a team of designers and developers that create high quality HTML Template & Woocommerce, Shopify Theme.
+                                    <p><?php echo $sitesetting[0]['site_desc'];?>
                                     </p>
                                 </div>
                                 <div class="hiraola-social_link">
@@ -109,16 +109,17 @@
                                                 <p>Subscribe to our newsletters now and stay up-to-date with new collections</p>
                                             </div>
                                             <div class="newsletter-form_wrap">
-                                                <form action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletters-form validate" target="_blank" novalidate>
-                                                    <div id="mc_embed_signup_scroll">
-                                                        <div id="mc-form" class="mc-form subscribe-form">
-                                                            <input id="mc-email" class="newsletter-input" type="email" autocomplete="off" placeholder="Enter your email" />
-                                                            <button class="newsletter-btn" id="mc-submit">
+                                                <!-- <form action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletters-form validate" target="_blank" novalidate> -->
+                                                    <!-- <form id="subscribe" method="post"> -->
+                                                    <div>
+                                                        <div class="mc-form subscribe-form">
+                                                            <input id="mc-email2" value="" class="newsletter-input" type="email" autocomplete="off" placeholder="Enter your email" />
+                                                            <button onclick="email_subscribe()" class="newsletter-btn">
                                                                 <i class="ion-android-mail" aria-hidden="true"></i>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                <!-- </form> -->
                                             </div>
                                         </div>
                                     </div>
@@ -388,6 +389,8 @@
     <!-- Instafeed JS -->
     <script src="<?php echo base_url();?>assets/frontendfiles/js/plugins/jquery.elevateZoom-3.0.8.min.js"></script>
 
+    <script src="<?php echo base_url();?>assets/frontendfiles/js/vendor/sweetalert.min.js"></script>
+
     <!-- Vendor & Plugins JS (Please remove the comment from below vendor.min.js & plugins.min.js for better website load performance and remove js files from avobe) -->
     <!--
 <script src="<?php echo base_url();?>assets/frontendfiles/js/vendor/vendor.min.js"></script>
@@ -496,6 +499,7 @@
 
 		}
 	?>
+    
     <script>
     /*----------------Load Currency Products------------------------*/ 
 
@@ -530,6 +534,39 @@
 
             
         }
+
+        function email_subscribe(){
+            var email = $('#mc-email2').val();
+            if(email == ''){
+                swal("Email address cannot be empty");
+            }else{
+                $.ajax({
+
+                    type: "POST",  
+                    url: "<?php echo base_url();?>product/email_subscription",
+                    // contentType: "application/json; charset=utf-8",
+                    data: {
+                    'email_id':email
+                    },   
+                    success: function (html) {
+                    console.log(html);
+                        if(html==0){
+                            swal("Invalid Email Address");
+                        }
+                        if(html == 1){
+                            swal("Already Subscribed");	
+                        }
+                        if(html == 2){
+                            swal("You have successfully subscribed");	
+                        }
+
+                        //location.reload();
+                    }
+                    });
+            }
+        }
+
+        
     
     </script>
 </body>

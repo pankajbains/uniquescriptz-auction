@@ -21,8 +21,18 @@ class admin_users_m extends CI_Model {
 			// return NULL;
 				if ($slug === FALSE)
 				{
-						$query = $this->db->get('user_register');
+						//$query = $this->db->get('user_register');
+						//return $query->result_array();
+						//$this->db->select('auction_features.featured, auction_items.auct_id, auction_items.auction_id, auction_items.auction_name, auction_items.auction_max_bid, auction_edate, auction_etime, auction_open', 'COUNT(auction_bids.auction_id) as total_bids','bid_status',false);
+						$this->db->select('user_register.*, user_credits.paid_credit, user_credits.free_credit');
+						$this->db->from('user_register');
+						//$this->db->where('auction_items.auction_closed', '0'); 
+						$this->db->join('user_credits', 'user_register.user_id = user_credits.user_id');
+						// $this->db->join('auction_bids', 'auction_bids.auction_id = auction_items.auction_id')->group_by('auction_id');
+						$query=$this->db->get();
+					 
 						return $query->result_array();
+
 				}
 
 
@@ -37,6 +47,7 @@ class admin_users_m extends CI_Model {
 				}
 
 		}
+
 
 
 		public function add_users($slug = FALSE){			

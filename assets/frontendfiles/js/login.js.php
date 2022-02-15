@@ -54,6 +54,7 @@ $(document).ready(function () {
 						url: "login_now",  
 						data: datastring,
 						success: function (html) {
+							console.log(html);
 
 								if (html == 1) {
 
@@ -62,11 +63,16 @@ $(document).ready(function () {
 
 								} else if (html == 0) {
 
-									alert('Invalid Username or Password. Please try again.');
+									swal('Invalid Username or Password. Please try again.');
 
-								} else {
+								} else if (html == 3) {
 
-									alert('Sorry, unexpected error. Please try again later.');
+								swal('User has been banned. Please contact administrator');
+
+								}
+								else {
+
+									swal('Sorry, unexpected error. Please try again later.');
 									
 								}
 							

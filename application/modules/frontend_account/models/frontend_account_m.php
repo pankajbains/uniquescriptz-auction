@@ -378,6 +378,9 @@ class frontend_account_m extends CI_Model {
 			if($num==1){
 				
 				$userlogin = $query->result_array();
+				if($userlogin[0]['banned'] == 1){
+					return 3;
+				}
 
 				$sessiondata = array(
 

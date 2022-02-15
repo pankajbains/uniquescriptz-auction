@@ -61,11 +61,25 @@
                                             <div class="hiraola-form-inner">
 												<div class="col-md-12">
 													<div class="check-box single-input single-input-half">
-														<input type="checkbox" id="newsletters" name="newsletters" <?php echo ($content_preference[0]['newsletters']==1)?'checked':''?>>
-														<label for="newsletters">Subscribe to our newsletter. </label>
+                                                        <?php
+                                                        //print_r($subscription_data);
+                                                        ?>
+                                                        <input type="hidden" id="mc-email2" value="<?php echo $email; ?>">
+                                                        <?php
+                                                            if(isset($subscription_data) && $subscription_data[0]['status'] == 'subscribed'){   
+                                                        ?>
+														<input checked type="checkbox" id="newsletters" name="newsletters" >
+														<?php
+                                                            }else{    
+                                                        ?>
+                                                            <input type="checkbox" id="newsletters" name="newsletters" >
+                                                        <?php
+                                                            }
+                                                        ?>                
+                                                        <label for="newsletters">Subscribe to our newsletter. </label>
 													</div>
 												</div>
-
+                                          
 												<div class="col-md-12">
 													<div class="check-box single-input single-input-half">
 														<input type="checkbox" id="activitystatus" name="activitystatus" <?php echo ($content_preference[0]['activitystatus']==1)?'checked':''?>>
@@ -75,7 +89,7 @@
 
                                                 
                                                 <div class="single-input pt-3">
-                                                    <button class="hiraola-btn hiraola-btn_dark" type="submit"><span>Update Settings</span></button>
+                                                    <button class="hiraola-btn hiraola-btn_dark" onclick="update_newsletter_status()" type="submit"><span>Update Settings</span></button>
                                                 </div>
                                             </div>
                                         </form>
@@ -89,4 +103,78 @@
             </div>
         </div>
         <!-- Hiraola's Page Area  End Here -->
+
+        <script>
+            function update_newsletter_status(){
+             var ischeck =  $('#newsletters').is(":checked")
+                if(ischeck){
+                    console.log('checkbox is checked');
+                    email_subscribe2();
+                }else{
+                    console.log('checkbox is not checked');
+                    email_unsubscribe();
+                }
+            }
+            function email_subscribe2(){
+            var email = $('#mc-email2').val();
+            if(email == ''){
+                //swal("Email address cannot be empty");
+            }else{
+                $.ajax({
+
+                    type: "POST",  
+                    url: "<?php echo base_url();?>product/email_subscription",
+                    // contentType: "application/json; charset=utf-8",
+                    data: {
+                    'email_id':email
+                    },   
+                    success: function (html) {
+                    console.log(html);
+                        if(html==0){
+                            //swal("Invalid Email Address");
+                        }
+                        if(html == 1){
+                            //swal("Already Subscribed");	
+                        }
+                        if(html == 2){
+                            //swal("You have successfully subscribed");	
+                        }
+
+                        //location.reload();
+                    }
+                    });
+            }
+        }
+
+        function email_unsubscribe(){
+            var email = $('#mc-email2').val();
+            if(email == ''){
+                //swal("Email address cannot be empty");
+            }else{
+                $.ajax({
+
+                    type: "POST",  
+                    url: "<?php echo base_url();?>product/email_unsubscription",
+                    // contentType: "application/json; charset=utf-8",
+                    data: {
+                    'email_id':email
+                    },   
+                    success: function (html) {
+                    console.log(html);
+                        if(html==0){
+                            //swal("Invalid Email Address");
+                        }
+                        if(html == 1){
+                            //swal("Already Subscribed");	
+                        }
+                        if(html == 2){
+                            //swal("You have successfully subscribed");	
+                        }
+
+                        //location.reload();
+                    }
+                    });
+            }
+        }
+        </script>
 
