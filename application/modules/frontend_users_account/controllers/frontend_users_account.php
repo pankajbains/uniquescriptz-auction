@@ -116,8 +116,8 @@ class Frontend_users_account extends Frontend_Controller {
 
 	public function refer_now($slug=NULL){
 
-			//var_dump($_POST);
-			$forgot=$this->frontend_account_m->forgot_now($_POST); 
+			//var_dump($_POST); die;
+			//$forgot=$this->frontend_account_m->forgot_now($_POST); 
 
 			$emailcontent = $this->frontend_templates_m->emaildata('referral_invite');
 			//var_dump($emailcontent);

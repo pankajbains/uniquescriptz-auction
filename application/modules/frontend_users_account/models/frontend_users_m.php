@@ -97,7 +97,7 @@ class frontend_users_m extends CI_Model {
 				$wharray_add_data = array('user_id' => $u_data[0]['user_id']);
 				$this->db->where($wharray_add_data);
 				$query_add_data = $this->db->get();
-				//print_r($this->db->last_query());
+				print_r($this->db->last_query());
 				$num_add_data = $query_add_data->num_rows();
 				if($num_add_data > 0){
 					//update data in usere address table

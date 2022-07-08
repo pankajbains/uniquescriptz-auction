@@ -19,6 +19,7 @@
    header ($expire);
 
 ?>
+
 $(document).ready(function () {
 
 
@@ -36,7 +37,7 @@ $(document).ready(function () {
 						success: function (html) {
 
 							if (html==1){				
-
+									console.log('hello');
 								window.scrollTo(0, 500);
 								$('#successrefer').show().delay(2000).fadeOut();
 								$('#account_form').trigger("reset");
