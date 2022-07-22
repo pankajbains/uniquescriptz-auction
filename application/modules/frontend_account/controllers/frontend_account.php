@@ -189,7 +189,7 @@ class Frontend_account extends Frontend_Controller {
 		$emailcontent = $this->frontend_templates_m->emaildata('forgot_password');
 		//var_dump($emailcontent);
 		$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
-		//var_dump($emailfrom);
+		//print_r($emailfrom); die;
 		$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
 		$text = $emailcontent['content_emails'][0]['user_emails_body'];
 
@@ -210,7 +210,8 @@ class Frontend_account extends Frontend_Controller {
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
 
-			$mail = '1'.$forgot;// $this->send_email($_POST['email'],$emailfrom,$sitenamenew,$subject,$textnew);
+			$mail = '1'.$forgot;
+			$this->send_email($_POST['email'],$emailfrom,$sitenamenew,$subject,$textnew);
 			//$emailto,$emailfrom,$name,$subject,$text
 			echo $mail;
 
@@ -227,12 +228,12 @@ class Frontend_account extends Frontend_Controller {
 
 
 	public function gift_now($data=NULL){
-	
+		
 		$this->session_check();
-		//var_dump($_POST);
+		//var_dump($_POST);die;
 
 		$recid = $this->frontend_account_m->gift_now($_POST);
-
+		$_SESSION['gift_userName'] = $_POST['first_name'].' '.$_POST['last_name'];
 		header("location:coupon_pay/".$recid."/".$_POST['couponid'].'.html');
 
 		//redirect('account/coupon_pay/'.$recid.'/'.$_POST['couponid']);
@@ -263,7 +264,8 @@ class Frontend_account extends Frontend_Controller {
 		$this->session_check();
 		if($this->uri->segment(3)!=''){
 			
-			$data['content_record']=$this->frontend_templates_m->get_records('auct','id',$this->uri->segment(3));
+			$data['content_record']=$this->frontend_templates_m->get_records('user_bidcredit_rate','id',$this->uri->segment(3));
+			//print_r($data['content_record']); die;
 			$data['content_gateway']=$this->frontend_templates_m->get_records('manage_paymentgateway','status','1');
 
 			$data['content_view']='frontend_account/gateway-v';

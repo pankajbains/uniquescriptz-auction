@@ -208,7 +208,8 @@ class Frontend_auctions extends Frontend_Controller {
 			
 			$emailcontent = $this->frontend_templates_m->emaildata($placebid[0]); 
 
-			$emailfrom = $emailcontent['emailsetting'][0]['email_auto']; 
+			$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+			$replyto = $emailcontent['emailsetting'][0]['email_support'];
 			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
 			$text = $emailcontent['content_emails'][0]['user_emails_body'];
 
@@ -229,7 +230,7 @@ class Frontend_auctions extends Frontend_Controller {
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
 			
-			$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+			$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
 			// $mail = 1;
 			 
 
@@ -298,8 +299,8 @@ public function search_auction($slug=NULL)
 }
 
 public function email_subscription(){
-	$apiKey = "a257277c1231894c54a0303384a3b633-us14"; // from mailchimp
-$listID = "bc669844ca"; // list id from Menyu email list
+	$apiKey = "df00eb3898803337e2897e6c5498f7e8-us10"; // from mailchimp
+$listID = "cad6c993c2"; // list id from Menyu email list
  
 /* form variables */
 
@@ -378,8 +379,8 @@ $email  = $_POST['email_id'];
 }
 
 public function email_unsubscription(){
-	$apiKey = "a257277c1231894c54a0303384a3b633-us14"; // from mailchimp
-$listID = "bc669844ca"; // list id from Menyu email list
+	$apiKey = "df00eb3898803337e2897e6c5498f7e8-us10"; // from mailchimp
+$listID = "cad6c993c2"; // list id from Menyu email list
  
 /* form variables */
 

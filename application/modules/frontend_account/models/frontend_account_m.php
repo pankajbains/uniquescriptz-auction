@@ -92,6 +92,8 @@ class frontend_account_m extends CI_Model {
 						'txn_date'=>date('y-m-d')
 					);
 
+					print_r($coupon_datas);
+
 					$wharray = array('id' => $data['bidcoupon_id']);
 					$this->db->where($wharray);
 					$result = $this->db->update('user_bidcoupon_records', $coupon_datas);
@@ -458,13 +460,13 @@ class frontend_account_m extends CI_Model {
 		}
 
 		public function buy_now($data){
-
+			$couponcode = substr($data['creditcoupon'], 0,9);
 			$this->db->select('*');
 			$this->db->from('user_bidcoupon_records');
-			$wharray = array('email' => $_SESSION['email'], 'coupon_code' => $data['creditcoupon'], 'coupon_used' => 0, 'paid' => 1);
+			$wharray = array('coupon_code' => $couponcode, 'coupon_used' => 0, 'paid' => 1);
 			$this->db->where($wharray);
 			$query = $this->db->get();
-			//print_r($this->db->last_query());
+			//print_r($this->db->last_query());die;
 			$num = $query->num_rows();
 			
 			if($num==1){
@@ -477,8 +479,24 @@ class frontend_account_m extends CI_Model {
 				
 				$validity_expires = date('Y-m-d', strtotime("+".$bidcredits[0]['coupon_validity']." months", strtotime($bidcredits[0]['txn_date'])));
 				
-				if((date('Y-m-d')>($bidcredits[0]['txn_date'])) && (date('Y-m-d')<$validity_expires)){
-				
+				if((date('Y-m-d')>=($bidcredits[0]['txn_date'])) && (date('Y-m-d')<$validity_expires)){
+					//Gets user phone data
+					$this->db->select('*');
+					$this->db->from('user_register');
+					$user_wharray = array('email' => $_SESSION['email']);
+					$this->db->where($user_wharray);
+					$user_query = $this->db->get();
+					$giftto_user_data = $user_query->result_array();
+					//Gets user phone data end
+					//print_r($giftto_user_data); die;
+					if(isset($giftto_user_data['mobile']) && $giftto_user_data['mobile'] == 0){
+						echo "Your Mobile Number is not registered, Please register Your Mobile Number first ";
+					}else{
+						$mobile_lastdidgit = substr($giftto_user_data[0]['mobile'], -4);
+						$cupon_lastdigit = substr($data['creditcoupon'], -4);
+						if($mobile_lastdidgit != $cupon_lastdigit){
+							echo "Last 4 digit not matched with Your registered phone number";
+						}else{
 					$this->db->select('paid_credit');
 					$this->db->from('user_credits');
 					$this->db->where('user_id', $_SESSION['user_id']);
@@ -498,14 +516,17 @@ class frontend_account_m extends CI_Model {
 							'coupon_used' => 1
 						);
 
-						$wharray = array('email' => $_SESSION['email'], 'coupon_code' => $data['creditcoupon']);
+						$wharray = array( 'coupon_code' => $couponcode);
 						$this->db->where($wharray);
 						$this->db->update('user_bidcoupon_records', $datacoupon);
 						
-						echo '1';
+						echo 1;
 					}
 
-				}else{
+				}
+			}
+				
+			}else{
 				
 					echo "Copoun Code Expired or Not Valid";
 				}
@@ -516,13 +537,14 @@ class frontend_account_m extends CI_Model {
 				echo "Copoun Code Expired or Not Valid";
 
 			}
+	
 
 		}
 
 
 		public function gift_now($data){
 
-			//print_r($data);
+			//print_r($data); die;
 			
 			$this->db->select('*');
 			$this->db->from('user_bidcoupon_rate');
@@ -534,6 +556,15 @@ class frontend_account_m extends CI_Model {
 			$num = $query->num_rows();
 			$coupon_code = $this->common->couponcode();
 
+			//Gets user phone data
+			// $this->db->select('mobile');
+			// $this->db->from('user_register');
+			// $user_wharray = array('email' => $this->common->encrypt_decrypt('encrypt',$data['email']));
+			// $this->db->where($user_wharray);
+			// $user_query = $this->db->get();
+			// $giftto_user_data = $user_query->result_array();
+			//Gets user phone data end
+
 			$datauser = array(
 
 				'first_name' => $data['first_name'],
@@ -544,10 +575,10 @@ class frontend_account_m extends CI_Model {
 				'coupon_validity' => $bidcoupon[0]['coupon_validity'],
 				'coupon_value' => $bidcoupon[0]['coupon_rate'],
 				'coupon_credit' => $bidcoupon[0]['coupon_credit'],
-				'coupon_code' => $coupon_code
+				'coupon_code' => $coupon_code//.substr($giftto_user_data[0]['mobile'], -4) //concatenates last 4 digit of user phone to the coupon code
 
 			);
-
+			//var_dump ('mobile', $coupon_code.substr($giftto_user_data[0]['mobile'], -4) ,'data', $giftto_user_data); exit;
 			$this->db->insert('user_bidcoupon_records', $datauser);
 			$id = $this->db->insert_id();
 

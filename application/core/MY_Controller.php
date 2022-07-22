@@ -74,7 +74,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
 		}
 
-		public function send_email($emailto,$emailfrom,$name,$subject,$text){
+		public function send_email($emailto,$emailfrom,$name,$subject,$text,$replyto=null){
 					
 					$header="MIME-Version: 1.0\r\n";
 					$header.= "Content-type: text/html; charset=iso-8859-1\r\n";
@@ -84,8 +84,11 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 					//return $mail;
 
 					$this->load->library('email'); // Note: no $config param needed
-					$this->email->from($emailfrom);
+					$this->email->from($emailfrom, $emailfrom);
 					$this->email->to($emailto);
+					if($replyto != null){
+						$this->email->reply_to($replyto, 'email_support');
+					}
 					$this->email->subject($subject);
 					$this->email->message($text);
 				
@@ -108,11 +111,13 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 			$text = $emailcontent['content_emails'][0]['user_emails_body'];
 	
 			$reciverusername = ucfirst($bidcoupons[0]['name']);
+			$user_name = $_SESSION['gift_userName'];
 			$message = $bidcoupons[0]['message'];
 			$couponcode = $bidcoupons[0]['coupon_code'];
 			$expiredate = $bidcoupons[0]['coupon_validity'].'Months';
-
-			$emailfrom = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
+			//print_r($emailcontent);die;
+			$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+			$replyto = $emailcontent['emailsetting'][0]['email_support'];
 			$emailto = $this->common->encrypt_decrypt('decrypt', $bidcoupons[0]['email']);
 
 			 
@@ -120,12 +125,15 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
 			$sitenamenew= $this->config->item('sitename');
 			
-			$activeword = array("[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
-			$replacedword = array($reciverusername, $sendername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
-	
+			$activeword = array("[[current_date]]","[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
+			//print_r($activeword);
+			$replacedword = array(date('Y-m-d'),$user_name, $reciverusername, $sitenamenew, $message, $couponcode,$expiredate, $sitelinknew);
+			//print_r($replacedword); die;
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+			$subject = str_replace('[[sender]]', $reciverusername, $subject);
+			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
+			//print_r($subject);die;
 
 
 		}
@@ -143,6 +151,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 			$free = $content_record[0]['free_credit'] ;
 			
 			$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+			$replyto = $emailcontent['emailsetting'][0]['email_support'];
 			$emailto = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
 			 
 			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
@@ -154,7 +163,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 	
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
-			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew);
+			$mail = $this->send_email($emailto,$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
 
 		
 		

@@ -38,6 +38,7 @@ $(document).ready(function () {
 							if (html==1){				
 
 								window.scrollTo(0, 700);
+								$('#msg').html("<strong>Well done!</strong> Records are updated successfully!")
 								$('#success').show().delay(2000).fadeOut();
 								$('#buy_form').trigger("reset");
 

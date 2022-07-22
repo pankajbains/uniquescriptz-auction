@@ -117,7 +117,7 @@ class Admin_templates extends Backend_Controller {
 			return $ip;
 		}
 
-		public function send_email($emailto,$emailfrom,$name,$subject,$text, $domdpf=null){
+		public function send_email($emailto,$emailfrom,$name,$subject,$text,$domdpf=null,$replyto=null){
 
 			$header="MIME-Version: 1.0\r\n";
 			$header.= "Content-type: text/html; charset=iso-8859-1\r\n";
@@ -127,8 +127,11 @@ class Admin_templates extends Backend_Controller {
 			//return $mail;
 
 			$this->CI->load->library('email'); // Note: no $config param needed
-			$this->CI->email->from($emailfrom);
+			$this->CI->email->from($emailfrom, $emailfrom);
 			$this->CI->email->to($emailto);
+			if($replyto != null){
+				$this->CI->email->reply_to($replyto, 'email_support');
+			}
 			$this->CI->email->subject($subject);
 			$this->CI->email->message($text); 
 			// $this->CI->email->attach($domdpf); 
@@ -194,6 +197,7 @@ class Admin_templates extends Backend_Controller {
 						$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
 						$text = $emailcontent['content_emails'][0]['user_emails_body'];
 						$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+						$replyto = $emailcontent['emailsetting'][0]['email_support'];
 						//var_dump($emailfrom);
 						$sitenamenew=$this->config->item('sitename');
 						
@@ -204,7 +208,7 @@ class Admin_templates extends Backend_Controller {
 						$textnew = str_replace('[[USER_NAME]]', $result[0]['admin_username'], $text);
 						$textnew = str_replace('[[LINK]]', $link, $textnew);
 						$subject = $subjectold;
-						$mail = $this->send_email($email,$emailfrom,$sitenamenew,$subject,$textnew);
+						$mail = $this->send_email($email,$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
 						//$emailto,$emailfrom,$name,$subject,$text
 						
 
@@ -231,6 +235,7 @@ class Admin_templates extends Backend_Controller {
 						$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
 						$text = $emailcontent['content_emails'][0]['user_emails_body'];
 						$emailfrom = $emailcontent['emailsetting'][0]['email_auto'];
+						$replyto = $emailcontent['emailsetting'][0]['email_support'];
 						//var_dump($emailfrom);
 						$sitenamenew=$this->config->item('sitename');
 						
@@ -241,7 +246,7 @@ class Admin_templates extends Backend_Controller {
 						$textnew = str_replace('[[USER_NAME]]', $result[0]['admin_username'], $text);
 						$textnew = str_replace('[[LINK]]', $link, $textnew);
 						$subject = $subjectold;
-						$mail = $this->send_email($email2,$emailfrom,$sitenamenew,$subject,$textnew);
+						$mail = $this->send_email($email2,$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
 						//$emailto,$emailfrom,$name,$subject,$text
 						
 

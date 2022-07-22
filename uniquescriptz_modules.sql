@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2021 at 05:37 AM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Generation Time: Jul 08, 2022 at 06:30 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -66,7 +65,7 @@ CREATE TABLE `admin_config_app` (
 --
 
 INSERT INTO `admin_config_app` (`id`, `config_type`, `site_invoice`, `site_currency`, `site_timezone`, `site_title`, `site_name`, `site_desc`, `site_header_logo`, `site_sticky_header_logo`, `site_favicon`, `site_analytics`, `email_support`, `email_auto`, `email_sales`, `site_address`, `site_phone`, `auction_type`) VALUES
-(14, 'site_settings', NULL, NULL, 'Australia/Sydney', 'UniqueScriptz-Auction', 'UniqueScriptz-Auctions', 'This is site description', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'UA-90619444-1', NULL, NULL, NULL, 'EK Group, Pioneer Drive, Ontario, Canada', '+91 9891944313', 'lowest'),
+(14, 'site_settings', NULL, NULL, 'Australia/Sydney', 'UniqueScriptz-Auction', 'UniqueScriptz-Auctions', 'This is Demo site description of Unique Script Auctions.', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'UA-90619444-1', NULL, NULL, NULL, 'EK Group, Pioneer Drive, Ontario, Canada', '+91 9891944314', 'lowest'),
 (15, 'email_settings', NULL, NULL, '', '', '', '', NULL, NULL, NULL, NULL, 'support@uniquescriptz.com', 'auto@uniquescriptz.com', 'sales@uniquescriptz.com', NULL, NULL, '');
 
 -- --------------------------------------------------------
@@ -146,7 +145,11 @@ CREATE TABLE `admin_users` (
 
 INSERT INTO `admin_users` (`id`, `config_type`, `admin_username`, `admin_password`, `admin_cpassword`, `admin_email`, `admin_role`, `admin_access`, `admin_permission`, `admin_status`) VALUES
 (1, 'masteradmin', 'admin ', 'e06fd6506e231a445cd642d45944b6d6', 'e06fd6506e231a445cd642d45944b6d6', 'admin@uniquescriptz.com', 'masteradmin', '[\"manage_content\",\"manage_users\",\"manage_emails\",\"manage_categories\",\"manage_auctions\",\"manage_credits\",\"manage_payments\",\"manage_coupons\",\"manage_wallets\",\"manage_affiliates\"]', '[\"read\",\"write\",\"create\",\"delete\"]', 1),
-(2, 'admin', 'kishor ', 'S3ZVYTVNQnNaTGNScUo5d0Q1SUFzUT09', 'S3ZVYTVNQnNaTGNScUo5d0Q1SUFzUT09', 'kishor4563@gmail.com', 'admin', '[\"manage_content\",\"manage_users\",\"manage_categories\"]', '[\"read\",\"write\"]', 1);
+(2, 'admin', 'kishor ', 'S3ZVYTVNQnNaTGNScUo5d0Q1SUFzUT09', 'S3ZVYTVNQnNaTGNScUo5d0Q1SUFzUT09', 'kishor4563@gmail.com', 'admin', '[\"manage_content\",\"manage_users\",\"manage_categories\"]', '[\"read\",\"write\"]', 1),
+(3, 'admin', 'shoaib ', '64b203a3d29b21a37c5c6298ae9790cb', '64b203a3d29b21a37c5c6298ae9790cb', 'shoaib.kipm@gmail.com', 'admin', '[\"manage_content\",\"manage_users\",\"manage_categories\"]', '[\"read\",\"write\"]', 1),
+(4, 'admin', 'Mohd Shoaib', 'djBmalpmQzZUR3MvdGVBbUYrcTdDdz09', 'djBmalpmQzZUR3MvdGVBbUYrcTdDdz09', 'ashraf@gmail.com', 'admin', '[\"manage_content\",\"manage_users\",\"manage_emails\",\"manage_categories\",\"manage_auctions\",\"manage_credits\",\"manage_payments\",\"manage_coupons\",\"manage_wallets\",\"manage_affiliates\"]', '[\"read\",\"write\",\"create\",\"delete\"]', 1),
+(5, 'role', 'zia n', 'e10adc3949ba59abbe56e057f20f883e', 'e10adc3949ba59abbe56e057f20f883e', 'n@gmail.com', 'role', '[\"manage_content\",\"manage_users\",\"manage_emails\",\"manage_auctions\"]', '[\"read\",\"write\",\"create\"]', 1),
+(6, 'staff', 'taugd', 'e10adc3949ba59abbe56e057f20f883e', 'e10adc3949ba59abbe56e057f20f883e', 'n@gmail.com', 'staff', '[\"manage_content\",\"manage_users\",\"manage_emails\",\"manage_categories\",\"manage_auctions\",\"manage_credits\",\"manage_payments\",\"manage_coupons\",\"manage_wallets\",\"manage_affiliates\"]', '[\"read\",\"write\",\"create\",\"delete\"]', 1);
 
 -- --------------------------------------------------------
 
@@ -171,18 +174,96 @@ CREATE TABLE `auction_bids` (
 --
 
 INSERT INTO `auction_bids` (`bid_id`, `user_id`, `auction_id`, `bid_status`, `bid_price`, `bid_credit`, `bid_date`, `mbrmail`, `hide`) VALUES
-(1, 'UNI9-2021', 'UNI4-2021', 0, '6.43', 2, '2021-10-03 15:43:23', 0, 0),
-(2, 'UNI9-2021', 'UNI4-2021', 0, '4.43', 2, '2021-10-03 15:43:35', 0, 0),
-(3, 'UNI9-2021', 'UNI18-2021', 0, '5.32', 2, '2021-10-03 17:07:14', 0, 0),
-(4, 'UNI4-2021', 'UNI4-2021', 1, '5.12', 2, '2021-10-03 17:13:36', 0, 0),
-(5, 'UNI4-2021', 'UNI4-2021', 0, '2.01', 2, '2021-10-03 17:15:19', 0, 0),
-(6, 'UNI4-2021', 'UNI4-2021', 0, '2.00', 2, '2021-10-03 17:15:34', 0, 0),
-(7, 'UNI4-2021', 'UNI18-2021', 1, '7.69', 2, '2021-10-03 17:18:08', 0, 0),
-(8, 'UNI9-2021', 'UNI18-2021', 0, '5.31', 2, '2021-10-03 17:18:16', 0, 0),
-(9, 'UNI9-2021', 'UNI18-2021', 0, '3.98', 2, '2021-10-03 17:19:12', 0, 0),
-(10, 'UNI9-2021', 'UNI18-2021', 1, '6.09', 2, '2021-10-03 17:19:26', 0, 0),
-(11, 'UNI9-2021', 'UNI18-2021', 1, '6.34', 2, '2021-10-03 17:19:47', 0, 0),
-(12, 'UNI4-2021', 'UNI18-2021', 1, '5.70', 2, '2021-10-03 17:20:15', 0, 0);
+(1, 'UNI13-2021', 'UNI1-2021', 1, '2.50', 1, '2021-12-11 21:44:31', 0, 0),
+(2, 'UNI13-2021', 'UNI1-2021', 2, '2.35', 1, '2021-12-11 21:44:50', 0, 0),
+(3, 'UNI11-2021', 'UNI1-2021', 2, '2.35', 1, '2021-12-11 21:45:39', 0, 0),
+(4, 'UNI11-2021', 'UNI1-2021', 2, '2.20', 1, '2021-12-11 21:45:51', 0, 0),
+(5, 'UNI13-2021', 'UNI1-2021', 2, '2.20', 1, '2021-12-11 21:47:39', 0, 0),
+(6, 'UNI13-2021', 'UNI1-2021', 1, '2.05', 1, '2021-12-11 21:47:50', 0, 0),
+(7, 'UNI11-2021', 'UNI1-2021', 1, '2.01', 1, '2021-12-11 21:48:37', 0, 0),
+(8, 'UNI13-2021', 'UNI1-2021', 0, '1.90', 1, '2021-12-11 21:50:18', 0, 0),
+(9, 'UNI11-2021', 'UNI2-2021', 0, '2.32', 1, '2021-12-17 09:33:53', 0, 0),
+(10, 'UNI11-2021', 'UNI2-2021', 1, '6.35', 1, '2021-12-17 09:44:38', 0, 0),
+(11, 'UNI11-2021', 'UNI2-2021', 1, '2.85', 1, '2021-12-17 18:09:40', 0, 0),
+(12, 'UNI11-2021', 'UNI2-2021', 1, '6.88', 1, '2021-12-17 18:10:54', 0, 0),
+(13, 'UNI11-2021', 'UNI2-2021', 1, '7.86', 1, '2021-12-17 18:24:01', 0, 0),
+(14, 'UNI11-2021', 'UNI2-2021', 1, '7.88', 1, '2021-12-17 18:24:30', 0, 0),
+(15, 'UNI11-2021', 'UNI2-2021', 1, '5.05', 1, '2021-12-17 18:26:41', 0, 0),
+(16, 'UNI11-2021', 'UNI2-2021', 1, '5.10', 1, '2021-12-17 18:26:57', 0, 0),
+(17, 'UNI11-2021', 'UNI2-2021', 1, '5.15', 1, '2021-12-17 18:30:33', 0, 0),
+(18, 'UNI11-2021', 'UNI2-2021', 1, '5.20', 1, '2021-12-17 18:32:30', 0, 0),
+(19, 'UNI11-2021', 'UNI2-2021', 1, '5.21', 1, '2021-12-17 18:33:14', 0, 0),
+(20, 'UNI11-2021', 'UNI2-2021', 1, '5.22', 1, '2021-12-17 18:34:50', 0, 0),
+(21, 'UNI11-2021', 'UNI2-2021', 1, '5.35', 1, '2021-12-17 18:39:44', 0, 0),
+(22, 'UNI11-2021', 'UNI2-2021', 1, '5.37', 1, '2021-12-17 18:41:02', 0, 0),
+(23, 'UNI11-2021', 'UNI2-2021', 1, '5.86', 1, '2021-12-17 18:48:26', 0, 0),
+(24, 'UNI11-2021', 'UNI2-2021', 1, '10.00', 1, '2021-12-17 18:53:21', 0, 0),
+(25, 'UNI11-2021', 'UNI5-2021', 1, '2.99', 1, '2021-12-17 21:28:04', 0, 0),
+(26, 'UNI11-2021', 'UNI2-2021', 1, '5.87', 1, '2021-12-21 17:01:21', 0, 0),
+(27, 'UNI11-2021', 'UNI5-2021', 0, '2.10', 1, '2021-12-21 17:03:17', 0, 0),
+(28, 'UNI11-2021', 'UNI5-2021', 1, '5.60', 1, '2021-12-21 17:28:31', 0, 0),
+(29, 'UNI11-2021', 'UNI5-2021', 1, '6.10', 1, '2021-12-21 17:37:12', 0, 0),
+(30, 'UNI11-2021', 'UNI5-2021', 1, '6.05', 1, '2021-12-21 17:38:30', 0, 0),
+(31, 'UNI11-2021', 'UNI5-2021', 1, '6.02', 1, '2021-12-21 17:41:03', 0, 0),
+(32, 'UNI11-2021', 'UNI5-2021', 1, '6.01', 1, '2021-12-21 17:43:09', 0, 0),
+(33, 'UNI11-2021', 'UNI5-2021', 1, '6.15', 1, '2021-12-21 17:50:13', 0, 0),
+(34, 'UNI11-2021', 'UNI5-2021', 1, '6.14', 1, '2021-12-21 17:51:27', 0, 0),
+(35, 'UNI11-2021', 'UNI5-2021', 1, '6.12', 1, '2021-12-21 17:53:29', 0, 0),
+(36, 'UNI11-2021', 'UNI5-2021', 2, '10.00', 1, '2021-12-21 17:58:53', 0, 0),
+(37, 'UNI13-2021', 'UNI5-2021', 2, '10.00', 1, '2021-12-21 18:01:14', 0, 0),
+(38, 'UNI11-2021', 'UNI5-2021', 1, '15.00', 1, '2021-12-21 19:33:13', 0, 0),
+(39, 'UNI11-2021', 'UNI5-2021', 1, '15.01', 1, '2021-12-21 19:34:28', 0, 0),
+(40, 'UNI11-2021', 'UNI5-2021', 1, '15.02', 1, '2021-12-21 19:35:50', 0, 0),
+(41, 'UNI11-2021', 'UNI5-2021', 1, '15.03', 1, '2021-12-21 19:36:36', 0, 0),
+(42, 'UNI11-2021', 'UNI5-2021', 1, '15.85', 1, '2021-12-21 19:46:28', 0, 0),
+(43, 'UNI11-2021', 'UNI5-2021', 1, '15.92', 1, '2021-12-21 19:50:13', 0, 0),
+(44, 'UNI11-2021', 'UNI5-2021', 1, '15.96', 1, '2021-12-21 19:52:55', 0, 0),
+(45, 'UNI11-2021', 'UNI5-2021', 1, '16.00', 1, '2021-12-21 19:54:19', 0, 0),
+(46, 'UNI11-2021', 'UNI5-2021', 1, '16.01', 1, '2021-12-21 19:55:12', 0, 0),
+(47, 'UNI11-2021', 'UNI5-2021', 1, '16.05', 1, '2021-12-21 19:58:54', 0, 0),
+(48, 'UNI11-2021', 'UNI5-2021', 1, '6.03', 1, '2021-12-21 20:01:06', 0, 0),
+(49, 'UNI11-2021', 'UNI5-2021', 2, '16.08', 1, '2021-12-21 20:03:00', 0, 0),
+(50, 'UNI11-2021', 'UNI5-2021', 1, '16.50', 1, '2021-12-21 20:06:06', 0, 0),
+(51, 'UNI11-2021', 'UNI5-2021', 1, '16.89', 1, '2021-12-21 20:13:29', 0, 0),
+(52, 'UNI11-2021', 'UNI5-2021', 1, '16.90', 1, '2021-12-21 20:16:13', 0, 0),
+(53, 'UNI13-2021', 'UNI5-2021', 1, '15.09', 1, '2021-12-21 20:19:14', 0, 0),
+(54, 'UNI13-2021', 'UNI5-2021', 1, '16.10', 1, '2021-12-21 20:20:51', 0, 0),
+(55, 'UNI13-2021', 'UNI5-2021', 2, '16.08', 1, '2021-12-21 20:21:50', 0, 0),
+(56, 'UNI13-2021', 'UNI5-2021', 1, '17.00', 1, '2021-12-21 20:23:06', 0, 0),
+(57, 'UNI13-2021', 'UNI5-2021', 1, '17.50', 1, '2021-12-21 20:24:45', 0, 0),
+(58, 'UNI13-2021', 'UNI5-2021', 1, '18.09', 1, '2021-12-21 20:37:53', 0, 0),
+(59, 'UNI13-2021', 'UNI5-2021', 1, '18.70', 1, '2021-12-21 20:38:38', 0, 0),
+(60, 'UNI13-2021', 'UNI5-2021', 1, '18.02', 1, '2021-12-21 20:39:44', 0, 0),
+(61, 'UNI13-2021', 'UNI5-2021', 1, '7.54', 1, '2021-12-21 20:42:34', 0, 0),
+(62, 'UNI13-2021', 'UNI5-2021', 1, '20.65', 1, '2021-12-21 20:44:16', 0, 0),
+(63, 'UNI13-2021', 'UNI5-2021', 1, '6.89', 1, '2021-12-21 20:49:25', 0, 0),
+(64, 'UNI13-2021', 'UNI5-2021', 1, '6.09', 1, '2021-12-21 20:50:31', 0, 0),
+(65, 'UNI13-2021', 'UNI5-2021', 1, '7.86', 1, '2021-12-21 20:56:04', 0, 0),
+(66, 'UNI13-2021', 'UNI5-2021', 1, '20.76', 1, '2021-12-21 20:57:05', 0, 0),
+(67, 'UNI13-2021', 'UNI5-2021', 1, '50.65', 1, '2021-12-21 20:57:26', 0, 0),
+(68, 'UNI13-2021', 'UNI5-2021', 1, '30.97', 1, '2021-12-21 20:58:41', 0, 0),
+(69, 'UNI11-2021', 'UNI6-2021', 0, '1.00', 1, '2021-12-31 09:27:51', 0, 0),
+(70, 'UNI11-2021', 'UNI6-2021', 1, '1.01', 1, '2021-12-31 09:40:26', 0, 0),
+(71, 'UNI11-2021', 'UNI6-2021', 1, '1.58', 1, '2021-12-31 09:42:50', 0, 0),
+(72, 'UNI11-2021', 'UNI6-2021', 1, '1.02', 1, '2021-12-31 10:10:21', 0, 0),
+(73, 'UNI11-2021', 'UNI7-2021', 0, '1.01', 1, '2021-12-31 10:56:01', 0, 0),
+(74, 'UNI11-2021', 'UNI8-2022', 1, '2.50', 1, '2021-12-31 23:19:30', 0, 0),
+(75, 'UNI11-2021', 'UNI8-2022', 0, '1.10', 1, '2021-12-31 23:20:32', 0, 0),
+(76, 'UNI11-2021', 'UNI9-2022', 1, '1.10', 1, '2022-01-03 10:34:15', 0, 0),
+(77, 'UNI11-2021', 'UNI9-2022', 1, '1.20', 1, '2022-01-03 10:34:31', 0, 0),
+(78, 'UNI11-2021', 'UNI9-2022', 1, '1.05', 1, '2022-01-03 10:34:44', 0, 0),
+(79, 'UNI11-2021', 'UNI9-2022', 1, '1.06', 1, '2022-01-03 10:34:58', 0, 0),
+(80, 'UNI11-2021', 'UNI9-2022', 1, '1.04', 1, '2022-01-03 10:35:08', 0, 0),
+(81, 'UNI11-2021', 'UNI9-2022', 0, '1.03', 1, '2022-01-03 10:35:22', 0, 0),
+(82, 'UNI11-2021', 'UNI9-2022', 1, '1.30', 1, '2022-01-03 10:35:54', 0, 0),
+(83, 'UNI11-2021', 'UNI9-2022', 1, '1.50', 1, '2022-01-03 10:37:57', 0, 0),
+(84, 'UNI11-2021', 'UNI10-2022', 0, '1.50', 1, '2022-01-03 20:49:15', 0, 0),
+(85, 'UNI11-2021', 'UNI10-2022', 1, '1.60', 1, '2022-01-03 21:04:18', 0, 0),
+(86, 'UNI11-2021', 'UNI10-2022', 1, '1.70', 1, '2022-01-03 21:05:35', 0, 0),
+(87, 'UNI11-2021', 'UNI12-2022', 1, '7.20', 3, '2022-07-06 18:58:53', 0, 0),
+(88, 'UNI11-2021', 'UNI12-2022', 1, '7.10', 3, '2022-07-06 19:00:22', 0, 0),
+(89, 'UNI19-2022', 'UNI12-2022', 1, '6.50', 3, '2022-07-07 17:08:59', 0, 0),
+(90, 'UNI11-2021', 'UNI12-2022', 0, '6.30', 3, '2022-07-07 17:13:29', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -220,15 +301,116 @@ CREATE TABLE `auction_features` (
 --
 
 INSERT INTO `auction_features` (`auct_id`, `auction_id`, `featured`, `sretail`, `sallowed_bids`, `sreq_bids`, `stotal_bids`, `sremaining_bids`, `scurrent_bids`, `extend_auction`) VALUES
-(1, 'UNI1-2021', 1, 1, 1, 1, 1, 0, 1, 0),
+(10, 'UNI10-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(11, 'UNI11-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(12, 'UNI12-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(100, 'UNI12-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(13, 'UNI13-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(101, 'UNI13-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(14, 'UNI14-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(102, 'UNI14-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(15, 'UNI15-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(103, 'UNI15-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(16, 'UNI16-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(104, 'UNI16-2022', 1, 1, 1, 1, 1, 1, 1, 0),
 (17, 'UNI17-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(105, 'UNI17-2022', 1, 1, 1, 1, 1, 1, 1, 0),
 (18, 'UNI18-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(106, 'UNI18-2022', 1, 1, 1, 1, 1, 1, 1, 0),
 (19, 'UNI19-2021', 1, 1, 1, 1, 1, 1, 1, 0),
-(2, 'UNI2-2021', 1, 1, 1, 1, 1, 0, 1, 0),
-(3, 'UNI3-2021', 1, 1, 1, 1, 1, 1, 1, 0),
-(4, 'UNI4-2021', 1, 1, 1, 1, 1, 1, 1, 0),
-(5, 'UNI5-2021', 1, 1, 1, 1, 1, 1, 1, 0),
-(6, 'UNI6-2021', 1, 1, 1, 1, 1, 1, 1, 0);
+(107, 'UNI19-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(20, 'UNI20-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(108, 'UNI20-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(21, 'UNI21-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(109, 'UNI21-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(22, 'UNI22-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(110, 'UNI22-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(23, 'UNI23-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(111, 'UNI23-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(24, 'UNI24-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(112, 'UNI24-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(25, 'UNI25-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(113, 'UNI25-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(26, 'UNI26-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(114, 'UNI26-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(27, 'UNI27-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(115, 'UNI27-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(28, 'UNI28-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(116, 'UNI28-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(29, 'UNI29-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(117, 'UNI29-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(30, 'UNI30-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(118, 'UNI30-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(31, 'UNI31-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(119, 'UNI31-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(32, 'UNI32-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(120, 'UNI32-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(33, 'UNI33-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(121, 'UNI33-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(34, 'UNI34-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(122, 'UNI34-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(35, 'UNI35-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(123, 'UNI35-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(36, 'UNI36-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(124, 'UNI36-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(37, 'UNI37-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(125, 'UNI37-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(38, 'UNI38-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(126, 'UNI38-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(39, 'UNI39-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(127, 'UNI39-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(40, 'UNI40-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(41, 'UNI41-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(42, 'UNI42-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(43, 'UNI43-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(44, 'UNI44-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(45, 'UNI45-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(46, 'UNI46-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(47, 'UNI47-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(48, 'UNI48-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(49, 'UNI49-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(50, 'UNI50-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(51, 'UNI51-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(52, 'UNI52-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(53, 'UNI53-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(54, 'UNI54-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(55, 'UNI55-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(56, 'UNI56-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(57, 'UNI57-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(58, 'UNI58-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(59, 'UNI59-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(60, 'UNI60-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(61, 'UNI61-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(62, 'UNI62-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(63, 'UNI63-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(64, 'UNI64-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(65, 'UNI65-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(66, 'UNI66-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(67, 'UNI67-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(68, 'UNI68-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(69, 'UNI69-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(70, 'UNI70-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(71, 'UNI71-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(72, 'UNI72-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(73, 'UNI73-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(74, 'UNI74-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(75, 'UNI75-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(76, 'UNI76-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(77, 'UNI77-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(78, 'UNI78-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(79, 'UNI79-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(8, 'UNI8-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(80, 'UNI80-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(81, 'UNI81-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(82, 'UNI82-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(83, 'UNI83-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(84, 'UNI84-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(85, 'UNI85-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(86, 'UNI86-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(87, 'UNI87-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(88, 'UNI88-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(9, 'UNI9-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(97, 'UNI9-2022', 1, 1, 1, 1, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -254,8 +436,7 @@ CREATE TABLE `auction_invoice` (
 --
 
 INSERT INTO `auction_invoice` (`id`, `user_id`, `auction_id`, `auction_name`, `invoice_no`, `invoice_amount`, `invoice_date`, `auction_plateform`, `status`, `delmark`) VALUES
-(1, 'UNI4-2021', 'UNI3-2021', 'redmi', 'UIN1-21', '123', '2021-09-13 12:53:49', '', 1, 0),
-(2, 'UNI4-2021', 'UNI5-2021', 'JIO', 'UIN2-21', '5.30', '2021-09-18 12:29:27', 'lowest', 0, 0);
+(1, 'UNI11-2021', 'UNI9-2022', 'Auction3', '', '1.03', '2022-01-03 11:41:35', 'lowest', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -292,15 +473,35 @@ CREATE TABLE `auction_items` (
 --
 
 INSERT INTO `auction_items` (`auct_id`, `auction_id`, `auction_name`, `auction_category`, `auction_desc`, `auction_terms`, `auction_type`, `auction_bid`, `auction_price`, `auction_nprice`, `auction_credits`, `auction_users_bid`, `auction_max_bid`, `auction_bid_inc`, `auction_sdate`, `auction_stime`, `auction_edate`, `auction_etime`, `auction_open`, `auction_closed`, `auction_winner`) VALUES
-(1, 'UNI1-2021', 'IPhone', 'UNI30', 'test', 'test', 1, 19, 1.00, 200.00, 2, 5, 19, NULL, '2021-08-19', '16:43:45', '2021-08-24', '16:43:45', 1, 1, 1),
-(17, 'UNI17-2021', 'REAlme note 2', 'UNI30', 'test', 'test', 1, 73, 1.00, 200.00, 2, 5, 5, NULL, '2021-08-19', '16:43:45', '2021-10-03', '16:43:45', 1, 0, 0),
-(18, 'UNI18-2021', 'REAlme Note 7', 'UNI30', 'test', 'test', 1, 104, 1.00, 200.00, 2, 5, 5, NULL, '2021-08-19', '16:43:45', '2021-10-04', '16:43:45', 1, 0, 0),
-(19, 'UNI19-2021', 'REAlme Note 7 Pro ', 'UNI30', 'test', 'test', 1, 117, 1.00, 200.00, 2, 5, 5, NULL, '2021-08-19', '16:43:45', '2021-10-04', '16:43:45', 1, 0, 0),
-(2, 'UNI2-2021', 'Redmi', 'UNI30', 'demo', 'demo test', 1, 4, 10.00, 250.00, 12, 10, 4, NULL, '2021-08-19', '16:50:15', '2021-08-24', '16:50:15', 1, 1, 1),
-(3, 'UNI3-2021', 'IPhone', 'UNI30', 'test', 'test', 1, 4, 1.00, 200.00, 2, 5, 2, NULL, '2021-08-19', '16:43:45', '2021-09-09', '16:43:45', 1, 1, 1),
-(4, 'UNI4-2021', 'REAlme', 'UNI30', 'test', 'test', 1, 52, 1.00, 200.00, 2, 5, 5, NULL, '2021-08-19', '16:43:45', '2021-10-04', '16:43:45', 1, 0, 0),
-(5, 'UNI5-2021', 'JIO', 'UNI30', 'test', 'test', 1, 24, 1.00, 200.00, 2, 5, 10, NULL, '2021-08-19', '16:43:45', '2021-09-16', '16:43:45', 1, 1, 1),
-(6, 'UNI6-2021', 'JIO Mobile', 'UNI30', 'test', 'test', 1, 34, 1.00, 200.00, 2, 5, 10, NULL, '2021-08-19', '16:43:45', '2021-09-20', '16:43:45', 1, 1, 0);
+(12, 'UNI12-2022', 'Auction 12', 'UNI28', 'Demo Auction 12', '', 1, 4, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(13, 'UNI13-2022', 'Auction 13', 'UNI28', 'Demo Auction 13', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(14, 'UNI14-2022', 'Auction 14', 'UNI28', 'Demo Auction 14', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(15, 'UNI15-2022', 'Auction 15', 'UNI28', 'Demo Auction 15', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(16, 'UNI16-2022', 'Auction 16', 'UNI28', 'Demo Auction 16', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(17, 'UNI17-2022', 'Auction 17', 'UNI28', 'Demo Auction 17', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(18, 'UNI18-2022', 'Auction 18', 'UNI28', 'Demo Auction 18', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(19, 'UNI19-2022', 'Auction 19', 'UNI28', 'Demo Auction 19', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(20, 'UNI20-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(21, 'UNI21-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(22, 'UNI22-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(23, 'UNI23-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(24, 'UNI24-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(25, 'UNI25-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(26, 'UNI26-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(27, 'UNI27-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(28, 'UNI28-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(29, 'UNI29-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(30, 'UNI30-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(31, 'UNI31-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(32, 'UNI32-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(33, 'UNI33-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(34, 'UNI34-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(35, 'UNI35-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(36, 'UNI36-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(37, 'UNI37-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(38, 'UNI38-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(39, 'UNI39-2022', 'Auction 20', 'UNI28', 'Demo Auction 20', '', 1, 0, 5.00, 9999.00, 3, 5, 7, NULL, '2022-07-06', '17:12:30', '2022-07-28', '17:12:30', 1, 0, 0),
+(9, 'UNI9-2022', 'Auction3', 'UNI28', '', '', 1, 8, 1.00, 5999.00, 1, 5, 7, NULL, '2022-01-03', '09:56:15', '2022-01-02', '09:56:15', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -323,12 +524,61 @@ CREATE TABLE `auction_media` (
 --
 
 INSERT INTO `auction_media` (`img_id`, `auction_id`, `auction_name`, `auction_icon_img`, `auction_img`, `auction_video`, `created_on`) VALUES
-(19, 'UNI19-2021', 'REAlme', 'xiaomi-redmi-7a.jpg', 'xiaomi-redmi-7a.jpg,xiaomi-redmi-7a1.jpg', NULL, '2021-09-21 12:39:32'),
-(17, 'UNI17-2021', 'REAlme', 'xiaomi-redmi-7a.jpg', 'xiaomi-redmi-7a.jpg,xiaomi-redmi-7a1.jpg', NULL, '2021-09-21 12:39:26'),
-(18, 'UNI18-2021', 'REAlme', 'xiaomi-redmi-7a1.jpg', 'xiaomi-redmi-7a.jpg,xiaomi-redmi-7a1.jpg', NULL, '2021-09-21 12:39:28'),
-(4, 'UNI4-2021', 'REAlme', 'xiaomi-redmi-7a.jpg', 'xiaomi-redmi-7a1.jpg', NULL, '2021-09-02 09:59:21'),
-(5, 'UNI5-2021', 'JIO', 'xiaomi-redmi-7a.jpg', 'xiaomi-redmi-7a.jpg,xiaomi-redmi-7a1.jpg', NULL, '2021-09-02 09:59:30'),
-(6, 'UNI6-2021', NULL, 'xiaomi-redmi-7a1.jpg', 'xiaomi-redmi-7a.jpg,xiaomi-redmi-7a1.jpg', NULL, '2021-09-08 12:33:54');
+(8, 'UNI9-2022', 'Auction3', 'MySQL.png', 'flowers.jpg', NULL, '2022-01-03 04:27:24'),
+(12, 'UNI13-2022', 'Auction 1', '16571093003942auction_image.jpg', NULL, NULL, '2022-07-06 12:02:30'),
+(13, 'UNI14-2022', 'Auction 13', '16571093168283auction_image.jpg', NULL, NULL, '2022-07-06 12:04:09'),
+(14, 'UNI15-2022', 'Auction 13', '16571093302505auction_image.jpg', NULL, NULL, '2022-07-06 12:04:23'),
+(15, 'UNI16-2022', 'Auction 13', '16571093465836auction_image.jpg', NULL, NULL, '2022-07-06 12:04:33'),
+(16, 'UNI17-2022', 'Auction 13', '16571093589092auction_image.jpg', NULL, NULL, '2022-07-06 12:04:41'),
+(17, 'UNI18-2022', 'Auction 13', '16571093739908auction_image.jpg', NULL, NULL, '2022-07-06 12:04:47'),
+(11, 'UNI12-2022', 'Auction 1', '16571080004956auction_image.jpg', '16571080009852auction_image.jpeg,16571080003381auction_image.jpg,16571080001993auction_image.jpg', NULL, '2022-07-06 11:44:40'),
+(18, 'UNI19-2022', 'Auction 13', '16571093935049auction_image.jpg', NULL, NULL, '2022-07-06 12:04:54'),
+(19, 'UNI20-2022', 'Auction 13', '16571094135642auction_image.jpg', NULL, NULL, '2022-07-06 12:05:00'),
+(20, 'UNI21-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:07'),
+(21, 'UNI22-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:12'),
+(22, 'UNI23-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:16'),
+(23, 'UNI24-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:20'),
+(24, 'UNI25-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:33'),
+(25, 'UNI26-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:38'),
+(26, 'UNI27-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:43'),
+(27, 'UNI28-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:47'),
+(28, 'UNI29-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:52'),
+(29, 'UNI30-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:16:56'),
+(30, 'UNI31-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:11'),
+(31, 'UNI32-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:14'),
+(32, 'UNI33-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:17'),
+(33, 'UNI34-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:20'),
+(34, 'UNI35-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:23'),
+(35, 'UNI36-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:25'),
+(36, 'UNI37-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:28'),
+(37, 'UNI38-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:31'),
+(38, 'UNI39-2022', 'Auction 20', NULL, NULL, NULL, '2022-07-07 11:17:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auction_wishlist`
+--
+
+CREATE TABLE `auction_wishlist` (
+  `id` int(11) NOT NULL,
+  `auction_id` varchar(255) NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `auction_wishlist`
+--
+
+INSERT INTO `auction_wishlist` (`id`, `auction_id`, `user_id`, `ip_address`, `created_at`, `updated_at`) VALUES
+(273, 'UNI3-2021', 'UNI11-2021', '', '2021-12-20 22:28:56', '2021-12-20 22:28:56'),
+(274, 'UNI3-2021', 'UNI11-2021', '', '2021-12-20 22:30:21', '2021-12-20 22:30:21'),
+(278, 'UNI3-2021', 'UNI11-2021', '', '2021-12-21 16:58:39', '2021-12-21 16:58:39'),
+(279, 'UNI4-2021', 'UNI11-2021', '', '2021-12-21 16:58:39', '2021-12-21 16:58:39'),
+(288, 'UNI12-2022', 'UNI19-2022', '', '2022-07-07 17:15:26', '2022-07-07 17:15:26');
 
 -- --------------------------------------------------------
 
@@ -357,9 +607,7 @@ CREATE TABLE `auction_won` (
 --
 
 INSERT INTO `auction_won` (`id`, `auction_id`, `bid_id`, `user_id`, `bid_price`, `won_date`, `won_status`, `payment`, `invoicesent`, `delivered`, `carrier`, `trknumber`, `delmark`) VALUES
-(1, 'UNI1-2021', 18, 'UNI9-2021', '2.45', '2021-09-02 07:59:50', 1, 0, 1, '1', NULL, NULL, 0),
-(2, 'UNI3-2021', 26, 'UNI4-2021', '5.86', '2021-09-12 21:48:08', 0, 0, 1, '0', NULL, NULL, 0),
-(3, 'UNI5-2021', 35, 'UNI4-2021', '5.30', '2021-09-18 12:29:27', 0, 0, 1, '0', NULL, NULL, 0);
+(7, 'UNI9-2022', 81, 'UNI11-2021', '1.03', '2022-01-03 11:41:35', 0, 0, 0, '0', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -4496,7 +4744,7 @@ CREATE TABLE `cms_pages` (
 --
 
 INSERT INTO `cms_pages` (`cms_id`, `cms_page_name`, `cms_page_url`, `cms_page_html`, `cms_page_css`, `cms_page_components`, `cms_page_styles`, `cms_page_assets`, `cms_page_heading1`, `cms_page_heading2`, `cms_page_heading3`, `cms_page_paragraph1`, `cms_page_paragraph2`, `cms_page_paragraph3`, `cms_page_paragraph4`, `cms_page_paragraph5`, `cms_page_paragraph6`, `cms_page_paragraph7`, `active`) VALUES
-(1, 'about us', 'about-us', '<div class=\"row\"><div class=\"cell\"><div id=\"iejj\"><h2>ABOUT US</h2><div><br/></div></div></div></div><div class=\"row\" id=\"izl2\"><div class=\"cell\"><div id=\"itl9g\"><h1>Company</h1><div><br/></div><div>We aims to be one of the largest Internet retailers of branded computer \ntechnology and digital lifestyle products with more than 5000 products \nfrom top international and domestic brands.</div><div><br/></div><div>Our business philosophy is simple: offer consumers and businesses what they want, when they want it.</div><div><br/></div></div></div></div><div class=\"row\" id=\"i4td2\"><div class=\"cell\"><div id=\"i11hl\"><h1>Products</h1><div><br/></div><div>We offer our customers over 5000 quality products, and our list of \nproduct categories and product offerings is growing every day. customers\n know they are getting the best prices and exclusive offers on a huge \nrange of computer technology products like desktops, notebooks, \nprinters, mobile phones, networking, digital cameras, software, storage \nand more. Plus, we offer other interesting products such as LCD TVs, MP3\n players, gaming and home electronics.<br/><br/>\nOur direct association with all the major brands means our customers \nwill always find special deals on great products from the biggest names \nin the industry. And to help our customers choose the right products, we\n make it easy to find availability, pricing, reviews and ratings.</div><div><br/></div><div><br/></div></div></div></div><div class=\"row\" id=\"i1zkg\"><div class=\"cell\" id=\"ihf3j\"><div id=\"i6a5m\"><h1>Services</h1>\nOur focus has always been on helping customers save time and money. This\n is why we have invested in building a website that allows them to \nsecurely manage their accounts without intervention. It is the \nempowering, 24/7 self service approach that ensures we keep our \ncustomers satisfied, and our prices competitive.</div></div></div>', '* { box-sizing: border-box; } body {margin: 0;}.row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}.cell{width:8%;display:table-cell;height:75px;}#iejj{padding:10px;font-weight:300;color:#cda557;}#itl9g{padding:10px;}#i11hl{padding:10px;}#i6a5m{padding:10px;}@media (max-width: 768px){.cell{width:100%;display:block;}}', '[{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"iejj\"},\"components\":[{\"tagName\":\"h2\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"ABOUT US\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"izl2\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"itl9g\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Company\",\"_innertext\":false}],\"_innertext\":true},{\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"We aims to be one of the largest Internet retailers of branded computer \\ntechnology and digital lifestyle products with more than 5000 products \\nfrom top international and domestic brands.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Our business philosophy is simple: offer consumers and businesses what they want, when they want it.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"i4td2\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"i11hl\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Products\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"We offer our customers over 5000 quality products, and our list of \\nproduct categories and product offerings is growing every day. customers\\n know they are getting the best prices and exclusive offers on a huge \\nrange of computer technology products like desktops, notebooks, \\nprinters, mobile phones, networking, digital cameras, software, storage \\nand more. Plus, we offer other interesting products such as LCD TVs, MP3\\n players, gaming and home electronics.\",\"_innertext\":false},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"\\nOur direct association with all the major brands means our customers \\nwill always find special deals on great products from the biggest names \\nin the industry. And to help our customers choose the right products, we\\n make it easy to find availability, pricing, reviews and ratings.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"i1zkg\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"attributes\":{\"id\":\"ihf3j\"},\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"i6a5m\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Services\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"\\nOur focus has always been on helping customers save time and money. This\\n is why we have invested in building a website that allows them to \\nsecurely manage their accounts without intervention. It is the \\nempowering, 24/7 self service approach that ensures we keep our \\ncustomers satisfied, and our prices competitive.\",\"_innertext\":false}]}]}]}]', '[{\"selectors\":[{\"name\":\"row\",\"private\":1}],\"style\":{\"display\":\"table\",\"padding-top\":\"10px\",\"padding-right\":\"10px\",\"padding-bottom\":\"10px\",\"padding-left\":\"10px\",\"width\":\"100%\"}},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell30\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell70\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"8%\",\"display\":\"table-cell\",\"height\":\"75px\"}},{\"selectors\":[\"#iejj\"],\"style\":{\"padding\":\"10px\",\"font-weight\":\"300\",\"color\":\"#cda557\"}},{\"selectors\":[\"#itl9g\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#i11hl\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#i6a5m\"],\"style\":{\"padding\":\"10px\"}}]', '[]', '<h2>About <span>Us</span></h2>\n', '', '', '<h1>Company</h1>\nWe aims to be one of the largest Internet retailers of branded computer technology and digital lifestyle products with more than 5000 products from top international and domestic brands.<br />\n<br />\nOur business philosophy is simple: offer consumers and businesses what they want, when they want it.', '<h1>Products</h1>\nWe offer our customers over 5000 quality products, and our list of product categories and product offerings is growing every day. customers know they are getting the best prices and exclusive offers on a huge range of computer technology products like desktops, notebooks, printers, mobile phones, networking, digital cameras, software, storage and more. Plus, we offer other interesting products such as LCD TVs, MP3 players, gaming and home electronics.<br />\n<br />\nOur direct association with all the major brands means our customers will always find special deals on great products from the biggest names in the industry. And to help our customers choose the right products, we make it easy to find availability, pricing, reviews and ratings.', '<h1>Services</h1>\nOur focus has always been on helping customers save time and money. This is why we have invested in building a website that allows them to securely manage their accounts without intervention. It is the empowering, 24/7 self service approach that ensures we keep our customers satisfied, and our prices competitive.', '', '', '', '', 1),
+(1, 'about us', 'about-us', '<div class=\"row\"><div class=\"cell\"><div id=\"iejj\"><h2>ABOUT US</h2><div><br/></div></div></div></div><div id=\"izl2\" class=\"row\"><div class=\"cell\"><div id=\"itl9g\"><h1>Companys</h1><div><br/></div><div>We aims to be one of the largest Internet retailers of branded computer \ntechnology and digital lifestyle products with more than 500 products \nfrom top international and domestic brands.</div><div><br/></div><div>Our business philosophy is simple: offer consumers and businesses what they want, when they want it.</div><div><br/></div></div></div></div><div id=\"i4td2\" class=\"row\"><div class=\"cell\"><div id=\"i11hl\"><h1>Products</h1><div><br/></div><div>We offer our customers over 5000 quality products, and our list of \nproduct categories and product offerings is growing every day. customers\n know they are getting the best prices and exclusive offers on a huge \nrange of computer technology products like desktops, notebooks, \nprinters, mobile phones, networking, digital cameras, software, storage \nand more. Plus, we offer other interesting products such as LCD TVs, MP3\n players, gaming and home electronics.<br/><br/>\nOur direct association with all the major brands means our customers \nwill always find special deals on great products from the biggest names \nin the industry. And to help our customers choose the right products, we\n make it easy to find availability, pricing, reviews and ratings.</div><div><br/></div><div><br/></div></div></div></div><div id=\"i1zkg\" class=\"row\"><div id=\"ihf3j\" class=\"cell\"><div id=\"i6a5m\"><h1>Services</h1>\nOur focus has always been on helping customers save time and money. This\n is why we have invested in building a website that allows them to \nsecurely manage their accounts without intervention. It is the \nempowering, 24/7 self service approach that ensures we keep our \ncustomers satisfied, and our prices competitive.</div></div></div>', '* { box-sizing: border-box; } body {margin: 0;}.row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}.cell{width:8%;display:table-cell;height:75px;}#iejj{padding:10px;font-weight:300;color:#cda557;}#itl9g{padding:10px;}#i11hl{padding:10px;}#i6a5m{padding:10px;}@media (max-width: 768px){.cell{width:100%;display:block;}}', '[{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"iejj\"},\"components\":[{\"tagName\":\"h2\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"ABOUT US\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"izl2\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"itl9g\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Companys\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"We aims to be one of the largest Internet retailers of branded computer \\ntechnology and digital lifestyle products with more than 500 products \\nfrom top international and domestic brands.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Our business philosophy is simple: offer consumers and businesses what they want, when they want it.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"i4td2\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"i11hl\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Products\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"We offer our customers over 5000 quality products, and our list of \\nproduct categories and product offerings is growing every day. customers\\n know they are getting the best prices and exclusive offers on a huge \\nrange of computer technology products like desktops, notebooks, \\nprinters, mobile phones, networking, digital cameras, software, storage \\nand more. Plus, we offer other interesting products such as LCD TVs, MP3\\n players, gaming and home electronics.\",\"_innertext\":false},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"\\nOur direct association with all the major brands means our customers \\nwill always find special deals on great products from the biggest names \\nin the industry. And to help our customers choose the right products, we\\n make it easy to find availability, pricing, reviews and ratings.\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true},{\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true}],\"_innertext\":true}]}]}]},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"i1zkg\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"attributes\":{\"id\":\"ihf3j\"},\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"i6a5m\"},\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Services\",\"_innertext\":false}],\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"\\nOur focus has always been on helping customers save time and money. This\\n is why we have invested in building a website that allows them to \\nsecurely manage their accounts without intervention. It is the \\nempowering, 24/7 self service approach that ensures we keep our \\ncustomers satisfied, and our prices competitive.\",\"_innertext\":false}]}]}]}]', '[{\"selectors\":[{\"name\":\"row\",\"private\":1}],\"style\":{\"display\":\"table\",\"padding-top\":\"10px\",\"padding-right\":\"10px\",\"padding-bottom\":\"10px\",\"padding-left\":\"10px\",\"width\":\"100%\"}},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell30\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell70\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"8%\",\"display\":\"table-cell\",\"height\":\"75px\"}},{\"selectors\":[\"#iejj\"],\"style\":{\"padding\":\"10px\",\"font-weight\":\"300\",\"color\":\"#cda557\"}},{\"selectors\":[\"#itl9g\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#i11hl\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#i6a5m\"],\"style\":{\"padding\":\"10px\"}}]', '[]', '<h2>About <span>Us</span></h2>\n', '', '', '<h1>Company</h1>\nWe aims to be one of the largest Internet retailers of branded computer technology and digital lifestyle products with more than 5000 products from top international and domestic brands.<br />\n<br />\nOur business philosophy is simple: offer consumers and businesses what they want, when they want it.', '<h1>Products</h1>\nWe offer our customers over 5000 quality products, and our list of product categories and product offerings is growing every day. customers know they are getting the best prices and exclusive offers on a huge range of computer technology products like desktops, notebooks, printers, mobile phones, networking, digital cameras, software, storage and more. Plus, we offer other interesting products such as LCD TVs, MP3 players, gaming and home electronics.<br />\n<br />\nOur direct association with all the major brands means our customers will always find special deals on great products from the biggest names in the industry. And to help our customers choose the right products, we make it easy to find availability, pricing, reviews and ratings.', '<h1>Services</h1>\nOur focus has always been on helping customers save time and money. This is why we have invested in building a website that allows them to securely manage their accounts without intervention. It is the empowering, 24/7 self service approach that ensures we keep our customers satisfied, and our prices competitive.', '', '', '', '', 1),
 (11, 'Auction Details', 'auction-details', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Auction <span>Details</span></strong></h2>\n', '', '', 'Update your profile information now to get latest update and communications.', 'Paragraph 2', '', '', '', '', '', 1),
 (12, 'How it Works', 'how-it-works', NULL, NULL, NULL, NULL, NULL, '<h2>How it Works</h2>\n', '', '', '<h3><strong>Register new member</strong></h3>\n\n<p>You must be a registered member to participate in the auctions. There are no joining fees. It is totally free to join! Registration is important as it enables us to contact you if you are the winner of an item. To win or Buy product, you should a register member.</p>\n', '<h3><strong>Buying Bids</strong></h3>\n\n<p>Using Debit Card, Using Credit Cards, Using Internet Banking and Using Internet Banking. After selecting your payment method click on Submit button then you will be automatically redirecting to your option which you will select for payment option after the successful of your payment you will get mails at your registered email id.</p>\n', '<h3><strong>Choose Product and Place Bids</strong></h3>\n\n<p>Main page shows, list of product, so bidder can choose desire product and place a bid on product page, you should choose unique and low bid to win for a product, you can fire more bids, there is not limit.</p>\n', '<h3><strong>Winner</strong></h3>\n\n<p>With Top menu winner list, User can view and watch currently winner list of the site, and view all product info also like total bids, max price bid, etc , the page also display saving amount also.</p>\n', '<h3><strong>Delivery</strong></h3>\n\n<p>Your won product also delivered to winner by the site team within x days. If applicable shipping charge than winner also pay shipping charge also.</p>\n', '<p>Bid Auction Script is a tool which offers items for sale by a auction process. Rather than the bidder with the highest bid winning (as is the case in traditional items auctions), this script can be set where the person wiin who has the &#34;Lowest Unique Bid&#34;.</p>\n\n<p>Bids may be any amount between $0.01 and $10,000, allowing people to buy a item at an incredibly low price. The cost of the item is covered by the administration/bid fee you pay to make a bid.</p>\n\n<p><strong>How is the Lowest/Highesgt Unique Bid Determined?</strong></p>\n\n<p>The &#34;Lowest Unique Bid&#34; is an amount of money between $0.01 and $10,000. The amount closest to $0.01 where no other bidder has bid the same amount of money is deemed the &#34;Lowest Unique Bid&#34;. The amount closest to $10,000 where no other bidder has bid the same amount of money is deemed the &#34;Highest Unique Bid&#34;.</p>\n\n<p>This is a representation only.</p>\n\n<table bgcolor=\"#dddddd\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"400\">\n	<tbody>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.03</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Lowest Unique Bid</strong></p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.04</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.05</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.07</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.10</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Highest Unique Bid </strong></p>\n			</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>&#160;</p>\n\n<p><em><strong>Example of a possible result at the end of the Auction.</strong></em></p>\n\n<p>In this example the Bid of 3c is the Lowest Unique Bidder and is awarded the auction result and would have to pay only 3cents. He/she has therefore purchased a items for $0.03 (Bid Amount) + the&#160;Admin Fee paid when he/she placed the bid.</p>\n\n<p>If the Bidder of the successful bid had more than one bid&#160;they would need to add .00 for each additional bid placed.<br />\nLets say as an example they placed a total of ten bids during the auction their total outlay to own the items would be 10 X .00 = 0.00 (initial Admin Fees) + $0.03 = 0.03.</p>\n\n<p>Remember: During the Auction the Lowest Unique Bid is constantly changing, if in this example someone else was to bid $0.03, then $0.03 would no longer be a &#34;Unique&#34; bid, meaning it would no longer be the Lowest Unique Bid, $0.04 would now become the Lowest Unique Bid. However if someone Bid $0.02, as this has not been bid previously by anyone else, it would then become the Lowest Unique Bid.</p>\n\n<p>&#160;</p>\n\n<p><strong>Strategic Considerations </strong></p>\n\n<p>It is important to note that the strategy of waiting to place a bid is not necessarily the most successful one for example:<br />\nIf at the close of the auction we didn&#39;t have a single lowest unique bid the successful bidder would be determined by the two lowest exact same bids however the bidder awarded the items would be the bidder that placed the first bid.</p>\n\n<p>So in that scenario it is very important to get your bid in early.</p>\n\n<p>&#160;</p>\n\n<p><strong>Start Bidding in just 4 Easy Steps</strong></p>\n\n<p><strong>1.&#160;Register</strong> - complete the registration form. Your password will then be emailed to the email address you provide us. It is vital you keep your username and password confidential, otherwise you may allow others to access your Bid Bank and place bids from your account.<br />\nYou are fully responsible for all activities that occur through your subscription and under your password and account.</p>\n\n<p><strong>2.&#160;Login </strong>- once you receive your password via email, login using your email address as your username and your password. You can change your password once you have logged in by typing a new one in the password field on the Edit Profile page.</p>\n\n<p><strong>3.&#160;Purchase Credit</strong> - Buy Credits from your account.</p>\n', '', 1),
 (13, 'Terms & Conditions', 'terms-conditions', NULL, NULL, NULL, NULL, NULL, '<h2>Terms &#38; Conditions</h2>\n', '', '', '<h3>1. CONDITIONS OF USE</h3>\n\n<p>Welcome to LowestUnique. By using the LowestUnique service (&#34;Services&#34;), you agree to be subject to the following terms of service (&#34;Terms&#34;) including those available by hyperlink, and enter into an agreement with Entertainment Shopping, Inc. and its internet platform is http://www.LowestUnique (&#34;LowestUnique&#34;).</p>\n\n<p>By accepting these Terms, you accept that these Terms and the LowestUnique Privacy Policy will apply whenever you use LowestUnique sites and services, as well as the manner in which LowestUnique operate its auctions as described on the LowestUnique&#160; site. If you use another LowestUnique site, you agree to accept the Terms and Privacy Policy applicable to that site. The agreement that applies on any of our domains and sub-domains is always the agreement that appears in the footer of each website. Some LowestUnique sites, services and tools may have additional or other terms that we provide to you when you use those sites, services or tools.</p>\n\n<p>None of the content on the LowestUnique site, including but not limited to the Help Section, is intended to amount to advice on which reliance should be placed. LowestUnique disclaims to the fullest extent permitted by law all liability and responsibility arising from any reliance placed on such materials by you or by anyone who may be informed of any of its contents.</p>\n\n<h3>2. ACCEPTING THE TERMS</h3>\n\n<p>You may not use the Services if you do not accept the Terms.</p>\n\n<p>You can accept the Terms by:</p>\n\n<ol>\n	<li>clicking to accept or agree to the Terms, where this option is made available to you by LowestUnique in the user interface for any Service; or</li>\n	<li>by actually using the Services. In this case, you understand and agree that LowestUnique will treat your use of the Services as acceptance of the Terms from that point onwards.</li>\n</ol>\n\n<p>You may not use the Services and may not accept the Terms if (a) you are not of legal age to form a binding contract with LowestUnique, or (b) you are a person barred from receiving the Services under the laws of the United States or other countries including the country in which you are resident or from which you use the Services.</p>\n\n<p>Before you continue, you should print off or save a local copy of the Terms for your records.</p>\n', '<h3>3. LICENSE AND SITE ACCESS</h3>\n\n<p>LowestUnique grants you a limited license to access and make personal use of this site and not to download (other than page caching) or modify it, or any portion of it, except with express written consent of LowestUnique. This license does not include any resale or commercial use of this site or its contents; any collection and use of any product listings, descriptions, or prices; any derivative use of this site or its contents; any downloading or copying of account information for the benefit of another merchant; or any use of data mining, robots, or similar data gathering and extraction tools. This site or any portion of this site, including the services provided on it, may not be reproduced, duplicated, copied, sold, resold, visited, or otherwise exploited for any commercial purpose without express written consent of LowestUnique. You may not frame or utilize framing techniques to enclose any trademark, logo, or other proprietary information (including images, text, page layout, or form) of LowestUnique without express written consent. You may not use any meta-tags or any other &#34;hidden text&#34; utilizing LowestUnique&#8217;s name or trademarks without the express written consent of LowestUnique. Any unauthorized use terminates the permission or license granted by LowestUnique. You are granted a limited, revocable, and nonexclusive right to create a hyperlink to the home page of LowestUnique&#160; so long as the link does not portray LowestUnique, or its products or services in a false, misleading, derogatory, or otherwise offensive matter. You may not use any LowestUnique logo or other proprietary graphic or trademark as part of the link without express written permission.</p>\n\n<h3>4. USER CONTENT, LINKS, THIRD-PARTY SELLERS</h3>\n\n<p>Our websites may contain (a) User Content (defined below) provided by other users, (b) links to other sites operated by third parties, (c) advertisements and/or sponsorships provided by third parties, and (d) stores, services, or product lines offered by third parties ((a), (b), (c), and (d) are collectively, Third-Party Materials.). We have no control over and are not responsible and assume no liability for any Third-Party Materials or the applicable third parties. We are not responsible for any acts or omissions of such third parties. We do not review, approve, endorse, guarantee, warrant, or make any representations with respect to Third-Party Materials or the applicable third parties. For example, we do not guarantee, warrant or represent that the Third-Party Materials are accurate, legal and/or inoffensive or that these third party sites do not contain viruses or other features that may adversely affect your computer. You use all Third Party Materials and interact with such third parties at your own risk. We are not obligated to be involved in any disputes between you and any such third parties. When you leave our site, our Terms (including our Privacy Policy) no longer govern. You should carefully review the applicable third party privacy statements and other terms and conditions of use. Without limiting the forgoing, if you have a problem with a link from any one of our sites, please notify us at info@LowestUnique</p>\n\n<p>You hereby release us, our subsidiaries, affiliates, officers, employees, agents, and successors from any claim, demands, losses, damages, rights, and actions of any kind, including personal injuries, death, and property damage, that is either directly or indirectly related to or arising from use of Third Party Materials or interactions with or conduct of the applicable third parties. In connection with the foregoing,</p>\n', '<h3>5. LICENSE GRANTED BY YOU</h3>\n\n<p>By providing, submitting, uploading any communications, reviews, comments, feedback, postings, materials, or other content for use on any of the LowestUnique websites (&#34;User Content&#34;), (a) you represent and warrant that you or the owner of all rights to such User Content and that such User Content does not violate our Terms and (b) you hereby grant us, and agree to grant us, an irrevocable, perpetual, royalty-free, fully paid-up, worldwide license (with the right to sublicense) in all languages to use, reproduce, distribute, publicly display, publicly perform, prepare derivative works of, modify, sell and otherwise exploit all or any part of the User Content in our sole discretion by any method now existing or later developed, subject to our Privacy Policy. Subject to our Privacy Policy, any User Content will be treated as non-confidential and non-proprietary and may be disseminated or used by us for any purpose, including, but not limited to, developing, creating, manufacturing or marketing products or services.</p>\n\n<h3>6. REGISTRATION AND PARTICIPATION</h3>\n\n<p>Employees and relatives of employees of LowestUnique are not eligible to participate in LowestUnique auctions under any circumstance.</p>\n\n<p>LowestUnique&#8217;s products and services are offered exclusively to private users and not to commercial or partly-commercial resellers. LowestUnique reserves the right to exclude commercial resellers from the participation in the auctions and to close such user accounts at any time.</p>\n\n<p>You may register only once using your postal address (registration using PO Boxes or equivalents is not permitted). Additionally, only one user registration per household is permitted.</p>\n\n<p>In order to access certain Services, you may be required to provide information about yourself (such as identification or contact details) as part of the registration process for the Service, or as part of your continued use of the Services. You agree that any registration information you give to LowestUnique will always be accurate, correct and up to date.</p>\n\n<p>During the registration process, you must choose a username. The username must not be offensive, be selected to deceive or mis-inform other users, may not offend common decency or infringe upon the rights of third parties. If LowestUnique receives information of a username which is illegal or in breach of these Terms, this username can be amended by LowestUnique without prior notice.</p>\n\n<p>You agree and understand that you are responsible for maintaining the confidentiality of passwords associated with any account you use to access the Service and that your user account may be used only by you and not anyone else. Accordingly, you agree that you will be solely responsible to LowestUnique for all activities that occur under your account. User accounts created during registration are non-transferable.</p>\n', '<h3>7. RULES, RESTRICTIONS, SUSPENSION</h3>\n\n<p>Without limiting other remedies, we may limit, suspend, or terminate our Service and user accounts, prohibit access to our sites and their content, services, and tools, delay or remove hosted content, including any User Content and take technical and legal steps to keep users off the sites if we think that they are creating problems or possible legal liabilities, infringing the intellectual property rights of third parties, or acting inconsistently with the letter or spirit of our policies. We also reserve the right to cancel unconfirmed accounts or accounts that have been inactive for a long time, or to modify or discontinue LowestUnique sites, services, or tools.</p>\n\n<p>You agree to the following conditions:</p>\n\n<ol>\n	<li>You agree to use the Services only for purposes that are permitted by (a) the Terms and (b) any applicable law, regulation or generally accepted practices or guidelines in the relevant jurisdictions (including any laws regarding the export of data or software to and from the United States or other relevant countries). You agree not to post User Content that (i) plagiarizes, violates or infringes upon the rights of any third-party, including trade secret, copyright, trademark, trade dress, privacy, patent, moral right, publicity, or other personal or proprietary rights, and/or (ii) contains unlawful, tortious, threatening, harmful, vulgar, defamatory, false, intentionally misleading, libelous, pornographic, obscene, patently offensive, inappropriate, offensive, harassing, or other unacceptable material or materials that are harmful to minors.</li>\n	<li>You also agree not to engage in any activity that circumvents, interferes with or disrupts the Services (or the servers and networks connected to the Services) or any user experience of our Services including but not limited to the following:</li>\n</ol>\n\n<ul>\n	<li>using any unauthorized third-party bidding software;</li>\n	<li>accessing any of the Services by means other than through the interface provided by LowestUnique (e.g. no use of scripts or web crawlers);</li>\n	<li>manipulating our fee structure, the billing process, bidding, auctions or fees owed to LowestUnique;</li>\n	<li>distributing spam,, unsolicited, or bulk electronic communications, chain letters, or pyramid schemes; or</li>\n	<li>collecting information about users, including email addresses, without their consent.</li>\n</ul>\n\n<p>You agree that you are solely responsible for (and that LowestUnique has no responsibility to you or to any third party for) any breach of your obligations under the Terms and for the consequences (including any loss or damage which LowestUnique may suffer) of any such breach. In case of a breach of these Terms, LowestUnique reserves the right to withhold deliveries or refunds for Bids.</p>\n', '<h3>8. BIDS</h3>\n\n<p>Bidding rights or bids (&#8220;Bids&#8221;) must be purchased and paid for by you prior to online bidding. Bids can be purchased in packages (&#8220;BidPacks&#8221;) as further described under &#8220;Bidding&#8221; in the &#8220;Help&#8221; Section of the LowestUnique Site. Prices for Bids or BidPacks may change in LowestUnique&#39;s discretion from time to time. Bids must currently be placed online through our website. In the future LowestUnique may allow Bids to be placed through third party websites or through use of your mobile phone. In such cases, you will be required to disclose your mobile phone number and be responsible for ensuring it is accurate and up to date. For information on when such opportunities may be available in the future, check the &#8220;Help&#8221; Section of the LowestUnique site.</p>\n\n<p>Bids and voucher Bids are non-transferable and valid for one year after they have been credited to your account. Free Bids are Bids you may get through a promotion or other marketing activity. Free Bids are usually time sensitive and are only valid for the time stated in a promotion. Upon expiration, they become void and can no longer be placed.</p>\n\n<p>Once a Bid is placed in an auction, it is deducted from your Bid account and can no longer be refunded. Refunds will not be issued for Bids placed in an auction, expired Bids, or Voucher Bids and Free Bids. For further information on refunds please see our return policy described under Returns &#38; Complaints in the &#8220;Help&#8221; Section.</p>\n', '<h3>9. THE AUCTION PROCESS</h3>\n\n<p>&#160;For information on how to place a bid, how to use the BidButler or how an auction works, please refer to the Bidding or Auctions topics of the &#8220;Help&#8221; Section on the LowestUnique site. Every auction ends when the remaining time reaches zero and the user who was the last to bid then wins the auction. All other Bids placed on the item expire and will not be credited back to your account nor will you be eligible for a refund for such Bids. The last bidder is determined based on the records in LowestUnique.s database and LowestUnique.s decision regarding who is the last bidder shall be final.</p>\n\n<p>You understand and agree that LowestUnique requires you to bid for auctioned items against other LowestUnique users, some of whom may reside outside the United States. In such cases, users in other countries may not always be bidding on the exact same product in a single auction. To ensure the auction remains fair, the auction items in a single auction will be comparable and reasonably equivalent.</p>\n\n<p>We do not represent or warrant that your Bid will be timely received or accepted by&#160; LowestUnique site and you understand that our receipt of your Bid depends on several factors, some of which we have no control over, including your Internet connection, the equipment you are using to access our site, and other technological and/or telecommunication-based factors. You agree that LowestUnique shall be held harmless from and against any and all claims, causes of action, expenses, costs, or losses arising from or related to any transaction in which your Bid is not received, delayed or otherwise rejected by LowestUnique.</p>\n\n<p>LowestUnique reserves the right to add, reschedule or remove products from the LowestUnique website at anytime without notice. An auction is deemed to have closed when the timer on the auctioned item counts &#34;closed&#34; and no users have placed a Bid. Users should be aware that the timer available to the user is an approximation which may be affected by network delays. The final decision of when an auction closes will be based on the timer used by LowestUnique servers.</p>\n\n<p>&#160;LowestUnique reserves the right to limit the number of auctions you can win within a specific time period. Please refer to the Auctions topic of the &#8220;Help&#8221; Section for further information. A Bid submitted by you constitutes your offer to enter into a binding contract with LowestUnique and in the event of winning an auction, you will receive a purchase offer for the item of the auction under the conditions set out in the related auction.</p>\n', '<h3>10.DELIVERY</h3>\n\n<p>All items purchased from LowestUnique are made pursuant to a shipment contract. This means that the risk of loss and title for such items pass to you upon delivery of the item to the carrier.</p>\n\n<p>Unless otherwise stated, delivery will be made directly from our third party suppliers or from our warehouse to the shipping address provided by you. Deliveries are made solely within the 50 states of the United States (explicitly excluding the U.S. sovereign territories of Guam, Puerto Rico and the U.S. Virgin Islands). Some restrictions or higher shipping costs may apply if the delivery address is in Alaska or Hawaii, please check notifications on the detail pages of the auctions in advance. You acknowledge that delivery times vary and any delivery time indicated is provided only as a guide and is not guaranteed. Please contact our service department at info@LowestUnique If an item is not delivered within the indicated time so that we can work with you to address the issue. LowestUnique shall be entitled to involve third parties to satisfy its contractual obligations without being required to notify the buyer. Obvious damage to the item from transport or packaging damaged during transport is to be reported to LowestUnique upon taking delivery.</p>\n\n<p>Should LowestUnique not be able to deliver the item ordered, LowestUnique shall be entitled to substitute the item with a comparable replacement product with the similar or better features, or provide a refund of the auction end price to you based upon your preference.</p>\n\n<h3>11. RETURNS/REFUNDS</h3>\n\n<p>If, within 14 days of delivery of an item, you decide you no longer want the item, LowestUnique will refund you with the amount that you paid for the item as well as original delivery costs, provided that you have (i) returned the item to LowestUnique, (ii) the item is still in its original packaging and (iii) the item is not damaged or used. Returns or refunds must be first initiated by contacting the LowestUnique customer service team in writing (by letter or email) within the 14 day period in order to be executed. Please note that we cannot offer you a refund on the cost of the Bids that you placed on that auction or the return shipping cost.</p>\n\n<p>Should LowestUnique incur additional costs for insufficient postage on the return or for courier shipments and other irregular shipping methods that are over and above postal shipping costs, these costs will be deducted from any payment whatsoever paid to you. Sets/boxes can only be returned in their entirety.</p>\n\n<p>Exceptions to the right to return are audio or video recordings, computer software that you have unsealed and other items noted by LowestUnique on the LowestUnique site. Such items are not eligible for return or refund.</p>\n\n<h3>12. INFORMATION INACCURACY DISCLAIMER</h3>\n\n<p>From time to time there may be information on the website that may contain typographical errors, inaccuracies, or omissions that may relate to product descriptions, pricing, and availability. LowestUnique reserves the right to correct any errors, inaccuracies or omissions and to change or update information at any time without prior notice (including after you have submitted your order). If a product offered by LowestUnique is not as described, your sole remedy is to return it in unused condition pursuant to our return policy.</p>\n', 1);
@@ -4539,7 +4787,7 @@ CREATE TABLE `config_currency` (
 
 INSERT INTO `config_currency` (`id`, `currency`, `currency_code`, `base_currency`, `coversion_rate`, `active`) VALUES
 (20, 'USD', '$', 1, 1, 1),
-(21, 'INR', 'Rs', 0, 74.22, 1),
+(21, 'INR', 'Rs', 0, 80, 1),
 (27, 'AUD', 'A$', 0, 0.92, 1),
 (28, 'CAD', 'CA$', 0, 1.25, 1);
 
@@ -5907,7 +6155,38 @@ CREATE TABLE `manage_paymentgateway` (
 
 INSERT INTO `manage_paymentgateway` (`id`, `gateway_name`, `gateway_email`, `secret_key`, `public_key`, `gateway_fee`, `gateway_other_fee`, `status`) VALUES
 (1, 'Paypal', 'info@theekgroup.com', 'fs', 'fsfsf', 3, 2, 1),
-(2, 'Stripe', 'pankajbains@gmail.com', 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ', 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP', 2, 2, 1);
+(2, 'Stripe', 'pankajbains@gmail.com', 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ', 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP', 2, 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manage_subscriber`
+--
+
+CREATE TABLE `manage_subscriber` (
+  `id` int(10) NOT NULL,
+  `subscriber_id` varchar(255) NOT NULL,
+  `email_id` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `manage_subscriber`
+--
+
+INSERT INTO `manage_subscriber` (`id`, `subscriber_id`, `email_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'e5c359cbfcaf14890f53fcf559a36d2c', 'shoaib.kipm@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'e97f23444c3139643295f9558655cd72', 'mohd.shoaib@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'b7270ba6d0d40af338115bccca34f216', 'kishor@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, '30cbb5b17f8849ed26d8b02c83302772', 'pankaj@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'ddfa35c84120009784154a96f0cc4ce3', 'kishor2@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, '72f0d3b0120aec6f4c6da8426f839666', 'zia@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, '4cb6b03dd03352830bd8ba350f81a7f1', 'tauheed786@gmail.com', 'subscribed', '2022-02-10 00:31:16', '2022-02-10 00:31:16'),
+(8, 'd0a0102ef2ce849edc4911cac6b63ccd', 'shoaib987@gmail.com', 'subscribed', '2022-02-10 11:42:26', '2022-02-10 11:42:26'),
+(9, 'da5fe620cc0cca1c181b071514cdec5c', 'shoaib@gmail.com', 'subscribed', '2022-07-05 13:33:51', '2022-07-05 13:33:51'),
+(10, '647c71253dfbe1516bbd6fa62365b3d5', 'srk@gmail.com', 'subscribed', '2022-07-07 16:32:37', '2022-07-07 16:32:37');
 
 -- --------------------------------------------------------
 
@@ -5934,6 +6213,35 @@ INSERT INTO `manage_wallets` (`id`, `user_id`, `points_earned`, `points_used`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `password_reset`
+--
+
+CREATE TABLE `password_reset` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `time` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `password_reset`
+--
+
+INSERT INTO `password_reset` (`id`, `email`, `token`, `time`) VALUES
+(1, 'shoaib.kipm@gmail.com', '23163', 1643660366),
+(2, 'shoaib.kipm@gmail.com', '42139', 1643660800),
+(3, 'shoaib.kipm@gmail.com', '98199', 1643661210),
+(4, 'shoaib.kipm@gmail.com', '35817', 1643699567),
+(5, 'shoaib.kipm@gmail.com', '54421', 0),
+(6, 'shoaib.kipm@gmail.com', '87620', 0),
+(7, 'shoaib.kipm@gmail.com', '21925', 1656999465),
+(8, 'shoaib.kipm@gmail.com', '52140', 1656999575),
+(9, 'shoaib.kipm@gmail.com', '96444', 0),
+(10, 'shoaib.kipm@gmail.com', '14730', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_address`
 --
 
@@ -5948,6 +6256,15 @@ CREATE TABLE `user_address` (
   `pin` varchar(6) NOT NULL,
   `country` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user_address`
+--
+
+INSERT INTO `user_address` (`id`, `user_id`, `bill_id`, `ship_id`, `address`, `city`, `state`, `pin`, `country`) VALUES
+(1, 'UNI11-2021', 0, 0, 'gorakhnaths', 'Lucknow', 'Uttar Prad', '273001', 'IN'),
+(2, 'UNI13-2021', 0, 0, 'Golghar', 'Gorakhpur', 'UP', '273001', 'IN'),
+(3, 'UNI19-2022', 0, 0, 'Hauz Khas', 'New Delhi', 'New Delhi', '110030', 'IN');
 
 -- --------------------------------------------------------
 
@@ -6069,7 +6386,13 @@ INSERT INTO `user_bidcoupon_records` (`id`, `name`, `first_name`, `last_name`, `
 (49, 'kishor kumar', 'kishor', 'kumar', 'Q0pxaWgxZ3VIY1F2SFdXZ0R3dklwNEtlcDRrZGU2Uzd5bFhYTFN6K1Iraz0=', 'test', '0b74gMlZU', 5, 20, 3, 0, 1, 0, NULL, '2021-08-23'),
 (50, 'kishor kumar', 'kishor', 'kumar', 'Q0pxaWgxZ3VIY1F2SFdXZ0R3dklwNEtlcDRrZGU2Uzd5bFhYTFN6K1Iraz0=', 'eer', '40WLsi7xR', 15, 30, 5, 0, 1, 0, NULL, '2021-08-23'),
 (51, 'Rajesh kumar', 'Rajesh', 'kumar', 'SWd4dFIvYmNReXdjZjNaRzdlRVJESi8zczdiUjR3MzdtWUhBdHJtSDNwST0=', 'test', '7Es01JomD', 5, 20, 3, 0, 1, 0, NULL, '2021-08-24'),
-(52, 'fsdfs', 'kishor', 'kumar', 'TEFVT0JjNzZDdmFIaDRrZXNxb2J2VkpqcGYwdG4vVWE4SEVpaTdJZHo2Yz0=', 'test', '8b9U1ArzH', 10, 30, 4, 1, 1, 0, NULL, '2021-08-23');
+(52, 'fsdfs', 'kishor', 'kumar', 'TEFVT0JjNzZDdmFIaDRrZXNxb2J2VkpqcGYwdG4vVWE4SEVpaTdJZHo2Yz0=', 'test', '8b9U1ArzH', 10, 30, 4, 1, 1, 0, NULL, '2021-08-23'),
+(53, 'MOHD SHOAIB ASHRAF', 'Mohd', 'Saif', 'THpCM0UzVFBidXdCbDJ0NXRsWFJMUT09', 'Hii', '49W8rABmq', 5, 20, 3, 0, 0, 0, NULL, '0000-00-00'),
+(54, 'Shoaib', 'saif', 'fine', 'THpCM0UzVFBidXdCbDJ0NXRsWFJMUT09', 'hiiiiiiii', 'y9o24JSEp', 5, 20, 3, 0, 1, 0, NULL, '2022-01-04'),
+(55, 'shoaib', 'tauheed', 'alam', 'WkdLTDRwUS9xVDRKWWFMYkFWUUdBRnh3T0dWR05SVndXMFNpZkJURGM0dz0=', 'hello', 'EX7aAu90c', 5, 20, 3, 0, 0, 0, NULL, '0000-00-00'),
+(56, 'MOHD SHOAIB ASHRAF', 'MOHD', 'ASHRAF', 'ZDZSZVdZdHAxQk51aklJMEdDZWhVUGlXbHhway9relk0L1gyZXBZZHBFZz0=', 'hfgjhfgj', '74rZKyeJ6', 5, 20, 3, 0, 0, 0, NULL, '0000-00-00'),
+(57, 'MOHD SHOAIB ASHRAF', 'MOHD', 'Shahrukh', 'VERKUThKM2cyMEdVRGFsSU1CcStrQT09', 'Hello', 'JYd36kh1E', 5, 20, 3, 0, 0, 0, NULL, '0000-00-00'),
+(58, 'MOHD SHOAIB ASHRAF', 'MOHD', 'Shahrukh', 'VERKUThKM2cyMEdVRGFsSU1CcStrQT09', 'Hello', '6Oumb81DA', 5, 20, 3, 0, 1, 0, NULL, '2022-07-07');
 
 -- --------------------------------------------------------
 
@@ -6112,12 +6435,22 @@ CREATE TABLE `user_credits` (
 --
 
 INSERT INTO `user_credits` (`id`, `user_id`, `paid_credit`, `free_credit`) VALUES
-(1, 'UNI2-2020', 96, 0),
+(1, 'UNI2-2020', 196, 100),
 (2, 'UNI4-2021', 487, 256),
 (3, 'UNI6-2021', 98, 20),
 (4, 'UNI7-2021', 500, 0),
 (5, 'UNI8-2021', 900, 0),
-(6, 'UNI9-2021', 696, 6);
+(6, 'UNI9-2021', 696, 6),
+(7, 'UNI10-2021', 20, 25),
+(8, 'UNI11-2021', 80, 110),
+(9, 'UNI12-2021', 150, 20),
+(10, 'UNI13-2021', 18, 30),
+(11, 'UNI14-2021', 15, 10),
+(12, 'UNI15-2021', 0, 0),
+(13, 'UNI16-2021', 0, 0),
+(14, 'UNI17-2021', 0, 0),
+(15, 'UNI18-2022', 0, 0),
+(16, 'UNI19-2022', 50, 100);
 
 -- --------------------------------------------------------
 
@@ -6138,7 +6471,7 @@ CREATE TABLE `user_emails` (
 --
 
 INSERT INTO `user_emails` (`id`, `user_emails_type`, `user_emails_subject`, `user_emails_body`, `status`) VALUES
-(1, 'user_registration', 'User Registration Successful at [[SITENAME]] Activate Now', '<p>Hello [[USERSFIRSTNAME]],<br />\n<br />\nWelcome to [[SITENAME]]. You have successfully registered your new account at [[SITENAME]]. Before you can use your account, you must click on the activation link provided below.<br />\n<br />\n[[ACTIVATELINK]]</p>\n\n<p>Once you activate your account you will be able to start to <strong>create an event </strong><strong>for your calendar.</strong></p>\n\n<p>Thank you,<br />\nContact Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n\n<p>&#160;</p>\n', 1),
+(1, 'user_registration', 'User Registration Successful at [[SITENAME]] Activate Now', '<p>Hello [[USERSFIRSTNAME]],<br />\r\n<br />\r\nWelcome to [[SITENAME]]. You have successfully registered your new account at [[SITENAME]]. Before you can use your account, you must click on the activation link provided below.<br />\r\n<br />\r\n[[ACTIVATELINK]]</p>\r\n\r\n<p>Once you activate your account you will be able to start to <strong>create an event </strong><strong>for your calendar.</strong></p>\r\n\r\n<p>Thank you,<br />\r\nContact Administrator</p>\r\n\r\n<hr />\r\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\r\n\r\n<p>&#160;</p>\r\n', 1),
 (2, 'forgot_password', 'Your Forgot Password Request at [[SITENAME]]', '<p>Hello [[USERSFIRSTNAME]],<br />\n<br />\nThank you for contacting the forgot password administrator at [[SITENAMELINK]].<br />\n<br />\nWe know it is easy to forget your password from time to time.<br />\nHere is your Login information:<br />\n<br />\nYour username: [[USERNAME]]<br />\nYour password: [[PASSWORD]]<br />\n<br />\n<span style=\"color:#0000ff\">Thank you,</span><br />\nForgot Password Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
 (3, 'contact_us', 'Query Submitted at [[SITENAME]]', '<p>Hello [[FIRSTNAME]],<br />\n<br />\nThank you for submiting your question to [[SITENAME]].<br />\n<br />\nYour question will be answered shortly.<br />\n<br />\nThank you,<br />\nContact Administrator</p>\n\n<hr />\n<p><br />\nPlease do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
 (4, 'referral_invite', 'Invitation To Join [[SITENAME]]', '<p>Hello [[REFERRALSFIRSTNAME]],<br />\r\n<br />\r\nYou have been invited by your friend [[FRIENDSFIRSTNAME]] to join [[SITENAME]]<br />\r\n<br />\r\nCome and see their events and also start to share your events with only the people you wish.<br />\r\n<br />\r\n[[FRIENDSFIRSTNAME]] likes this so much and they know you will too. Come take a look at what we have to offer, we know you will love our site. Be sure to click on the referral link in this email so [[FRIENDSFIRSTNAME]] receives a gift and if you also refer a friend, you will too.<br />\r\n<br />\r\n[[SITENAME]]<br />\r\nThank you,<br />\r\n<span style=\"color: rgb(0, 0, 255);\">Referral Administrator</span></p>\r\n\r\n<hr />\r\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\r\n', 1),
@@ -6151,7 +6484,8 @@ INSERT INTO `user_emails` (`id`, `user_emails_type`, `user_emails_subject`, `use
 (11, 'auction_invoice', 'Auction Invoices from [[SITENAME]]', '<p>Dear [[USERNAME]],</p>\n\n<p>Thank you for your bids in our auction.</p>\n\n<p>The document is also available under &#34;My Account&#34; in &#34;Invoices&#34; on the website of [[SITENAME]].</p>\n\n<p>Payments</p>\n\n<p>We request that you transfer the total amount due to our account at the ___________ bank:</p>\n\n<p>* Account number: _____________</p>\n\n<p>* On behalf of: ___________.</p>\n\n<p>* IBAN:</p>\n\n<p>* BIC/SWIFT:</p>\n\n<p>* Reference number: [[INVOICENO]]</p>\n\n<p>Please note that no transfers are made between banks on weekends (Friday from 16.00 hrs).</p>\n\n<p>We thank you for the confidence shown in our company.</p>\n\n<p>Yours sincerely,<br />\nAdministrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAME]].</p>\n', 1),
 (12, 'successful_unique_lowest_bid', 'Successful Lowest Unique Bid Placed at [[SITENAME]]', '<p>Hello [[USERNAME]],<br />\n<br />\nYour bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] was placed successfully. Your bid was Unique and Lowest! .<br />\n<br />\nPlease watch the bids in your account, as the status of your bids can change as new bids are placed by other members.<br />\n<br />\nThank you,<br />\nBid Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
 (13, 'gift_coupon_email', 'You have received a gift coupon for [[sender]]', '<p>Dear [[name]],</p>\n\n<p>Lucky You!</p>\n\n<p>You have received a gift coupon for [[sender]] which can be used at [[sitename]].com</p>\n\n<p>Your special message says</p>\n\n<p>[[msg]]</p>\n\n<p>To redeem your coupon use the following coupon code in Buy Credit section of [[sitename]].com after you have logged on or set up an account.</p>\n\n<p>Cut and Paste this code: [[couponcode]] and then add the last 4 numbers of your mobile to activate</p>\n\n<p>Note that this voucher expires on [[expiredate]]</p>\n\n<p>Thank you,<br />\nCoupon Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].com</p>\n', 1),
-(14, 'bid_credits', 'You have purchased a credit offer plan [[PAID]] Paid Credits & [[FREE]] Free Credits', '<p>Dear [[NAME]],</p>\n\n<p>&#160;</p>\n\n<p>You have purchased a bid credit point for &#160;[[PAID]] Paid Credits &#38; [[FREE]] Free Credits which can be used at [[SITENAME]].com</p>\n\n<p>&#160;&#160;</p>\n\n<p>Thank you,<br />\nCoupon Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].com</p>\n', 1);
+(14, 'bid_credits', 'You have purchased a credit offer plan [[PAID]] Paid Credits & [[FREE]] Free Credits', '<p>Dear [[NAME]],</p>\n\n<p>&#160;</p>\n\n<p>You have purchased a bid credit point for &#160;[[PAID]] Paid Credits &#38; [[FREE]] Free Credits which can be used at [[SITENAME]].com</p>\n\n<p>&#160;&#160;</p>\n\n<p>Thank you,<br />\nCoupon Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].com</p>\n', 1),
+(15, 'reset_password', 'Reset Password', '<p>Hello [[USER_NAME]],</p>\n\n<p>To reset your password, please follow the [[LINK]].</p>\n\n<p>This link will be valid for 5 minutes only.</p>\n\n<p>&#160;</p>\n\n<p>Thank you<br />\nBid Administrator</p>\n', 1);
 
 -- --------------------------------------------------------
 
@@ -6187,7 +6521,17 @@ INSERT INTO `user_payment` (`id`, `user_id`, `purchase_date`, `amount`, `txn_id`
 (7, 'UNI4-2021', '2021-08-24', '12.30', '8VY44001N7742174V', 25, 'credit_pay', '10.00', 20, 10, 1),
 (8, 'UNI4-2021', '2021-08-24', '12.30', '2YV51758BM5997306', 25, 'credit_pay', '10.00', 20, 10, 2),
 (9, 'UNI4-2021', '2021-08-24', '7.10', 'ch_3JRiwPSJTrSMxFdu1nAmHsyd', 20, 'coupon_pay', '5.00', 20, 0, 2),
-(10, 'UNI4-2021', '2021-08-24', '12.20', 'ch_3JRiyiSJTrSMxFdu1n5A7Jt7', 23, 'coupon_pay', '10.00', 30, 0, 2);
+(10, 'UNI4-2021', '2021-08-24', '12.20', 'ch_3JRiyiSJTrSMxFdu1n5A7Jt7', 23, 'coupon_pay', '10.00', 30, 0, 2),
+(11, 'UNI12-2021', '2021-11-02', '32.60', 'ch_3JrJgoSJTrSMxFdu1zmH2siY', 27, 'credit_pay', '30.00', 60, 30, 2),
+(12, 'UNI12-2021', '2021-11-02', '32.60', 'ch_3JrJosSJTrSMxFdu0RQyHh9H', 27, 'credit_pay', '30.00', 60, 30, 2),
+(13, 'UNI11-2021', '2021-11-16', '32.60', 'ch_3JwLrwSJTrSMxFdu0HFlLilk', 27, 'credit_pay', '30.00', 60, 30, 2),
+(14, 'UNI11-2021', '2021-11-17', '32.60', 'ch_3JwSImSJTrSMxFdu14qG4wtP', 27, 'credit_pay', '30.00', 60, 30, 2),
+(15, 'UNI13-2021', '2021-11-27', '32.60', 'ch_3K05PbSJTrSMxFdu0FMxd2FO', 27, 'credit_pay', '30.00', 60, 30, 2),
+(16, 'UNI11-2021', '2021-11-27', '32.60', 'ch_3K0N1TSJTrSMxFdu0eC7QfDA', 27, 'credit_pay', '30.00', 60, 30, 2),
+(17, 'UNI11-2021', '2021-12-09', '12.20', 'ch_3K4jTXSJTrSMxFdu0XbQbQLx', 25, 'credit_pay', '10.00', 20, 10, 2),
+(18, 'UNI11-2021', '2021-12-17', '12.20', 'ch_3K7JhDSJTrSMxFdu0IQsduia', 25, 'credit_pay', '10.00', 20, 10, 2),
+(19, 'UNI11-2021', '2022-01-04', '7.10', 'ch_3KE5kSSJTrSMxFdu05r9tKFF', 20, 'coupon_pay', '5.00', 20, 0, 2),
+(20, 'UNI11-2021', '2022-07-07', '7.10', 'ch_3LIsHXSJTrSMxFdu1cCH6jnZ', 20, 'coupon_pay', '5.00', 20, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -6211,7 +6555,17 @@ INSERT INTO `user_referral` (`id`, `user_id`, `referral_id`) VALUES
 (3, 'UNI6-2021', ''),
 (4, 'UNI7-2021', '0'),
 (5, 'UNI8-2021', '0'),
-(6, 'UNI9-2021', '0');
+(6, 'UNI9-2021', '0'),
+(7, 'UNI10-2021', '0'),
+(8, 'UNI11-2021', '0'),
+(9, 'UNI12-2021', '0'),
+(10, 'UNI13-2021', '0'),
+(11, 'UNI14-2021', '0'),
+(12, 'UNI15-2021', '0'),
+(13, 'UNI16-2021', '0'),
+(14, 'UNI17-2021', '0'),
+(15, 'UNI18-2022', '0'),
+(16, 'UNI19-2022', '0');
 
 -- --------------------------------------------------------
 
@@ -6248,7 +6602,17 @@ INSERT INTO `user_register` (`reg_id`, `user_id`, `first_name`, `last_name`, `us
 (2, 'UNI2-2020', 'pankaj', 'bains', 'R2dvNGFGdHEvbXJwcllKYmRIWlM0UT09', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', 'cmV1VGE0M1lkY2Q5NW1ETUhpZldWdz09', '9868950850', 'AD', '::1', 1, 0, 0, '2020-04-03 03:03:00', '', 1, 0, 1),
 (4, 'UNI4-2021', 'kishor', 'kumar', 'b1hiUGEycmtqMHg5OUQwbmJ4UEd1UT09', 'Q0pxaWgxZ3VIY1F2SFdXZ0R3dklwNEtlcDRrZGU2Uzd5bFhYTFN6K1Iraz0=', 'cmV1VGE0M1lkY2Q5NW1ETUhpZldWdz09', '8863822726', 'IN', '127.0.0.1', 1, 1, 0, '2021-07-27 10:29:34', '', 1, 0, 0),
 (9, 'UNI9-2021', 'kk ', 'kumar raj', 'TmdnMHF1T3hHNExTMW1HVll5TVhkQT09', 'TEFVT0JjNzZDdmFIaDRrZXNxb2J2VkpqcGYwdG4vVWE4SEVpaTdJZHo2Yz0=', 'cmV1VGE0M1lkY2Q5NW1ETUhpZldWdz09', '0', '', '127.0.0.1', 1, 1, 0, '2021-08-23 12:37:33', '', 1, 0, 1),
-(8, 'UNI8-2021', 'kishor', 'kumar', 'T1V4dUx0aDBCOWdGNmtVL1h4YkRYQT09', 'SWd4dFIvYmNReXdjZjNaRzdlRVJESi8zczdiUjR3MzdtWUhBdHJtSDNwST0=', 'cmV1VGE0M1lkY2Q5NW1ETUhpZldWdz09', '0', '', '::1', 1, 1, 0, '2021-08-23 07:10:23', NULL, 1, 0, 1);
+(8, 'UNI8-2021', 'kishor', 'kumar', 'T1V4dUx0aDBCOWdGNmtVL1h4YkRYQT09', 'SWd4dFIvYmNReXdjZjNaRzdlRVJESi8zczdiUjR3MzdtWUhBdHJtSDNwST0=', 'cmV1VGE0M1lkY2Q5NW1ETUhpZldWdz09', '0', '', '::1', 1, 1, 0, '2021-08-23 07:10:23', NULL, 1, 0, 1),
+(10, 'UNI10-2021', 'MOHD', 'ASHRAF', 'Zm10dXZHV0J2R2hjWUo0MEVYM21tQT09', 'c0VxRTVDdGcyeDRqWjgrV3N2R3ZPYjZCM1d2STFVNTRGQ29wWGpuM1pzRT0=', 'SndoOEtmdEdyYUF2dm5hVXhZclpyZz09', '0', '', '::1', 1, 1, 0, '2021-10-20 13:38:07', NULL, 1, 0, 1),
+(11, 'UNI11-2021', 'MOHD', 'Abuzar', 'Zm10dXZHV0J2R2hjWUo0MEVYM21tQT09', 'ZDZSZVdZdHAxQk51aklJMEdDZWhVUGlXbHhway9relk0L1gyZXBZZHBFZz0=', 'aU5uaFgwb1Q4dVU3QkQ1QTdEY0I1dz09', '9650154225', 'IN', '::1', 1, 1, 0, '2021-10-20 13:41:31', '', 1, 0, 1),
+(12, 'UNI12-2021', 'MOHD', 'ASHRAF', 'SUhTdHFSNk4yQlZzdExjd2VYTlRZdz09', 'UFJ2L29zaHgrMmF1K0h6OE5BYWtRTkwrTVUyZjkrNXNyWC9CUkpISXl4VT0=', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '0', 'IN', '::1', 1, 1, 0, '2021-11-02 09:47:05', 'Male', 0, 0, 1),
+(13, 'UNI13-2021', 'saif', 'mohd', 'N1JGU1NmcnIydWtiS0c0QWpsRXJVdz09', 'THpCM0UzVFBidXdCbDJ0NXRsWFJMUT09', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '9876543210', 'IN', '::1', 1, 1, 0, '2021-11-26 14:23:18', NULL, 1, 0, 1),
+(14, 'UNI14-2021', 'tauheed', 'ahmad', 'Ulp0aC9NNDFXU3gvR3BtVzZjclp0dz09', 'Um91MFpCNXYwVXZ5UHM4VCtEMWN6NXVpWmFIQ2tPays5N0ZzclZheDBoWT0=', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '0', '', '::1', 1, 1, 0, '2021-12-09 15:10:53', NULL, 1, 0, 1),
+(15, 'UNI15-2021', 'Kishor', 'Kumar', 'dDFxb2hNVE5IRUZjTjkraGRvWWMrdz09', 'SkI0VmVQUGxOdkFIa1dzaDFWNloyVGhZZ25LaE12TE01eGxEZlRZZ0tMST0=', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '0', '', '::1', 1, 1, 0, '2021-12-09 15:18:27', NULL, 1, 0, 1),
+(16, 'UNI16-2021', 'kislay', 'Komal', 'Y2E3RnpLclYwN3B2eWRjNXlsd0oxUT09', 'NmpiNi94WTl4T1hEU1RWNHFYYVVHdUw0VSt3Y3FHdC9JalNBTHU0Vmlwcz0=', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '0', '', '127.0.0.1', 1, 1, 0, '2021-12-11 16:30:48', NULL, 1, 0, 1),
+(17, 'UNI17-2021', 'Rahul', 'Kumar', 'OVBWcjRReUE2Q2pVYkliWFZaWFlrUT09', 'TFhnWG96cW9nRGNpVFhYZ3Q1dUM3Zz09', 'ZEZiYkhobFIvRGNJVEtYcHBSaDlhQT09', '0', '', '127.0.0.1', 1, 1, 0, '2021-12-11 16:32:44', NULL, 1, 0, 1),
+(18, 'UNI18-2022', 'taaheed', 'alam', 'Ulp0aC9NNDFXU3gvR3BtVzZjclp0dz09', 'dFpXNURCbzc0Y3hnQkl6b1ZOUlJYZG83Q2JMSzJuaCtHRXMwNDN0RHBoWT0=', 'NDRFeThJcHcvcWhTQTFkL0paT2lPdz09', '0', '', '::1', 0, 1, 0, '2022-02-09 18:54:48', NULL, 1, 0, 1),
+(19, 'UNI19-2022', 'Mohd', 'Shahrukh', 'ZGZqT3lxZ2ptM2FNQnpMZW0zY3hXdz09', 'VERKUThKM2cyMEdVRGFsSU1CcStrQT09', 'aU5uaFgwb1Q4dVU3QkQ1QTdEY0I1dz09', '9876543219', 'IN', '127.0.0.1', 1, 1, 0, '2022-07-07 10:46:15', NULL, 1, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -6319,6 +6683,12 @@ ALTER TABLE `auction_media`
   ADD UNIQUE KEY `auct_id` (`img_id`);
 
 --
+-- Indexes for table `auction_wishlist`
+--
+ALTER TABLE `auction_wishlist`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `auction_won`
 --
 ALTER TABLE `auction_won`
@@ -6378,9 +6748,21 @@ ALTER TABLE `manage_paymentgateway`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `manage_subscriber`
+--
+ALTER TABLE `manage_subscriber`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `manage_wallets`
 --
 ALTER TABLE `manage_wallets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_reset`
+--
+ALTER TABLE `password_reset`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -6470,13 +6852,13 @@ ALTER TABLE `admin_config_social`
 -- AUTO_INCREMENT for table `admin_users`
 --
 ALTER TABLE `admin_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `auction_bids`
 --
 ALTER TABLE `auction_bids`
-  MODIFY `bid_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `bid_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `auction_category`
@@ -6488,31 +6870,37 @@ ALTER TABLE `auction_category`
 -- AUTO_INCREMENT for table `auction_features`
 --
 ALTER TABLE `auction_features`
-  MODIFY `auct_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `auct_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `auction_invoice`
 --
 ALTER TABLE `auction_invoice`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `auction_items`
 --
 ALTER TABLE `auction_items`
-  MODIFY `auct_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `auct_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `auction_media`
 --
 ALTER TABLE `auction_media`
-  MODIFY `img_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `img_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `auction_wishlist`
+--
+ALTER TABLE `auction_wishlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
 
 --
 -- AUTO_INCREMENT for table `auction_won`
 --
 ALTER TABLE `auction_won`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `city`
@@ -6551,16 +6939,28 @@ ALTER TABLE `manage_paymentgateway`
   MODIFY `id` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `manage_subscriber`
+--
+ALTER TABLE `manage_subscriber`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `manage_wallets`
 --
 ALTER TABLE `manage_wallets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `password_reset`
+--
+ALTER TABLE `password_reset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `user_address`
 --
 ALTER TABLE `user_address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_affiliates`
@@ -6578,7 +6978,7 @@ ALTER TABLE `user_bidcoupon_rate`
 -- AUTO_INCREMENT for table `user_bidcoupon_records`
 --
 ALTER TABLE `user_bidcoupon_records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `user_bidcredit_rate`
@@ -6590,31 +6990,31 @@ ALTER TABLE `user_bidcredit_rate`
 -- AUTO_INCREMENT for table `user_credits`
 --
 ALTER TABLE `user_credits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_emails`
 --
 ALTER TABLE `user_emails`
-  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user_payment`
 --
 ALTER TABLE `user_payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `user_referral`
 --
 ALTER TABLE `user_referral`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_register`
 --
 ALTER TABLE `user_register`
-  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
