@@ -42,6 +42,9 @@ class Frontend_home extends Frontend_Controller {
 
 			$data['content_newauction']=$this->frontend_home_m->get_newauction();
 
+			$data['side_banner']=$this->frontend_home_m->get_side_banner();
+			print_r($data['side_banner']); die;
+
 			$this->frontend_templates->index($data, $this->settings());
 				
 				

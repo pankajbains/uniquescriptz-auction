@@ -106,6 +106,7 @@ $(document).ready(function () {
 							
 								$('#success').show().delay(1000).fadeOut();
 								$("#"+html).hide();
+								location.reload();
 
 							}
 

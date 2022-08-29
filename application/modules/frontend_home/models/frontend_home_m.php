@@ -26,7 +26,7 @@ class frontend_home_m extends CI_Model {
 
 		public function get_featuredauction(){
 
-			$this->db->select('auction_items.auction_id, auction_media.auction_icon_img, auction_items.auction_name');
+			$this->db->select('auction_items.auction_id, auction_media.auction_icon_img, auction_items.auction_name, auction_items.auction_nprice');
 			$this->db->from('auction_items');
 			$this->db->join('auction_media', 'auction_items.auction_id = auction_media.auction_id');
 			$this->db->join('auction_features', 'auction_items.auction_id = auction_features.auction_id');
@@ -49,6 +49,19 @@ class frontend_home_m extends CI_Model {
 			$this->db->join('auction_media', 'auction_items.auction_id = auction_media.auction_id');
 
 			$wharray = array('auction_items.auction_sdate >='=>date('Y-m-d', strtotime('-20 day', time())), 'auction_closed' => '0', 'auction_open' => '1');
+			$this->db->where($wharray);
+
+			$query = $this->db->get();
+			//var_dump($this->db->last_query());
+			return $query->result_array($query);
+
+		}
+
+		public function get_side_banner(){
+			
+			$this->db->select('*');
+			$this->db->from('manage_banner');
+			$wharray = array('manage_banner.open_banner'=>1);
 			$this->db->where($wharray);
 
 			$query = $this->db->get();

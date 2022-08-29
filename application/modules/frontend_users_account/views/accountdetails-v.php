@@ -89,7 +89,7 @@
 
                                                 <div class="single-input single-input-half">
                                                     <label for="account-details-mobile">Pincode*</label>
-                                                    <input type="number" id="pin" name="pin" value="<?php echo $content_address[0]['pin']?>">
+                                                    <input type="text" id="pin" name="pin" value="<?php echo $content_address[0]['pin']?>">
                                                 </div>
 
 												<div class="single-input single-input-half">
@@ -104,7 +104,7 @@
 															
 															if($content_account[0]['country']==$country[$i]['Code2']){$selected="selected";}else{$selected="";}
 
-															 echo "<option value='".$country[$i]['Code2']."' ".$selected.">".$country[$i]['Name']."</option>";
+															 echo "<option value='".$country[$i]['Code2']."' ".$selected." >".$country[$i]['Name']."</option>";
 
 														 }
 														

@@ -84,8 +84,10 @@
 														<i class="icon-pencil bigger-130"></i>
 													</a>
 
-													<a class="red" id="delrec" name="delrec" value="<?php echo $admin_users[$i]['id'].'|admin_users|id';?>">
+													<a class="red" id="delrec" name="delrec" value="<?php echo $admin_users[$i]['id'].'|admin_users|id';?>"style="cursor:pointer;" class="tooltip-error" data-rel="tooltip" title="Delete">
+													<span class="red">
 														<i class="icon-trash bigger-130"></i>
+													</span>
 													</a>
 												</div>
 

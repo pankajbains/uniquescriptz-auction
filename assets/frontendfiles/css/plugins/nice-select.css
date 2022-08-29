@@ -82,6 +82,9 @@
 .nice-select.wide .list {
 	left: 0 !important;
 	right: 0 !important;
+	max-height: 260px;
+	overflow-y: auto;
+	overscroll-behavior-x: none;
 }
 .nice-select.right {
 	float: right;

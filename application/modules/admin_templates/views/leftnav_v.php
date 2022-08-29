@@ -300,6 +300,42 @@
 					</li>
 					
 					<?php } ?>
+
+					<!-- Manage Banner -->
+
+					<?php //if(in_array('manage_categories', $sections)){ ?>
+					 
+						
+					 <li>
+					 <a href="#" class="dropdown-toggle">
+						 <i class="icon-edit"></i>
+						 <span class="menu-text"> Manage Banner </span>
+
+						 <b class="arrow icon-angle-down"></b>
+					 </a>
+
+					 <ul class="submenu"  <?php if($this->router->fetch_class()=="admin_banner"){echo "style='display:block'";}?>>
+						 <?php if(in_array('create', $permisions)){ ?>
+						 <li>
+							 <a href="<?php echo base_url()?>admin_banner/add_banner.html">
+								 <i class="icon-double-angle-right"></i>
+								 Add Banner
+							 </a>
+						 </li>
+						 <?php } ?>
+						 <?php if(in_array('read', $permisions)){ ?>
+						 <li>
+							 <a href="<?php echo base_url()?>admin_banner/view_banner.html">
+								 <i class="icon-double-angle-right"></i>
+								 View Banner
+							 </a>
+						 </li>
+						 <?php } ?>
+					 </ul>
+				 </li>
+				 
+				 <?php //} ?>
+
 				<!-- Manage Auction Settings -->
 					<?php if(in_array('manage_auctions', $sections)){ ?>
 					   

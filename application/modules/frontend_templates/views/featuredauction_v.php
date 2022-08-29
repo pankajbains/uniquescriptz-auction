@@ -47,13 +47,9 @@ $i++;
                     </div>
                     <div class="col-lg-12">
                         <div class="hiraola-product_slider">
-
-						<?php
-							for($f=0;$f<count($content_featuredauction);$f++){
-
-							
-						?>
-							
+						    <?php
+							    for($f=0;$f<count($content_featuredauction);$f++){
+						    ?>
                             <!-- Begin Hiraola's Slide Item Area -->
                             <div class="slide-item">
                                 <div class="single_product">
