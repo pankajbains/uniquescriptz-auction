@@ -1,0 +1,63 @@
+/*----------------------------------------*/
+/*  22 - Components - Breadcrumb
+/*----------------------------------------*/
+.breadcrumb-area {
+	/*background-image: url("../images/breadcrumb/1.jpg");*/
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	min-height: 100px;
+	position: relative;
+	border-bottom: 1px solid #eee;
+	@include breakpoint (max-x_small) {
+		background-position: right;
+	}
+	.breadcrumb-content {
+		@include absCenter;
+		text-align: center;
+		@include breakpoint (max-x_small) {
+			width: 100%;
+		}
+		> h2 {
+			font-weight: $heading-font_weight;
+			color: $bg-black_color;
+			text-transform: uppercase;
+			text-align: center;
+			font-size: 36px;
+			margin-bottom: 0;
+			padding-bottom: 20px;
+			@include breakpoint (max-normal) {
+				font-size: 20px;
+			}
+		}
+		ul {
+			> li {
+				color: $bg-black_color;
+				display: inline-block;
+				padding-left: 20px;
+				position: relative;
+				&:first-child {
+					padding-left: 0;
+				}
+				&:before {
+					content: "\f054";
+					font-family: 'Font Awesome 5 Free';
+					font-weight: 600;
+					position: absolute;
+					right: -15px;
+					top: 2px;
+					font-size: 10px;
+					color: $bg-black_color;
+				}
+				&:last-child {
+					&:before {
+						display: none;
+					}
+				}
+				> a {
+					color: $bg-black_color;
+				}
+			}
+		}
+	}
+}
