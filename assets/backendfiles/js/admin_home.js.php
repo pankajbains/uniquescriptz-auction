@@ -172,7 +172,7 @@ $(document).ready(function () {
 						processData:false,        // To send DOMDocument or non processed data file it is set to false
 						success: function(data)   // A function to be called if request succeeds
 						{
-									alert(data);
+									//alert(data);
 									if (data == 1) {
 										$(window).scrollTop(0);
 										$('#success').show();//.delay(1000).fadeOut();

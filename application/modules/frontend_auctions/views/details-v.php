@@ -242,21 +242,17 @@ $i++;
 		 <?php
 			$this->load->view('related-v');
 		?>
-		
 
 		<?php
-
-
-
-				$randvalue=number_format($this->common->frand(.01, .05, 3), 2, '.', '');
+				$randvalue=number_format($this->common->frand(.01, .10, 3), 2, '.', '');
 				$randvalueplus=number_format($this->common->frand(.01, .10, 3), 2, '.', '');
 				$randvalueneg=number_format($this->common->frand(.01, .10, 3), 2, '.', '');
-				
+				//var_dump($content_bids);
 				for($i=0;$i<count($content_bids);$i++){
 
-					//$bids[]=$content_bids[$i]['bid_price'];
-				    //	$counts[]=$content_bids[$i]['total'];
-
+					$bids[]=$content_bids[$i]['bid_price'];
+				    $counts[]=$content_bids[$i]['total'];
+//echo $content_bids[$i]['total'];
 					if($content_bids[$i]['bid_status']==0){
 						$msg='Lowest Unique Bid';
                         $customBullet="https://www.thestockmarket.guru/img/redstar.png";
@@ -274,7 +270,7 @@ $i++;
 				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
-               // print_r($datagraph);
+                //print_r($datagraph);
                 //var_dump($dataprovider);
 		?>
 		<script src="<?php echo base_url();?>assets/frontendfiles/amcharts/amcharts.js" type="text/javascript"></script>

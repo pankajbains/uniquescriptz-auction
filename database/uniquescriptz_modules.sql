@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 23, 2021 at 03:32 AM
--- Server version: 5.7.28-log
--- PHP Version: 7.4.1
+-- Host: 127.0.0.1
+-- Generation Time: Feb 07, 2023 at 03:32 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -44,7 +43,7 @@ CREATE TABLE `admin_config_app` (
   `email_support` varchar(60) DEFAULT NULL,
   `email_auto` varchar(60) DEFAULT NULL,
   `email_sales` varchar(60) DEFAULT NULL,
-  `site_address` text,
+  `site_address` text DEFAULT NULL,
   `site_phone` varchar(20) DEFAULT NULL,
   `auction_type` varchar(10) NOT NULL DEFAULT 'lowest'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -54,7 +53,7 @@ CREATE TABLE `admin_config_app` (
 --
 
 INSERT INTO `admin_config_app` (`id`, `config_type`, `site_invoice`, `site_currency`, `site_timezone`, `site_title`, `site_name`, `site_desc`, `site_header_logo`, `site_sticky_header_logo`, `site_favicon`, `site_analytics`, `email_support`, `email_auto`, `email_sales`, `site_address`, `site_phone`, `auction_type`) VALUES
-(14, 'site_settings', NULL, NULL, 'Australia/Sydney', 'UniqueScriptz-Auction', 'UniqueScriptz-Auctions', 'This is site description', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'UA-90619444-1', NULL, NULL, NULL, 'EK Group, Pioneer Drive, Ontario, Canada', '+91 9891944313', 'lowest'),
+(14, 'site_settings', NULL, NULL, 'Australia/Sydney', 'UniqueScriptz-Auction', 'UniqueScriptz-Auctions', 'This is Demo site description of Unique Script Auctions.', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'uniquescriptz-logo1.png', 'UA-90619444-1', NULL, NULL, NULL, 'EK Group, Pioneer Drive, Ontario, Canada', '+91 9868950850', 'lowest'),
 (15, 'email_settings', NULL, NULL, '', '', '', '', NULL, NULL, NULL, NULL, 'support@uniquescriptz.com', 'auto@uniquescriptz.com', 'sales@uniquescriptz.com', NULL, NULL, '');
 
 -- --------------------------------------------------------
@@ -66,12 +65,12 @@ INSERT INTO `admin_config_app` (`id`, `config_type`, `site_invoice`, `site_curre
 CREATE TABLE `admin_config_points` (
   `id` int(11) NOT NULL,
   `config_type` varchar(20) NOT NULL,
-  `points_register` smallint(2) NOT NULL DEFAULT '0',
-  `points_login` smallint(2) NOT NULL DEFAULT '0',
+  `points_register` smallint(2) NOT NULL DEFAULT 0,
+  `points_login` smallint(2) NOT NULL DEFAULT 0,
   `point_refer` smallint(2) DEFAULT NULL,
-  `points_fblikes` smallint(2) NOT NULL DEFAULT '0',
-  `points_fbshare` smallint(2) NOT NULL DEFAULT '0',
-  `points_tweet` smallint(2) NOT NULL DEFAULT '0',
+  `points_fblikes` smallint(2) NOT NULL DEFAULT 0,
+  `points_fbshare` smallint(2) NOT NULL DEFAULT 0,
+  `points_tweet` smallint(2) NOT NULL DEFAULT 0,
   `points_value` smallint(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -124,6 +123,7 @@ CREATE TABLE `admin_users` (
   `admin_email` varchar(60) DEFAULT NULL,
   `admin_role` varchar(60) DEFAULT NULL,
   `admin_access` varchar(255) DEFAULT NULL,
+  `admin_permission` varchar(255) DEFAULT NULL,
   `admin_status` smallint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -131,8 +131,8 @@ CREATE TABLE `admin_users` (
 -- Dumping data for table `admin_users`
 --
 
-INSERT INTO `admin_users` (`id`, `config_type`, `admin_username`, `admin_password`, `admin_cpassword`, `admin_email`, `admin_role`, `admin_access`, `admin_status`) VALUES
-(1, 'masteradmin', 'admin', 'e63e617266a52326d87833dc9f4a9843', 'e63e617266a52326d87833dc9f4a9843', 'admin@uniquescriptz.com', NULL, 'all', 1);
+INSERT INTO `admin_users` (`id`, `config_type`, `admin_username`, `admin_password`, `admin_cpassword`, `admin_email`, `admin_role`, `admin_access`, `admin_permission`, `admin_status`) VALUES
+(1, 'masteradmin', 'admin ', 'e63e617266a52326d87833dc9f4a9843', 'e63e617266a52326d87833dc9f4a9843', 'admin@uniquescriptz.com', 'masteradmin', '[\"manage_content\",\"manage_users\",\"manage_emails\",\"manage_categories\",\"manage_auctions\",\"manage_credits\",\"manage_payments\",\"manage_coupons\",\"manage_wallets\",\"manage_affiliates\"]', '[\"read\",\"write\",\"create\",\"delete\"]', 1);
 
 -- --------------------------------------------------------
 
@@ -147,9 +147,9 @@ CREATE TABLE `auction_bids` (
   `bid_status` smallint(1) DEFAULT NULL,
   `bid_price` decimal(15,2) DEFAULT NULL,
   `bid_credit` int(11) DEFAULT NULL,
-  `bid_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `mbrmail` tinyint(1) DEFAULT '0',
-  `hide` tinyint(1) NOT NULL DEFAULT '0'
+  `bid_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `mbrmail` tinyint(1) DEFAULT 0,
+  `hide` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -157,16 +157,66 @@ CREATE TABLE `auction_bids` (
 --
 
 INSERT INTO `auction_bids` (`bid_id`, `user_id`, `auction_id`, `bid_status`, `bid_price`, `bid_credit`, `bid_date`, `mbrmail`, `hide`) VALUES
-(1, 'UNI2-2020', 'LOC1-2019', 0, '1.03', 2, '2020-04-09 17:36:11', 0, 0),
-(2, 'UNI2-2020', 'LOC1-2019', 1, '1.04', 2, '2020-04-09 17:37:29', 0, 0),
-(3, 'UNI2-2020', 'LOC1-2019', 1, '1.36', 2, '2020-04-09 17:40:15', 0, 0),
-(4, 'UNI2-2020', 'LOC1-2019', 2, '1.37', 2, '2020-04-09 17:45:11', 0, 0),
-(5, 'UNI2-2020', 'LOC1-2019', 1, '1.38', 2, '2020-04-09 17:48:32', 0, 0),
-(6, 'UNI2-2020', 'LOC1-2019', 2, '1.37', 2, '2020-04-09 17:50:40', 0, 0),
-(7, 'UNI2-2020', 'LOC1-2019', 1, '1.45', 2, '2020-04-09 17:59:00', 0, 0),
-(8, 'UNI2-2020', 'LOC1-2019', 2, '1.37', 2, '2020-04-09 23:47:41', 0, 0),
-(9, 'UNI3-2020', 'LOC1-2019', 2, '2.04', 2, '2020-04-09 23:48:13', 0, 0),
-(10, 'UNI2-2020', 'LOC1-2019', 2, '2.04', 2, '2020-04-10 00:23:46', 0, 0);
+(1, 'COD1-2022', 'COD1-2022', 1, '20.32', 2, '2022-10-05 11:16:56', 0, 0),
+(2, 'COD1-2022', 'COD1-2022', 2, '23.26', 2, '2022-10-05 11:26:18', 0, 0),
+(3, 'COD1-2022', 'COD1-2022', 2, '23.26', 2, '2022-10-05 11:27:53', 0, 0),
+(4, 'COD2-2022', 'COD1-2022', 1, '23.27', 2, '2022-10-05 11:30:18', 0, 0),
+(5, 'COD1-2022', 'COD1-2022', 1, '23.28', 2, '2022-10-05 11:31:25', 0, 0),
+(6, 'COD1-2022', 'COD1-2022', 1, '23.29', 2, '2022-10-05 11:32:57', 0, 0),
+(7, 'COD1-2022', 'COD1-2022', 0, '0.10', 2, '2022-10-06 11:41:53', 0, 0),
+(8, 'COD2-2022', 'COD1-2022', 1, '0.20', 2, '2022-10-06 11:43:04', 0, 0),
+(9, 'COD1-2022', 'COD1-2022', 1, '0.30', 2, '2022-10-06 11:43:32', 0, 0),
+(10, 'COD1-2022', 'COD1-2022', 1, '0.40', 2, '2022-10-06 11:45:19', 0, 0),
+(11, 'COD1-2022', 'COD1-2022', 2, '0.12', 2, '2022-10-06 11:49:29', 0, 0),
+(12, 'COD1-2022', 'COD1-2022', 1, '10.00', 2, '2022-10-06 11:53:37', 0, 0),
+(13, 'COD1-2022', 'COD1-2022', 2, '11.00', 2, '2022-10-06 12:20:29', 0, 0),
+(14, 'COD1-2022', 'COD1-2022', 2, '11.00', 2, '2022-10-06 13:15:14', 0, 0),
+(15, 'COD1-2022', 'COD1-2022', 1, '13.00', 2, '2022-10-06 13:16:49', 0, 0),
+(16, 'COD1-2022', 'COD1-2022', 2, '0.12', 2, '2022-10-06 13:17:23', 0, 0),
+(17, 'COD1-2022', 'COD1-2022', 1, '0.25', 2, '2022-10-06 13:33:24', 0, 0),
+(18, 'COD1-2022', 'COD1-2022', 1, '0.29', 2, '2022-10-06 13:33:56', 0, 0),
+(19, 'COD1-2022', 'COD1-2022', 1, '0.50', 2, '2022-10-06 14:14:01', 0, 0),
+(20, 'COD1-2022', 'COD1-2022', 1, '0.60', 2, '2022-10-06 14:14:48', 0, 0),
+(21, 'COD1-2022', 'COD1-2022', 1, '0.90', 2, '2022-10-06 14:39:33', 0, 0),
+(22, 'COD1-2022', 'COD1-2022', 1, '0.85', 2, '2022-10-06 14:40:47', 0, 0),
+(23, 'COD1-2022', 'COD1-2022', 1, '0.98', 2, '2022-10-06 14:41:34', 0, 0),
+(24, 'COD1-2022', 'COD1-2022', 1, '1.62', 2, '2022-10-06 14:46:11', 0, 0),
+(25, 'COD1-2022', 'COD2-2022', 1, '2.03', 2, '2022-10-12 09:18:36', 0, 0),
+(26, 'USR2-2022', 'COD2-2022', 1, '0.32', 2, '2022-10-12 15:33:14', 0, 0),
+(27, 'USR2-2022', 'COD2-2022', 0, '0.11', 2, '2022-10-13 14:47:33', 0, 0),
+(28, 'USR2-2022', 'COD2-2022', 1, '0.12', 2, '2022-10-13 14:47:36', 0, 0),
+(29, 'USR2-2022', 'COD2-2022', 1, '0.13', 2, '2022-10-13 14:47:38', 0, 0),
+(30, 'USR2-2022', 'COD2-2022', 1, '0.15', 2, '2022-10-13 14:47:39', 0, 0),
+(31, 'USR2-2022', 'COD2-2022', 1, '0.14', 2, '2022-10-13 14:47:41', 0, 0),
+(32, 'USR2-2022', 'COD2-2022', 1, '0.16', 2, '2022-10-13 14:47:45', 0, 0),
+(33, 'USR2-2022', 'COD2-2022', 1, '0.17', 2, '2022-10-13 14:47:47', 0, 0),
+(34, 'USR2-2022', 'COD2-2022', 1, '0.18', 2, '2022-10-13 14:47:50', 0, 0),
+(35, 'USR2-2022', 'COD2-2022', 1, '0.19', 2, '2022-10-13 14:47:52', 0, 0),
+(36, 'USR2-2022', 'COD2-2022', 1, '0.20', 2, '2022-10-13 14:47:54', 0, 0),
+(37, 'USR2-2022', 'COD2-2022', 1, '0.21', 2, '2022-10-13 14:47:56', 0, 0),
+(38, 'USR2-2022', 'COD2-2022', 1, '0.23', 2, '2022-10-13 14:48:00', 0, 0),
+(39, 'USR2-2022', 'COD2-2022', 1, '0.26', 2, '2022-10-13 14:48:03', 0, 0),
+(40, 'USR2-2022', 'COD2-2022', 1, '0.24', 2, '2022-10-13 14:48:14', 0, 0),
+(41, 'USR2-2022', 'COD2-2022', 1, '0.25', 2, '2022-10-13 14:48:16', 0, 0),
+(42, 'USR2-2022', 'COD2-2022', 1, '0.27', 2, '2022-10-13 14:48:30', 0, 0),
+(43, 'USR2-2022', 'COD2-2022', 1, '0.28', 2, '2022-10-13 14:48:33', 0, 0),
+(44, 'USR2-2022', 'COD2-2022', 1, '0.29', 2, '2022-10-13 14:48:34', 0, 0),
+(45, 'USR2-2022', 'COD2-2022', 1, '0.30', 2, '2022-10-13 14:49:10', 0, 0),
+(46, 'USR2-2022', 'COD2-2022', 1, '0.33', 2, '2022-10-13 14:51:29', 0, 0),
+(47, 'USR2-2022', 'COD2-2022', 1, '0.34', 2, '2022-10-13 14:52:08', 0, 0),
+(48, 'USR2-2022', 'COD2-2022', 1, '0.35', 2, '2022-10-13 14:54:32', 0, 0),
+(49, 'USR2-2022', 'COD2-2022', 1, '0.36', 2, '2022-10-13 14:54:54', 0, 0),
+(50, 'USR2-2022', 'COD2-2022', 1, '0.37', 2, '2022-10-13 14:59:50', 0, 0),
+(51, 'USR2-2022', 'COD2-2022', 1, '0.41', 2, '2022-10-13 15:00:05', 0, 0),
+(52, 'USR2-2022', 'COD2-2022', 1, '0.72', 2, '2022-10-13 15:03:10', 0, 0),
+(53, 'USR2-2022', 'COD2-2022', 1, '0.43', 2, '2022-10-13 15:16:53', 0, 0),
+(54, 'USR2-2022', 'COD2-2022', 1, '0.45', 2, '2022-10-13 15:19:18', 0, 0),
+(55, 'USR2-2022', 'COD2-2022', 1, '0.46', 2, '2022-10-13 15:24:25', 0, 0),
+(56, 'USR2-2022', 'COD2-2022', 1, '0.47', 2, '2022-10-13 15:25:21', 0, 0),
+(57, 'COD1-2022', 'COD1-2022', 1, '2.36', 2, '2022-10-20 16:25:59', 0, 0),
+(58, 'COD1-2022', 'COD1-2022', 1, '0.11', 2, '2022-10-20 16:26:48', 0, 0),
+(59, 'COD1-2022', 'COD1-2022', 1, '0.13', 2, '2022-10-20 16:27:50', 0, 0),
+(60, 'COD1-2022', 'COD2-2022', 1, '2.36', 2, '2022-11-03 11:36:10', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -204,8 +254,118 @@ CREATE TABLE `auction_features` (
 --
 
 INSERT INTO `auction_features` (`auct_id`, `auction_id`, `featured`, `sretail`, `sallowed_bids`, `sreq_bids`, `stotal_bids`, `sremaining_bids`, `scurrent_bids`, `extend_auction`) VALUES
-(3, 'LOC3-2020', 1, 1, 1, 1, 1, 1, 1, 1),
-(4, 'LOC4-2020', 1, 1, 1, 1, 1, 1, 1, 2);
+(128, 'COD1-2022', 1, 1, 1, 1, 1, 1, 1, 1),
+(129, 'COD2-2022', 1, 1, 1, 1, 1, 1, 1, 1),
+(10, 'UNI10-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(11, 'UNI11-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(12, 'UNI12-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(100, 'UNI12-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(13, 'UNI13-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(101, 'UNI13-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(14, 'UNI14-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(102, 'UNI14-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(15, 'UNI15-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(103, 'UNI15-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(16, 'UNI16-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(104, 'UNI16-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(17, 'UNI17-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(105, 'UNI17-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(18, 'UNI18-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(106, 'UNI18-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(19, 'UNI19-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(107, 'UNI19-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(20, 'UNI20-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(108, 'UNI20-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(21, 'UNI21-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(109, 'UNI21-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(22, 'UNI22-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(110, 'UNI22-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(23, 'UNI23-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(111, 'UNI23-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(24, 'UNI24-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(112, 'UNI24-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(25, 'UNI25-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(113, 'UNI25-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(26, 'UNI26-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(114, 'UNI26-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(27, 'UNI27-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(115, 'UNI27-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(28, 'UNI28-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(116, 'UNI28-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(29, 'UNI29-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(117, 'UNI29-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(30, 'UNI30-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(118, 'UNI30-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(31, 'UNI31-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(119, 'UNI31-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(32, 'UNI32-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(120, 'UNI32-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(33, 'UNI33-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(121, 'UNI33-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(34, 'UNI34-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(122, 'UNI34-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(35, 'UNI35-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(123, 'UNI35-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(36, 'UNI36-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(124, 'UNI36-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(37, 'UNI37-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(125, 'UNI37-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(38, 'UNI38-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(126, 'UNI38-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(39, 'UNI39-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(127, 'UNI39-2022', 1, 1, 1, 1, 1, 1, 1, 0),
+(40, 'UNI40-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(41, 'UNI41-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(42, 'UNI42-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(43, 'UNI43-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(44, 'UNI44-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(45, 'UNI45-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(46, 'UNI46-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(47, 'UNI47-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(48, 'UNI48-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(49, 'UNI49-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(50, 'UNI50-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(51, 'UNI51-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(52, 'UNI52-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(53, 'UNI53-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(54, 'UNI54-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(55, 'UNI55-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(56, 'UNI56-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(57, 'UNI57-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(58, 'UNI58-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(59, 'UNI59-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(60, 'UNI60-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(61, 'UNI61-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(62, 'UNI62-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(63, 'UNI63-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(64, 'UNI64-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(65, 'UNI65-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(66, 'UNI66-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(67, 'UNI67-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(68, 'UNI68-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(69, 'UNI69-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(70, 'UNI70-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(71, 'UNI71-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(72, 'UNI72-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(73, 'UNI73-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(74, 'UNI74-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(75, 'UNI75-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(76, 'UNI76-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(77, 'UNI77-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(78, 'UNI78-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(79, 'UNI79-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(8, 'UNI8-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(80, 'UNI80-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(81, 'UNI81-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(82, 'UNI82-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(83, 'UNI83-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(84, 'UNI84-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(85, 'UNI85-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(86, 'UNI86-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(87, 'UNI87-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(88, 'UNI88-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(9, 'UNI9-2021', 1, 1, 1, 1, 1, 1, 1, 0),
+(97, 'UNI9-2022', 1, 1, 1, 1, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -220,11 +380,18 @@ CREATE TABLE `auction_invoice` (
   `auction_name` varchar(100) NOT NULL,
   `invoice_no` varchar(40) NOT NULL,
   `invoice_amount` varchar(10) NOT NULL,
-  `invoice_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `invoice_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `auction_plateform` varchar(25) NOT NULL,
   `status` smallint(11) NOT NULL,
   `delmark` smallint(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `auction_invoice`
+--
+
+INSERT INTO `auction_invoice` (`id`, `user_id`, `auction_id`, `auction_name`, `invoice_no`, `invoice_amount`, `invoice_date`, `auction_plateform`, `status`, `delmark`) VALUES
+(1, 'COD1-2022', 'COD1-2022', 'Jabra Connect 5t Work From Home Noise Cancelling Truly Wireless Headphones', 'COD110-2022', '0.10', '2022-10-28 10:20:23', 'lowest', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -235,25 +402,25 @@ CREATE TABLE `auction_invoice` (
 CREATE TABLE `auction_items` (
   `auct_id` int(11) NOT NULL,
   `auction_id` varchar(15) NOT NULL DEFAULT '',
-  `auction_name` varchar(60) DEFAULT NULL,
+  `auction_name` varchar(100) DEFAULT NULL,
   `auction_category` varchar(50) NOT NULL,
-  `auction_desc` text,
-  `auction_terms` text,
+  `auction_desc` text DEFAULT NULL,
+  `auction_terms` text DEFAULT NULL,
   `auction_type` tinyint(1) DEFAULT NULL,
-  `auction_bid` int(11) DEFAULT '0',
+  `auction_bid` int(11) DEFAULT 0,
   `auction_price` float(15,2) DEFAULT NULL,
   `auction_nprice` float(15,2) DEFAULT NULL,
   `auction_credits` smallint(10) DEFAULT NULL,
-  `auction_users_bid` smallint(5) DEFAULT '0',
+  `auction_users_bid` smallint(5) DEFAULT 0,
   `auction_max_bid` smallint(10) NOT NULL,
   `auction_bid_inc` float(10,2) DEFAULT NULL,
   `auction_sdate` date DEFAULT NULL,
   `auction_stime` time DEFAULT NULL,
   `auction_edate` date DEFAULT NULL,
   `auction_etime` time DEFAULT NULL,
-  `auction_open` tinyint(1) NOT NULL DEFAULT '0',
-  `auction_closed` tinyint(1) NOT NULL DEFAULT '0',
-  `auction_winner` tinyint(1) NOT NULL DEFAULT '0'
+  `auction_open` tinyint(1) NOT NULL DEFAULT 0,
+  `auction_closed` tinyint(1) NOT NULL DEFAULT 0,
+  `auction_winner` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -261,9 +428,8 @@ CREATE TABLE `auction_items` (
 --
 
 INSERT INTO `auction_items` (`auct_id`, `auction_id`, `auction_name`, `auction_category`, `auction_desc`, `auction_terms`, `auction_type`, `auction_bid`, `auction_price`, `auction_nprice`, `auction_credits`, `auction_users_bid`, `auction_max_bid`, `auction_bid_inc`, `auction_sdate`, `auction_stime`, `auction_edate`, `auction_etime`, `auction_open`, `auction_closed`, `auction_winner`) VALUES
-(1, 'LOC1-2019', 'Redmi 7A (Matte Black, 16 GB)  (2 GB RAM)', 'UNI30', 'With the Redmi 7A smartphone, you can access your digital world right in the palm of your hand. It is crafted and designed to ensure smooth operation and seamless performance. It comes with an HD Full Screen Display that enhances your viewing experience. Also, as it comes with up to 256 GB of expandable storage, you can store your favourite videos, photos, and songs and enjoy them anytime and anywhere. It also comes with powerful rear and front cameras that let you click stunning pictures and selfies. Access all these features and more, such as the High-volume Speaker, and Headphone-free FM Radio by unlocking the Redmi 7A instantly using the AI Face Unlock Technology.', 'With the Redmi 7A smartphone, you can access your digital world right in the palm of your hand. It is crafted and designed to ensure smooth operation and seamless performance. It comes with an HD Full Screen Display that enhances your viewing experience. Also, as it comes with up to 256 GB of expandable storage, you can store your favourite videos, photos, and songs and enjoy them anytime and anywhere. It also comes with powerful rear and front cameras that let you click stunning pictures and selfies. Access all these features and more, such as the High-volume Speaker, and Headphone-free FM Radio by unlocking the Redmi 7A instantly using the AI Face Unlock Technology.', 1, 10, 10.00, 349.00, 2, 0, 10, NULL, '2020-03-27', '23:40:15', '2020-05-02', '23:40:15', 1, 1, 1),
-(3, 'LOC3-2020', 'iphone', 'UNI30', 'test auction', 'test auction terms', 1, 0, 1.00, 200.00, 2, 0, 10, NULL, '2020-03-30', '22:49:30', '2020-05-30', '22:49:30', 1, 0, 0),
-(4, 'LOC4-2020', 'Redmi 7A (Matte Black, 16 GB)  (2 GB RAM)', 'UNI30', 'With the Redmi 7A smartphone, you can access your digital world right in the palm of your hand. It is crafted and designed to ensure smooth operation and seamless performance. It comes with an HD Full Screen Display that enhances your viewing experience. Also, as it comes with up to 256 GB of expandable storage, you can store your favourite videos, photos, and songs and enjoy them anytime and anywhere. It also comes with powerful rear and front cameras that let you click stunning pictures and selfies. Access all these features and more, such as the High-volume Speaker, and Headphone-free FM Radio by unlocking the Redmi 7A instantly using the AI Face Unlock Technology.', 'With the Redmi 7A smartphone, you can access your digital world right in the palm of your hand. It is crafted and designed to ensure smooth operation and seamless performance. It comes with an HD Full Screen Display that enhances your viewing experience. Also, as it comes with up to 256 GB of expandable storage, you can store your favourite videos, photos, and songs and enjoy them anytime and anywhere. It also comes with powerful rear and front cameras that let you click stunning pictures and selfies. Access all these features and more, such as the High-volume Speaker, and Headphone-free FM Radio by unlocking the Redmi 7A instantly using the AI Face Unlock Technology.', 1, 0, 10.00, 349.00, 2, 0, 100, NULL, '2020-03-27', '23:40:15', '2020-05-02', '23:40:15', 1, 0, 0);
+(1, 'COD1-2022', 'Jabra Connect 5t Work From Home Noise Cancelling Truly Wireless Headphones', 'UNI28', 'Staying connected is easier than ever thanks to the compact and comfortable design of these Jabra Connect 5t in-ear headphones. Equipped with Bluetooth technology, they pair effortlessly to your device, enabling hands free phone calls and meetings without the tangle of wires. They deliver 7 hours of play time in the ear buds and 28 hours with the case to get you through your work day and beyond.', '<p>30 days to return or exchange</p>\n\n<p>Condition: Unopened, No signs of use</p>\n', 1, 27, 0.10, 219.00, 2, 0, 20, NULL, '2022-10-04', '11:51:00', '2022-10-21', '11:51:00', 1, 1, 1),
+(2, 'COD2-2022', 'Jabra Connect 5t Work From Home Noise Cancelling Truly Wireless Headphones', 'UNI28', 'Staying connected is easier than ever thanks to the compact and comfortable design of these Jabra Connect 5t in-ear headphones. Equipped with Bluetooth technology, they pair effortlessly to your device, enabling hands free phone calls and meetings without the tangle of wires. They deliver 7 hours of play time in the ear buds and 28 hours with the case to get you through your work day and beyond.', '<p>30 days to return or exchange</p>\n\n<p>Condition: Unopened, No signs of use</p>\n', 1, 33, 0.10, 219.00, 2, 0, 100, NULL, '2022-10-04', '11:51:00', '2023-01-01', '11:51:00', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -278,7 +444,7 @@ CREATE TABLE `auction_media` (
   `auction_icon_img` varchar(100) DEFAULT NULL,
   `auction_img` varchar(255) DEFAULT NULL,
   `auction_video` varchar(255) DEFAULT NULL,
-  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_on` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -286,10 +452,33 @@ CREATE TABLE `auction_media` (
 --
 
 INSERT INTO `auction_media` (`img_id`, `auction_id`, `auction_name`, `auction_icon_img`, `auction_img`, `auction_video`, `created_on`) VALUES
-(1, 'LOC1-2019', 'iphone', 'iphone.jpg', 'iphone.jpg', NULL, '2020-01-02 05:32:00'),
-(2, 'LOC2-2019', 'Redmi 7A (Matte Black, 16 GB) (2 GB RAM)', 'xiaomi-redmi-7a.jpg', 'iphone.jpg,xiaomi-redmi-7a.jpg', NULL, '2020-01-01 23:50:28'),
-(5, 'LOC3-2020', 'iphone', 'iphone.jpg', 'iphone.jpg', NULL, '2020-02-25 04:17:20'),
-(6, 'LOC4-2020', 'Redmi 7A (Matte Black, 16 GB)  (2 GB RAM)', 'xiaomi-redmi-7a.jpg', 'xiaomi-redmi-7a.jpg', NULL, '2020-02-25 04:27:31');
+(1, 'COD1-2022', 'Jabra Connect 5t Work From Home Noise Cancelling Truly Wireless Headphones', '16448364.jpg', '16448364.jpg', NULL, '2022-10-04 15:52:47'),
+(2, 'COD2-2022', 'Jabra Connect 5t Work From Home Noise Cancelling Truly Wireless Headphones', '16662978545332auction_image.jpg', '16662978549433auction_image.jpg', NULL, '2022-10-07 16:14:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auction_wishlist`
+--
+
+CREATE TABLE `auction_wishlist` (
+  `id` int(11) NOT NULL,
+  `auction_id` varchar(255) NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `auction_wishlist`
+--
+
+INSERT INTO `auction_wishlist` (`id`, `auction_id`, `user_id`, `ip_address`, `created_at`, `updated_at`) VALUES
+(29, '0', 'COD1-2022', '', '2022-10-07 12:08:46', '2022-10-07 12:08:46'),
+(32, '0', 'COD1-2022', '', '2022-10-07 12:59:37', '2022-10-07 12:59:37'),
+(35, '0', 'COD1-2022', '', '2022-10-07 13:45:51', '2022-10-07 13:45:51'),
+(38, 'COD1-2022', 'USR2-2022', '', '2022-10-13 14:46:59', '2022-10-13 14:46:59');
 
 -- --------------------------------------------------------
 
@@ -300,17 +489,17 @@ INSERT INTO `auction_media` (`img_id`, `auction_id`, `auction_name`, `auction_ic
 CREATE TABLE `auction_won` (
   `id` int(11) NOT NULL,
   `auction_id` varchar(15) DEFAULT NULL,
-  `bid_id` int(11) NOT NULL DEFAULT '0',
+  `bid_id` int(11) NOT NULL DEFAULT 0,
   `user_id` varchar(15) DEFAULT NULL,
-  `bid_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `bid_price` decimal(10,2) NOT NULL DEFAULT 0.00,
   `won_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `won_status` int(11) NOT NULL DEFAULT '0',
-  `payment` smallint(1) DEFAULT '0',
-  `invoicesent` smallint(1) NOT NULL DEFAULT '0',
+  `won_status` int(11) NOT NULL DEFAULT 0,
+  `payment` smallint(1) DEFAULT 0,
+  `invoicesent` smallint(1) NOT NULL DEFAULT 0,
   `delivered` varchar(30) DEFAULT '0',
   `carrier` varchar(60) DEFAULT NULL,
   `trknumber` varchar(60) DEFAULT NULL,
-  `delmark` smallint(11) NOT NULL DEFAULT '0'
+  `delmark` smallint(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -318,7 +507,7 @@ CREATE TABLE `auction_won` (
 --
 
 INSERT INTO `auction_won` (`id`, `auction_id`, `bid_id`, `user_id`, `bid_price`, `won_date`, `won_status`, `payment`, `invoicesent`, `delivered`, `carrier`, `trknumber`, `delmark`) VALUES
-(4, 'LOC1-2019', 1, 'UNI2-2020', '1.03', '2020-05-02 18:56:21', 1, 0, 1, '0', NULL, NULL, 0);
+(1, 'COD1-2022', 7, 'COD1-2022', '0.10', '2022-10-28 10:20:23', 0, 0, 1, '0', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -331,7 +520,7 @@ CREATE TABLE `city` (
   `Name` char(35) NOT NULL DEFAULT '',
   `CountryCode` char(3) NOT NULL DEFAULT '',
   `District` char(20) NOT NULL DEFAULT '',
-  `Population` int(11) NOT NULL DEFAULT '0'
+  `Population` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4432,44 +4621,50 @@ CREATE TABLE `cms_pages` (
   `cms_id` smallint(2) NOT NULL,
   `cms_page_name` varchar(60) DEFAULT NULL,
   `cms_page_url` varchar(60) DEFAULT NULL,
-  `cms_page_heading1` text,
-  `cms_page_heading2` text,
-  `cms_page_heading3` text,
-  `cms_page_paragraph1` text,
-  `cms_page_paragraph2` text,
-  `cms_page_paragraph3` text,
-  `cms_page_paragraph4` text,
-  `cms_page_paragraph5` text,
-  `cms_page_paragraph6` text,
-  `cms_page_paragraph7` text,
-  `active` smallint(2) DEFAULT '0'
+  `cms_page_html` longtext DEFAULT NULL,
+  `cms_page_css` longtext DEFAULT NULL,
+  `cms_page_components` longtext DEFAULT NULL,
+  `cms_page_styles` longtext DEFAULT NULL,
+  `cms_page_assets` longtext DEFAULT NULL,
+  `cms_page_heading1` text DEFAULT NULL,
+  `cms_page_heading2` text DEFAULT NULL,
+  `cms_page_heading3` text DEFAULT NULL,
+  `cms_page_paragraph1` text DEFAULT NULL,
+  `cms_page_paragraph2` text DEFAULT NULL,
+  `cms_page_paragraph3` text DEFAULT NULL,
+  `cms_page_paragraph4` text DEFAULT NULL,
+  `cms_page_paragraph5` text DEFAULT NULL,
+  `cms_page_paragraph6` text DEFAULT NULL,
+  `cms_page_paragraph7` text DEFAULT NULL,
+  `active` smallint(2) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cms_pages`
 --
 
-INSERT INTO `cms_pages` (`cms_id`, `cms_page_name`, `cms_page_url`, `cms_page_heading1`, `cms_page_heading2`, `cms_page_heading3`, `cms_page_paragraph1`, `cms_page_paragraph2`, `cms_page_paragraph3`, `cms_page_paragraph4`, `cms_page_paragraph5`, `cms_page_paragraph6`, `cms_page_paragraph7`, `active`) VALUES
-(1, 'about us', 'about-us', '<h2>About <span>Us</span></h2>\n', '', '', '<h1>Company</h1>\nWe aims to be one of the largest Internet retailers of branded computer technology and digital lifestyle products with more than 5000 products from top international and domestic brands.<br />\n<br />\nOur business philosophy is simple: offer consumers and businesses what they want, when they want it.', '<h1>Products</h1>\nWe offer our customers over 5000 quality products, and our list of product categories and product offerings is growing every day. customers know they are getting the best prices and exclusive offers on a huge range of computer technology products like desktops, notebooks, printers, mobile phones, networking, digital cameras, software, storage and more. Plus, we offer other interesting products such as LCD TVs, MP3 players, gaming and home electronics.<br />\n<br />\nOur direct association with all the major brands means our customers will always find special deals on great products from the biggest names in the industry. And to help our customers choose the right products, we make it easy to find availability, pricing, reviews and ratings.', '<h1>Services</h1>\nOur focus has always been on helping customers save time and money. This is why we have invested in building a website that allows them to securely manage their accounts without intervention. It is the empowering, 24/7 self service approach that ensures we keep our customers satisfied, and our prices competitive.', '', '', '', '', 1),
-(11, 'Auction Details', 'auction-details', '<h2><strong>Auction <span>Details</span></strong></h2>\n', '', '', 'Update your profile information now to get latest update and communications.', 'Paragraph 2', '', '', '', '', '', 1),
-(12, 'How it Works', 'how-it-works', '<h2>How it Works</h2>\n', '', '', '<h3><strong>Register new member</strong></h3>\n\n<p>You must be a registered member to participate in the auctions. There are no joining fees. It is totally free to join! Registration is important as it enables us to contact you if you are the winner of an item. To win or Buy product, you should a register member.</p>\n', '<h3><strong>Buying Bids</strong></h3>\n\n<p>Using Debit Card, Using Credit Cards, Using Internet Banking and Using Internet Banking. After selecting your payment method click on Submit button then you will be automatically redirecting to your option which you will select for payment option after the successful of your payment you will get mails at your registered email id.</p>\n', '<h3><strong>Choose Product and Place Bids</strong></h3>\n\n<p>Main page shows, list of product, so bidder can choose desire product and place a bid on product page, you should choose unique and low bid to win for a product, you can fire more bids, there is not limit.</p>\n', '<h3><strong>Winner</strong></h3>\n\n<p>With Top menu winner list, User can view and watch currently winner list of the site, and view all product info also like total bids, max price bid, etc , the page also display saving amount also.</p>\n', '<h3><strong>Delivery</strong></h3>\n\n<p>Your won product also delivered to winner by the site team within x days. If applicable shipping charge than winner also pay shipping charge also.</p>\n', '<p>Bid Auction Script is a tool which offers items for sale by a auction process. Rather than the bidder with the highest bid winning (as is the case in traditional items auctions), this script can be set where the person wiin who has the &#34;Lowest Unique Bid&#34;.</p>\n\n<p>Bids may be any amount between $0.01 and $10,000, allowing people to buy a item at an incredibly low price. The cost of the item is covered by the administration/bid fee you pay to make a bid.</p>\n\n<p><strong>How is the Lowest/Highesgt Unique Bid Determined?</strong></p>\n\n<p>The &#34;Lowest Unique Bid&#34; is an amount of money between $0.01 and $10,000. The amount closest to $0.01 where no other bidder has bid the same amount of money is deemed the &#34;Lowest Unique Bid&#34;. The amount closest to $10,000 where no other bidder has bid the same amount of money is deemed the &#34;Highest Unique Bid&#34;.</p>\n\n<p>This is a representation only.</p>\n\n<table bgcolor=\"#dddddd\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"400\">\n	<tbody>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.03</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Lowest Unique Bid</strong></p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.04</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.05</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.07</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.10</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Highest Unique Bid </strong></p>\n			</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>&#160;</p>\n\n<p><em><strong>Example of a possible result at the end of the Auction.</strong></em></p>\n\n<p>In this example the Bid of 3c is the Lowest Unique Bidder and is awarded the auction result and would have to pay only 3cents. He/she has therefore purchased a items for $0.03 (Bid Amount) + the&#160;Admin Fee paid when he/she placed the bid.</p>\n\n<p>If the Bidder of the successful bid had more than one bid&#160;they would need to add .00 for each additional bid placed.<br />\nLets say as an example they placed a total of ten bids during the auction their total outlay to own the items would be 10 X .00 = 0.00 (initial Admin Fees) + $0.03 = 0.03.</p>\n\n<p>Remember: During the Auction the Lowest Unique Bid is constantly changing, if in this example someone else was to bid $0.03, then $0.03 would no longer be a &#34;Unique&#34; bid, meaning it would no longer be the Lowest Unique Bid, $0.04 would now become the Lowest Unique Bid. However if someone Bid $0.02, as this has not been bid previously by anyone else, it would then become the Lowest Unique Bid.</p>\n\n<p>&#160;</p>\n\n<p><strong>Strategic Considerations </strong></p>\n\n<p>It is important to note that the strategy of waiting to place a bid is not necessarily the most successful one for example:<br />\nIf at the close of the auction we didn&#39;t have a single lowest unique bid the successful bidder would be determined by the two lowest exact same bids however the bidder awarded the items would be the bidder that placed the first bid.</p>\n\n<p>So in that scenario it is very important to get your bid in early.</p>\n\n<p>&#160;</p>\n\n<p><strong>Start Bidding in just 4 Easy Steps</strong></p>\n\n<p><strong>1.&#160;Register</strong> - complete the registration form. Your password will then be emailed to the email address you provide us. It is vital you keep your username and password confidential, otherwise you may allow others to access your Bid Bank and place bids from your account.<br />\nYou are fully responsible for all activities that occur through your subscription and under your password and account.</p>\n\n<p><strong>2.&#160;Login </strong>- once you receive your password via email, login using your email address as your username and your password. You can change your password once you have logged in by typing a new one in the password field on the Edit Profile page.</p>\n\n<p><strong>3.&#160;Purchase Credit</strong> - Buy Credits from your account.</p>\n', '', 1),
-(13, 'Terms & Conditions', 'terms-conditions', '<h2>Terms &#38; Conditions</h2>\n', '', '', '<h3>1. CONDITIONS OF USE</h3>\n\n<p>Welcome to LowestUnique. By using the LowestUnique service (&#34;Services&#34;), you agree to be subject to the following terms of service (&#34;Terms&#34;) including those available by hyperlink, and enter into an agreement with Entertainment Shopping, Inc. and its internet platform is http://www.LowestUnique (&#34;LowestUnique&#34;).</p>\n\n<p>By accepting these Terms, you accept that these Terms and the LowestUnique Privacy Policy will apply whenever you use LowestUnique sites and services, as well as the manner in which LowestUnique operate its auctions as described on the LowestUnique&#160; site. If you use another LowestUnique site, you agree to accept the Terms and Privacy Policy applicable to that site. The agreement that applies on any of our domains and sub-domains is always the agreement that appears in the footer of each website. Some LowestUnique sites, services and tools may have additional or other terms that we provide to you when you use those sites, services or tools.</p>\n\n<p>None of the content on the LowestUnique site, including but not limited to the Help Section, is intended to amount to advice on which reliance should be placed. LowestUnique disclaims to the fullest extent permitted by law all liability and responsibility arising from any reliance placed on such materials by you or by anyone who may be informed of any of its contents.</p>\n\n<h3>2. ACCEPTING THE TERMS</h3>\n\n<p>You may not use the Services if you do not accept the Terms.</p>\n\n<p>You can accept the Terms by:</p>\n\n<ol>\n	<li>clicking to accept or agree to the Terms, where this option is made available to you by LowestUnique in the user interface for any Service; or</li>\n	<li>by actually using the Services. In this case, you understand and agree that LowestUnique will treat your use of the Services as acceptance of the Terms from that point onwards.</li>\n</ol>\n\n<p>You may not use the Services and may not accept the Terms if (a) you are not of legal age to form a binding contract with LowestUnique, or (b) you are a person barred from receiving the Services under the laws of the United States or other countries including the country in which you are resident or from which you use the Services.</p>\n\n<p>Before you continue, you should print off or save a local copy of the Terms for your records.</p>\n', '<h3>3. LICENSE AND SITE ACCESS</h3>\n\n<p>LowestUnique grants you a limited license to access and make personal use of this site and not to download (other than page caching) or modify it, or any portion of it, except with express written consent of LowestUnique. This license does not include any resale or commercial use of this site or its contents; any collection and use of any product listings, descriptions, or prices; any derivative use of this site or its contents; any downloading or copying of account information for the benefit of another merchant; or any use of data mining, robots, or similar data gathering and extraction tools. This site or any portion of this site, including the services provided on it, may not be reproduced, duplicated, copied, sold, resold, visited, or otherwise exploited for any commercial purpose without express written consent of LowestUnique. You may not frame or utilize framing techniques to enclose any trademark, logo, or other proprietary information (including images, text, page layout, or form) of LowestUnique without express written consent. You may not use any meta-tags or any other &#34;hidden text&#34; utilizing LowestUnique&#8217;s name or trademarks without the express written consent of LowestUnique. Any unauthorized use terminates the permission or license granted by LowestUnique. You are granted a limited, revocable, and nonexclusive right to create a hyperlink to the home page of LowestUnique&#160; so long as the link does not portray LowestUnique, or its products or services in a false, misleading, derogatory, or otherwise offensive matter. You may not use any LowestUnique logo or other proprietary graphic or trademark as part of the link without express written permission.</p>\n\n<h3>4. USER CONTENT, LINKS, THIRD-PARTY SELLERS</h3>\n\n<p>Our websites may contain (a) User Content (defined below) provided by other users, (b) links to other sites operated by third parties, (c) advertisements and/or sponsorships provided by third parties, and (d) stores, services, or product lines offered by third parties ((a), (b), (c), and (d) are collectively, Third-Party Materials.). We have no control over and are not responsible and assume no liability for any Third-Party Materials or the applicable third parties. We are not responsible for any acts or omissions of such third parties. We do not review, approve, endorse, guarantee, warrant, or make any representations with respect to Third-Party Materials or the applicable third parties. For example, we do not guarantee, warrant or represent that the Third-Party Materials are accurate, legal and/or inoffensive or that these third party sites do not contain viruses or other features that may adversely affect your computer. You use all Third Party Materials and interact with such third parties at your own risk. We are not obligated to be involved in any disputes between you and any such third parties. When you leave our site, our Terms (including our Privacy Policy) no longer govern. You should carefully review the applicable third party privacy statements and other terms and conditions of use. Without limiting the forgoing, if you have a problem with a link from any one of our sites, please notify us at info@LowestUnique</p>\n\n<p>You hereby release us, our subsidiaries, affiliates, officers, employees, agents, and successors from any claim, demands, losses, damages, rights, and actions of any kind, including personal injuries, death, and property damage, that is either directly or indirectly related to or arising from use of Third Party Materials or interactions with or conduct of the applicable third parties. In connection with the foregoing,</p>\n', '<h3>5. LICENSE GRANTED BY YOU</h3>\n\n<p>By providing, submitting, uploading any communications, reviews, comments, feedback, postings, materials, or other content for use on any of the LowestUnique websites (&#34;User Content&#34;), (a) you represent and warrant that you or the owner of all rights to such User Content and that such User Content does not violate our Terms and (b) you hereby grant us, and agree to grant us, an irrevocable, perpetual, royalty-free, fully paid-up, worldwide license (with the right to sublicense) in all languages to use, reproduce, distribute, publicly display, publicly perform, prepare derivative works of, modify, sell and otherwise exploit all or any part of the User Content in our sole discretion by any method now existing or later developed, subject to our Privacy Policy. Subject to our Privacy Policy, any User Content will be treated as non-confidential and non-proprietary and may be disseminated or used by us for any purpose, including, but not limited to, developing, creating, manufacturing or marketing products or services.</p>\n\n<h3>6. REGISTRATION AND PARTICIPATION</h3>\n\n<p>Employees and relatives of employees of LowestUnique are not eligible to participate in LowestUnique auctions under any circumstance.</p>\n\n<p>LowestUnique&#8217;s products and services are offered exclusively to private users and not to commercial or partly-commercial resellers. LowestUnique reserves the right to exclude commercial resellers from the participation in the auctions and to close such user accounts at any time.</p>\n\n<p>You may register only once using your postal address (registration using PO Boxes or equivalents is not permitted). Additionally, only one user registration per household is permitted.</p>\n\n<p>In order to access certain Services, you may be required to provide information about yourself (such as identification or contact details) as part of the registration process for the Service, or as part of your continued use of the Services. You agree that any registration information you give to LowestUnique will always be accurate, correct and up to date.</p>\n\n<p>During the registration process, you must choose a username. The username must not be offensive, be selected to deceive or mis-inform other users, may not offend common decency or infringe upon the rights of third parties. If LowestUnique receives information of a username which is illegal or in breach of these Terms, this username can be amended by LowestUnique without prior notice.</p>\n\n<p>You agree and understand that you are responsible for maintaining the confidentiality of passwords associated with any account you use to access the Service and that your user account may be used only by you and not anyone else. Accordingly, you agree that you will be solely responsible to LowestUnique for all activities that occur under your account. User accounts created during registration are non-transferable.</p>\n', '<h3>7. RULES, RESTRICTIONS, SUSPENSION</h3>\n\n<p>Without limiting other remedies, we may limit, suspend, or terminate our Service and user accounts, prohibit access to our sites and their content, services, and tools, delay or remove hosted content, including any User Content and take technical and legal steps to keep users off the sites if we think that they are creating problems or possible legal liabilities, infringing the intellectual property rights of third parties, or acting inconsistently with the letter or spirit of our policies. We also reserve the right to cancel unconfirmed accounts or accounts that have been inactive for a long time, or to modify or discontinue LowestUnique sites, services, or tools.</p>\n\n<p>You agree to the following conditions:</p>\n\n<ol>\n	<li>You agree to use the Services only for purposes that are permitted by (a) the Terms and (b) any applicable law, regulation or generally accepted practices or guidelines in the relevant jurisdictions (including any laws regarding the export of data or software to and from the United States or other relevant countries). You agree not to post User Content that (i) plagiarizes, violates or infringes upon the rights of any third-party, including trade secret, copyright, trademark, trade dress, privacy, patent, moral right, publicity, or other personal or proprietary rights, and/or (ii) contains unlawful, tortious, threatening, harmful, vulgar, defamatory, false, intentionally misleading, libelous, pornographic, obscene, patently offensive, inappropriate, offensive, harassing, or other unacceptable material or materials that are harmful to minors.</li>\n	<li>You also agree not to engage in any activity that circumvents, interferes with or disrupts the Services (or the servers and networks connected to the Services) or any user experience of our Services including but not limited to the following:</li>\n</ol>\n\n<ul>\n	<li>using any unauthorized third-party bidding software;</li>\n	<li>accessing any of the Services by means other than through the interface provided by LowestUnique (e.g. no use of scripts or web crawlers);</li>\n	<li>manipulating our fee structure, the billing process, bidding, auctions or fees owed to LowestUnique;</li>\n	<li>distributing spam,, unsolicited, or bulk electronic communications, chain letters, or pyramid schemes; or</li>\n	<li>collecting information about users, including email addresses, without their consent.</li>\n</ul>\n\n<p>You agree that you are solely responsible for (and that LowestUnique has no responsibility to you or to any third party for) any breach of your obligations under the Terms and for the consequences (including any loss or damage which LowestUnique may suffer) of any such breach. In case of a breach of these Terms, LowestUnique reserves the right to withhold deliveries or refunds for Bids.</p>\n', '<h3>8. BIDS</h3>\n\n<p>Bidding rights or bids (&#8220;Bids&#8221;) must be purchased and paid for by you prior to online bidding. Bids can be purchased in packages (&#8220;BidPacks&#8221;) as further described under &#8220;Bidding&#8221; in the &#8220;Help&#8221; Section of the LowestUnique Site. Prices for Bids or BidPacks may change in LowestUnique&#39;s discretion from time to time. Bids must currently be placed online through our website. In the future LowestUnique may allow Bids to be placed through third party websites or through use of your mobile phone. In such cases, you will be required to disclose your mobile phone number and be responsible for ensuring it is accurate and up to date. For information on when such opportunities may be available in the future, check the &#8220;Help&#8221; Section of the LowestUnique site.</p>\n\n<p>Bids and voucher Bids are non-transferable and valid for one year after they have been credited to your account. Free Bids are Bids you may get through a promotion or other marketing activity. Free Bids are usually time sensitive and are only valid for the time stated in a promotion. Upon expiration, they become void and can no longer be placed.</p>\n\n<p>Once a Bid is placed in an auction, it is deducted from your Bid account and can no longer be refunded. Refunds will not be issued for Bids placed in an auction, expired Bids, or Voucher Bids and Free Bids. For further information on refunds please see our return policy described under Returns &#38; Complaints in the &#8220;Help&#8221; Section.</p>\n', '<h3>9. THE AUCTION PROCESS</h3>\n\n<p>&#160;For information on how to place a bid, how to use the BidButler or how an auction works, please refer to the Bidding or Auctions topics of the &#8220;Help&#8221; Section on the LowestUnique site. Every auction ends when the remaining time reaches zero and the user who was the last to bid then wins the auction. All other Bids placed on the item expire and will not be credited back to your account nor will you be eligible for a refund for such Bids. The last bidder is determined based on the records in LowestUnique.s database and LowestUnique.s decision regarding who is the last bidder shall be final.</p>\n\n<p>You understand and agree that LowestUnique requires you to bid for auctioned items against other LowestUnique users, some of whom may reside outside the United States. In such cases, users in other countries may not always be bidding on the exact same product in a single auction. To ensure the auction remains fair, the auction items in a single auction will be comparable and reasonably equivalent.</p>\n\n<p>We do not represent or warrant that your Bid will be timely received or accepted by&#160; LowestUnique site and you understand that our receipt of your Bid depends on several factors, some of which we have no control over, including your Internet connection, the equipment you are using to access our site, and other technological and/or telecommunication-based factors. You agree that LowestUnique shall be held harmless from and against any and all claims, causes of action, expenses, costs, or losses arising from or related to any transaction in which your Bid is not received, delayed or otherwise rejected by LowestUnique.</p>\n\n<p>LowestUnique reserves the right to add, reschedule or remove products from the LowestUnique website at anytime without notice. An auction is deemed to have closed when the timer on the auctioned item counts &#34;closed&#34; and no users have placed a Bid. Users should be aware that the timer available to the user is an approximation which may be affected by network delays. The final decision of when an auction closes will be based on the timer used by LowestUnique servers.</p>\n\n<p>&#160;LowestUnique reserves the right to limit the number of auctions you can win within a specific time period. Please refer to the Auctions topic of the &#8220;Help&#8221; Section for further information. A Bid submitted by you constitutes your offer to enter into a binding contract with LowestUnique and in the event of winning an auction, you will receive a purchase offer for the item of the auction under the conditions set out in the related auction.</p>\n', '<h3>10.DELIVERY</h3>\n\n<p>All items purchased from LowestUnique are made pursuant to a shipment contract. This means that the risk of loss and title for such items pass to you upon delivery of the item to the carrier.</p>\n\n<p>Unless otherwise stated, delivery will be made directly from our third party suppliers or from our warehouse to the shipping address provided by you. Deliveries are made solely within the 50 states of the United States (explicitly excluding the U.S. sovereign territories of Guam, Puerto Rico and the U.S. Virgin Islands). Some restrictions or higher shipping costs may apply if the delivery address is in Alaska or Hawaii, please check notifications on the detail pages of the auctions in advance. You acknowledge that delivery times vary and any delivery time indicated is provided only as a guide and is not guaranteed. Please contact our service department at info@LowestUnique If an item is not delivered within the indicated time so that we can work with you to address the issue. LowestUnique shall be entitled to involve third parties to satisfy its contractual obligations without being required to notify the buyer. Obvious damage to the item from transport or packaging damaged during transport is to be reported to LowestUnique upon taking delivery.</p>\n\n<p>Should LowestUnique not be able to deliver the item ordered, LowestUnique shall be entitled to substitute the item with a comparable replacement product with the similar or better features, or provide a refund of the auction end price to you based upon your preference.</p>\n\n<h3>11. RETURNS/REFUNDS</h3>\n\n<p>If, within 14 days of delivery of an item, you decide you no longer want the item, LowestUnique will refund you with the amount that you paid for the item as well as original delivery costs, provided that you have (i) returned the item to LowestUnique, (ii) the item is still in its original packaging and (iii) the item is not damaged or used. Returns or refunds must be first initiated by contacting the LowestUnique customer service team in writing (by letter or email) within the 14 day period in order to be executed. Please note that we cannot offer you a refund on the cost of the Bids that you placed on that auction or the return shipping cost.</p>\n\n<p>Should LowestUnique incur additional costs for insufficient postage on the return or for courier shipments and other irregular shipping methods that are over and above postal shipping costs, these costs will be deducted from any payment whatsoever paid to you. Sets/boxes can only be returned in their entirety.</p>\n\n<p>Exceptions to the right to return are audio or video recordings, computer software that you have unsealed and other items noted by LowestUnique on the LowestUnique site. Such items are not eligible for return or refund.</p>\n\n<h3>12. INFORMATION INACCURACY DISCLAIMER</h3>\n\n<p>From time to time there may be information on the website that may contain typographical errors, inaccuracies, or omissions that may relate to product descriptions, pricing, and availability. LowestUnique reserves the right to correct any errors, inaccuracies or omissions and to change or update information at any time without prior notice (including after you have submitted your order). If a product offered by LowestUnique is not as described, your sole remedy is to return it in unused condition pursuant to our return policy.</p>\n', 1),
-(14, 'faq', 'faq', '<h2>Frequently Asked Questions</h2>\n', '', '', '<span style=\"font-weight: bold;\">Q1. Do I have to pay to take part in</span><br />\n<br />\nA1. All you have to do is register and start bidding. At the bidding time you just have to buy credits. The credit option are on bidding page. this service? It looks too good to be true?<br />\n<br />\n<span style=\"font-weight: bold;\">Q2. How does Lowest Unique Bid Work?</span><br />\n<br />\nA2. Lowest Unique Bid is a unique fresh way to win items at auction for a fraction of the retail value, The winner of each auction is not necessarily the highest bidder, just the highest Unique bid (no one else has bid the same amount) The maximum amount anyone could win the auction by bidding is the max price which is set for each auction.<br />\n<br />\n<span style=\"font-weight: bold;\">Q3. What process is involved to make a winning bid?</span><br />\n<br />\nA3. After joining Lowest Unique Bid Auctions, members select the item they wish to bid on and place a valid bid that cannot exceed the displayed max price.<br />\n<br />\nMembers may bid as often as they wish on available items. Each valid bid will be documented in the My Account part of our website.<br />\n<br />\nA bid credit/s will be charged for each valid bid. The bid credits are determined item by item.<br />\nBid credits for each item are displayed with each auctioned item on the Lowest Unique Bid website. Each auction has a limited quantity of valid bids allowed.<br />\n<br />\nThe auction will successfully close upon receipt of the required quantity of valid bids (Note - auctions may be closed/withdrawn at Lowest Unique Bid Auction&#39;s discretion without notice, any auction withdrawn will have all bids received credited back to bidder accounts)<br />\n<br />\nThe number of valid bids allowed or remaining available is displayed with each item. The Bidder that submitted the highest unique valid bid will win the product. In the event that an auction has no unique valid bid, the Bidder that first submitted the highest non-unique valid bid will win the product.<br />\n<br />\nThe successful Bidder will receive a notification email directing them to confirm their order within five business days. The auctioned item will be processed and shipped to the address on record for the successful Bidder.', '<span style=\"font-weight: bold;\">Q4. How much does it cost to bid?</span><br />\n<br />\nA4. For each auction there is an Bid Credit amount, each credit costs $1.00 to purchase so an auction with an bid credit amount of 2 would in effect be costing you $2.00 per bid. Below is the credits details:<br />\n$1.00 = 1 Bid Credit<br />\n$5.00 = 5 Bid Credit<br />\n$10.00 = 10 Bid Credit ( +1 free)<br />\n$25.00 = 25 Bid Credit ( +3 free)<br />\n$50.00 = 50 Bid Credit ( +6 free)<br />\n$100.00 = 100 Bid Credit ( +12 free)<br />\n<br />\n<span style=\"font-weight: bold;\">Q5. How do I bid?</span><br />\n<br />\nA5. If you bid the max price you will not necessarily win the auction. The winner of the auction will be the person who has bid the highest unique price.<br />\n<br />\nFor example, if the max price is $100.00, you could bid $99.99. If $99.99 is the highest unique bid (no one else bid that amount and no one else bid a higher unique price) you will win the auction.<br />\n<br />\n<span style=\"font-weight: bold;\">Q6. What is a Unique Bid?</span><br />\n<br />\nA6. A bid is unique when there hasn&#39;t been another bidder bidding the same amount. A unique bid wins each auction.<br />\n<br />\nEach auction has a different maximum number of bids allowed. For example, if there is an auction with only three bidders allowed and two of them bid the max price of $50.00 and one of them bids $9.10, the $9.10 bid will win because it is the highest unique bid.<br />\n<br />\nRemember the highest bidder may not win the auction - it is the highest unique bid.', '<span style=\"font-weight: bold;\">Q7. How can I increase my chances of winning?</span><br />\n<br />\nA7. Lowest Unique Bid is different from regular auctions, giving everyone an equal chance of winning every auction.<br />\n<br />\nThe winning bid will never be more than the max price set for each auction.<br />\n<br />\nThe number of bids allowed on each auction is set before the auction begins.<br />\n<br />\nThere are no methods by which a bidder can gain an advantage over other bidders; all bids are kept hidden until the end of each auction.<br />\n<br />\nThe only way to increase your chances of wining is to bid multiple times, obviously someone who bids five times have more of a chance of winning than someone who bids once.<br />\n<br />\nIf you bid multiple times on the same auction, you are increasing your chances of winning that auction by covering a wider range of bids.<br />\n<br />\n<span style=\"font-weight: bold;\">Q8. When can I submit bids?</span><br />\n<br />\nA8. Bidders may submit valid bids at anytime of day or night that an auction is still open.<br />\n<br />\n<span style=\"font-weight: bold;\">Q9 Can I submit more than one bid per auction?</span><br />\n<br />\nA9. The number of valid bids for a given auction is limited to the required number of valid bids as displayed for each auctioned item.<br />\n<br />\nThere is no limit to the number of valid bids a member may submit for an auctioned item.', '<span style=\"font-weight: bold;\">Q10. How are successful bids determined?</span><br />\n<br />\nA10. Upon receipt of the required quantity of valid bids, Lowest Unique Bid will review all valid bids and identify the successful valid bid.<br />\n<br />\nThe Bidder that submitted the highest unique valid bid will win the product. The successful Bidder will receive a notification email directing them to confirm their order within five business days.<br />\n<br />\nIn the event that an auction has no unique valid bids, the Bidder that first submitted the highest non-unique valid bid will win the product.<br />\n<br />\n<span style=\"font-weight: bold;\">Q11. How can I see what the winning bid was in an auction?</span><br />\n<br />\nA11. Members may review auction winning, and all other bids, for successfully closed auctions by clicking on the Results Link on the website. Bidders may also review the status of any auction for which they submitted a valid bid by clicking on the Browse link<br />\n<br />\n<span style=\"font-weight: bold;\">Q12. I tried to submit a bid but it kept telling me &#34;my bid is higher than the max price&#34;. What am I doing wrong?</span><br />\n<br />\nA12. Bids cannot exceed the max Auction price as indicated for each item auctioned on the website.<br />\n<br />\n<span style=\"font-weight: bold;\">Q13. Can I cancel or change my bid after it has been submitted and confirmed?</span><br />\n<br />\nA13. All valid submitted bids are final and cannot be cancelled or changed. Any question regarding the validity of a bid should be submitted by clicking on the Contact Us link.', '<span style=\"font-weight: bold;\">Q14. When do the auctions end?</span><br />\n<br />\nA14. The auctions either end when the maximum number of bids has been reached or the end date has been reached. However, if an auction has reached its end date, but the minimum number of bids has not been reached, it may be extended.<br />\n<br />\n<span style=\"font-weight: bold;\">Q15. What is an bid credit?</span><br />\n<br />\nA15. Credits are our way of making the bidding process easier for you. It also allows you to earn credits by referring friends or buying large amounts of credits. Above it has been described<br />\n<br />\n<span style=\"font-weight: bold;\">Q16. What is the administration/handling fee?</span><br />\n<br />\nA16. The administration/handling fee (also known as the Bid Credit) varies from auction to auction and generally ranges from 1 credit to 56 credits.<br />\n<br />\n<span style=\"font-weight: bold;\">Q17. How much will the postage and packaging be on each item?</span><br />\n<br />\nA17. If you live in the US, and the goods are to be delivered to an address in the US shipping is FREE!! Unless stated in the auction details.<br />\n<br />\nIf the item is to be delivered elsewhere or you require special delivery instructions above and beyond our normal posting procedures you may incur extra fees as described in the Terms and Conditions.<br />\n<br />\n<span style=\"font-weight: bold;\">Q18. How do I receive the product if I am the successful Bidder?</span><br />\n<br />\nA18. Successful Bidders will receive an email notification. Upon receipt of the winning bid amount from the winning bidder, the item will be shipped to the address on record for the successful Bidder. All items will be shipped standard ground shipping via a carrier of Lowest Unique Bid Auction&#39;s choosing', '<span style=\"font-weight: bold;\">Q19. Are any of the items used or refurbished?</span><br />\n<br />\nA19. At present, all auctioned items are new and include the full manufacturer&#39;s warranty. Lowest Unique Bid Auction may, at a later date, offer refurbished items or pre-sold items on consignment (these will be clearely marked)<br />\n<br />\nAll Bidders and the public in general will be notified of the change at that time. Look in the auctions details section of any listed auction, if the goods/products are used, refurbished or pre-sold items this is where you will be notified.<br />\n<br />\nUSED Vehicles are SOLD AS SEEN; a used vehicle will clearly have its date of registration shown. Used vehicles come with no warranties or guarantees of roadworthiness or reliability. Although every effort is made to ensure vehicles are of a high standard.<br />\n<br />\nAny and all used vehicle&#39;s sold are sold as seen, Lowest Unique Bid make no guarantees to the vehicles roadworthiness, a winning bidder of used auctions should have that vehicle checked over by a qualified motor dealership as soon as possible. Collection of the vehicle is the winner&#39;s responsability, winners may be required to participate in publicity pictures/news stories.<br />\n<br />\n<span style=\"font-weight: bold;\">Q20. I am the winning bidder of a vehicle how do I take possession?</span><br />\n<br />\nA20. New vehicles will be bought and paid for from a local dealership to us, it is your responsibility to arrange collection/delivery from the dealership. If the vehicle can be sourced from a dealership of your choice close to you for the same price we have negotiated? (not necessarily the Normal MSRP, we may have negotiated a discount ?) We may choose to purchase the vehicle from the dealership of your choice; this is purely at Lowest Unique Bid discretion.<br />\n<br />\nUsed vehicles must be collected within 14 days of the auction closing, vehicles not collected within 14 days must have a storage charge (Lowest Unique Bid discretion) applied at the rate of &#239;&#191;&#189;?$15.00 per day, for each day after the 14 day initial collection period. If a vehicle still has not been collected after 28 days, the vehicle will be sold and the balance after Lowest Unique Bid fees &#38; expenses being deducted will be forwarded onto the auction winner.', '<p><span style=\"font-weight: bold;\">Q21. Do you offer a cash alternative?</span><br />\n<br />\nA21. At Lowest Unique Bid discretion we offer a cash/cheque alternative to any winning auction, this cash alternative is no less than 60% of the auctions listed Normal MSRP price.<br />\n<br />\n<span style=\"font-weight: bold;\">Q22. Can I review the auctions I&#39;ve entered?</span><br />\n<br />\nA22. By clicking on the My Account link on at the top of the page.<br />\n<br />\n<span style=\"font-weight: bold;\">Q23. I don&#39;t have a credit/debit card or paypal account. Can I pay using a cheque?</span><br />\n<br />\nA23. Yes you can pay using a cheque, For this event you have to contact to admin for more information.<br />\n<br />\n<span style=\"font-weight: bold;\">Q24. How do I cancel my membership?</span><br />\n<br />\nA24. If you wish to cancel your membership with Lowest Unique Bid Auction, simply fill out the Contact form on this site with the request to cancel. Please keep in mind you will lose any and all bid credits you have in your account, all bidding history, and you will no longer receive Bid Watch or Bid Alert messages. You may, if you choose sign up at any time in the future, but you will be starting afresh with no bid credits or Lowest Unique Bid history.</p>\n\n<p><span style=\"font-weight: bold;\">Q25. Why can&#39;t I log in?</span><br />\n<br />\nA25. You must first register and confirm your registration via email to log in.<br />\n<br />\n<span style=\"font-weight: bold;\">Q26. It says my email address is invalid when I try logging in.</span><br />\n<br />\nA26. Make sure you&#39;re using the valid email address that was used when you registered. If you changed your email address in my Details then you must log in with your new one. Also make sure your email address is in the proper format.<br />\n<br />\n<span style=\"font-weight: bold;\">Q27. Are all payments secure?</span><br />\n<br />\nA27. Yes. All payments are handled through PayPal, which is a highly respected online payment gateway and is totally secure.<br />\n<br />\nNeed more answers? Contact <a classname=\"\" href=\"mailto:admin@uniquescriptz.com\">UniqueScriptz</a>.</p>\n', 1),
-(15, 'Privacy Policy', 'privacy-policy', '<h2>Privacy Policy</h2>\n', '', '', '<strong><span style=\"font-size: 20px;\">General</span></strong>\n<p>We may amend this Privacy Policy&#160; at any time by posting the new Privacy Policy on Bajebids. Bajebids reserves&#160; the right to change this Privacy Policy at any time without notice to You.&#160; Consequently, You should review this Privacy Policy for changes each time You&#160; visit Bajebids.</p>\n', '', '', '', '', '', '', 1),
-(16, 'login', 'login', '<h1>Login to Place Bid</h1>\n', '', '', 'Login Content', '', '', '', '', '', '', 1),
-(20, 'register', 'register', '<h2>Register Now</h2>\n', '', '', 'Please provide a valid email address, where you will receive the account activation code. Your account information: (note: all fields are required !)', '', '', '', '', '', '', 1),
-(21, 'Forgot Password', 'forgot-password', '<h2><strong>Forgot Password</strong></h2>\n', '', '', 'Please enter your Email address in order to receive the password in your E-mail.', '', '', '', '', '', '', 1),
-(22, 'Gift Credits', 'gift-credits', '<h2>Gift Coupons</h2>\n', '', '', 'Gift your friends coupons to place bids', '', '', '', '', '', '', 1),
-(23, 'Buy Credits', 'buy-credits', '<h2><strong>Buy <span>Credits</span></strong></h2>\n', '', '', 'To buy more credits click on&#160;<strong>Buy Now</strong>&#160;button.<br />\nWhen you purchase credits we give you some&#160;&#39;Free&#39; Credits&#160;which can only be used in special auctions that we will run on a regular basis. In these auctions only Free credits can be used to bid for the auction lots.', '', '', '', '', '', '', 1),
-(24, 'Account Details', 'account-details', '<h2><strong>Account <span>Details</span></strong></h2>\n', '', '', 'Update your profile information now to get latest update and communications.', '', '', '', '', '', '', 1),
-(25, 'Account Preferences', 'preferences', '<h2><strong>Account <span>Preferences</span></strong></h2>\n', '', '', 'Refer friends and update Newsletter Settings', '', '', '', '', '', '', 1),
-(26, 'Payments', 'payments', '<h2><strong>Payment <span>History</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
-(27, 'Auction Wishlist', 'wishlist', '<h2><strong>Auction <span>Wishlist</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
-(28, 'Current Auction', 'current-auctions', '<h2><strong>My Current <span>Auctions</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
-(29, 'Closed Auction', 'closed-auctions', '<h2><strong>Closed <span>Auctions</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
-(30, 'Auction Won', 'won-auctions', '<h2><strong>Auction <span>Won</span> by You</strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
-(31, 'Contact', 'contact', '<h2><strong>Contact <span>Us</span></strong></h2>\n', '', '', '', '', '', '', '', '', 'Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum formas human.', 1),
-(32, 'winners', 'winners', '<h2>Previous Auction Winners</h2>\n', 'Click on an Auction Number/Name to see all bids!', '', '', '', '', '', '', '', '', 1);
+INSERT INTO `cms_pages` (`cms_id`, `cms_page_name`, `cms_page_url`, `cms_page_html`, `cms_page_css`, `cms_page_components`, `cms_page_styles`, `cms_page_assets`, `cms_page_heading1`, `cms_page_heading2`, `cms_page_heading3`, `cms_page_paragraph1`, `cms_page_paragraph2`, `cms_page_paragraph3`, `cms_page_paragraph4`, `cms_page_paragraph5`, `cms_page_paragraph6`, `cms_page_paragraph7`, `active`) VALUES
+(1, 'about us', 'about-us', '<section class=\"bdg-sect\"><h1 class=\"heading\"><h2 id=\"i9j2\"><strong id=\"ivcn\">About<span id=\"i2ay\"> </span><span id=\"i9aiy\">US</span></strong></h2></h1><p class=\"paragraph\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></section><section class=\"bdg-sect\"><h1 class=\"heading\">COMPANY</h1><p class=\"paragraph\">WE AIMS TO BE ONE OF THE LARGEST INTERNET RETAILERS OF BRANDED COMPUTER TECHNOLOGY AND DIGITAL LIFESTYLE PRODUCTS WITH MORE THAN 500 PRODUCTS FROM TOP INTERNATIONAL AND DOMESTIC BRANDS.<br/><br/>OUR BUSINESS PHILOSOPHY IS SIMPLE: OFFER CONSUMERS AND BUSINESSES WHAT THEY WANT, WHEN THEY WANT IT.</p></section><section class=\"bdg-sect\"><h1 class=\"heading\">PRODUCTS</h1><p class=\"paragraph\">WE OFFER OUR CUSTOMERS OVER 5000 QUALITY PRODUCTS, AND OUR LIST OF PRODUCT CATEGORIES AND PRODUCT OFFERINGS IS GROWING EVERY DAY. CUSTOMERS KNOW THEY ARE GETTING THE BEST PRICES AND EXCLUSIVE OFFERS ON A HUGE RANGE OF COMPUTER TECHNOLOGY PRODUCTS LIKE DESKTOPS, NOTEBOOKS, PRINTERS, MOBILE PHONES, NETWORKING, DIGITAL CAMERAS, SOFTWARE, STORAGE AND MORE. PLUS, WE OFFER OTHER INTERESTING PRODUCTS SUCH AS LCD TVS, MP3 PLAYERS, GAMING AND HOME ELECTRONICS.<br/><br/>OUR DIRECT ASSOCIATION WITH ALL THE MAJOR BRANDS MEANS OUR CUSTOMERS WILL ALWAYS FIND SPECIAL DEALS ON GREAT PRODUCTS FROM THE BIGGEST NAMES IN THE INDUSTRY. AND TO HELP OUR CUSTOMERS CHOOSE THE RIGHT PRODUCTS, WE MAKE IT EASY TO FIND AVAILABILITY, PRICING, REVIEWS AND RATINGS.</p></section><section class=\"bdg-sect\"><h1 class=\"heading\">SERVICES</h1><p class=\"paragraph\">OUR FOCUS HAS ALWAYS BEEN ON HELPING CUSTOMERS SAVE TIME AND MONEY. THIS IS WHY WE HAVE INVESTED IN BUILDING A WEBSITE THAT ALLOWS THEM TO SECURELY MANAGE THEIR ACCOUNTS WITHOUT INTERVENTION. IT IS THE EMPOWERING, 24/7 SELF SERVICE APPROACH THAT ENSURES WE KEEP OUR CUSTOMERS SATISFIED, AND OUR PRICES COMPETITIVE.</p></section>', '* { box-sizing: border-box; } body {margin: 0;}.heading{font-size:14px;}#i9j2{box-sizing:border-box;margin-top:0px;margin-bottom:0.5rem;font-family:Lato, sans-serif;font-weight:700;line-height:1;color:rgb(51, 51, 51);font-size:2rem;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:uppercase;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;}#ivcn{box-sizing:border-box;font-weight:bolder;}#i2ay{box-sizing:border-box;color:rgb(205, 165, 87);}#i9aiy{box-sizing:border-box;color:rgb(205, 165, 87);}', '[{\"tagName\":\"section\",\"classes\":[\"bdg-sect\"],\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"classes\":[\"heading\"],\"components\":[{\"tagName\":\"h2\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"i9j2\"},\"components\":[{\"tagName\":\"strong\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"ivcn\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"About\",\"_innertext\":false},{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"i2ay\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\" \",\"_innertext\":false}],\"_innertext\":true},{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"i9aiy\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"US\",\"_innertext\":false}],\"_innertext\":true}],\"_innertext\":true}],\"_innertext\":true}]},{\"tagName\":\"p\",\"type\":\"text\",\"classes\":[\"paragraph\"],\"components\":[{\"type\":\"textnode\",\"content\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\"}]}]},{\"tagName\":\"section\",\"classes\":[\"bdg-sect\"],\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"classes\":[\"heading\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"COMPANY\",\"_innertext\":false}]},{\"tagName\":\"p\",\"type\":\"text\",\"classes\":[\"paragraph\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"WE AIMS TO BE ONE OF THE LARGEST INTERNET RETAILERS OF BRANDED COMPUTER TECHNOLOGY AND DIGITAL LIFESTYLE PRODUCTS WITH MORE THAN 500 PRODUCTS FROM TOP INTERNATIONAL AND DOMESTIC BRANDS.\",\"_innertext\":false},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"tagName\":\"br\",\"type\":\"default\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"OUR BUSINESS PHILOSOPHY IS SIMPLE: OFFER CONSUMERS AND BUSINESSES WHAT THEY WANT, WHEN THEY WANT IT.\",\"_innertext\":false}]}]},{\"tagName\":\"section\",\"classes\":[\"bdg-sect\"],\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"classes\":[\"heading\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"PRODUCTS\",\"_innertext\":false}]},{\"tagName\":\"p\",\"type\":\"text\",\"classes\":[\"paragraph\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"WE OFFER OUR CUSTOMERS OVER 5000 QUALITY PRODUCTS, AND OUR LIST OF PRODUCT CATEGORIES AND PRODUCT OFFERINGS IS GROWING EVERY DAY. CUSTOMERS KNOW THEY ARE GETTING THE BEST PRICES AND EXCLUSIVE OFFERS ON A HUGE RANGE OF COMPUTER TECHNOLOGY PRODUCTS LIKE DESKTOPS, NOTEBOOKS, PRINTERS, MOBILE PHONES, NETWORKING, DIGITAL CAMERAS, SOFTWARE, STORAGE AND MORE. PLUS, WE OFFER OTHER INTERESTING PRODUCTS SUCH AS LCD TVS, MP3 PLAYERS, GAMING AND HOME ELECTRONICS.\",\"_innertext\":false},{\"tagName\":\"br\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"tagName\":\"br\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"void\":true,\"_innertext\":true},{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"OUR DIRECT ASSOCIATION WITH ALL THE MAJOR BRANDS MEANS OUR CUSTOMERS WILL ALWAYS FIND SPECIAL DEALS ON GREAT PRODUCTS FROM THE BIGGEST NAMES IN THE INDUSTRY. AND TO HELP OUR CUSTOMERS CHOOSE THE RIGHT PRODUCTS, WE MAKE IT EASY TO FIND AVAILABILITY, PRICING, REVIEWS AND RATINGS.\",\"_innertext\":false}]}]},{\"tagName\":\"section\",\"classes\":[\"bdg-sect\"],\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"classes\":[\"heading\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"SERVICES\",\"_innertext\":false}]},{\"tagName\":\"p\",\"type\":\"text\",\"classes\":[\"paragraph\"],\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"OUR FOCUS HAS ALWAYS BEEN ON HELPING CUSTOMERS SAVE TIME AND MONEY. THIS IS WHY WE HAVE INVESTED IN BUILDING A WEBSITE THAT ALLOWS THEM TO SECURELY MANAGE THEIR ACCOUNTS WITHOUT INTERVENTION. IT IS THE EMPOWERING, 24/7 SELF SERVICE APPROACH THAT ENSURES WE KEEP OUR CUSTOMERS SATISFIED, AND OUR PRICES COMPETITIVE.\",\"_innertext\":false}]}]}]', '[{\"selectors\":[\"heading\"],\"style\":{\"font-size\":\"14px\"}},{\"selectors\":[\"#i9j2\"],\"style\":{\"box-sizing\":\"border-box\",\"margin-top\":\"0px\",\"margin-bottom\":\"0.5rem\",\"font-family\":\"Lato, sans-serif\",\"font-weight\":\"700\",\"line-height\":\"1\",\"color\":\"rgb(51, 51, 51)\",\"font-size\":\"2rem\",\"font-style\":\"normal\",\"font-variant-ligatures\":\"normal\",\"font-variant-caps\":\"normal\",\"letter-spacing\":\"normal\",\"orphans\":\"2\",\"text-align\":\"left\",\"text-indent\":\"0px\",\"text-transform\":\"uppercase\",\"white-space\":\"normal\",\"widows\":\"2\",\"word-spacing\":\"0px\",\"-webkit-text-stroke-width\":\"0px\",\"background-color\":\"rgb(255, 255, 255)\",\"text-decoration-thickness\":\"initial\",\"text-decoration-style\":\"initial\",\"text-decoration-color\":\"initial\"}},{\"selectors\":[\"#ivcn\"],\"style\":{\"box-sizing\":\"border-box\",\"font-weight\":\"bolder\"}},{\"selectors\":[\"#i2ay\"],\"style\":{\"box-sizing\":\"border-box\",\"color\":\"rgb(205, 165, 87)\"}},{\"selectors\":[\"#i9aiy\"],\"style\":{\"box-sizing\":\"border-box\",\"color\":\"rgb(205, 165, 87)\"}}]', '[]', '<h2>About <span>Us</span></h2>\n', '', '', '<h1>Company</h1>\nWe aims to be one of the largest Internet retailers of branded computer technology and digital lifestyle products with more than 5000 products from top international and domestic brands.<br />\n<br />\nOur business philosophy is simple: offer consumers and businesses what they want, when they want it.', '<h1>Products</h1>\nWe offer our customers over 5000 quality products, and our list of product categories and product offerings is growing every day. customers know they are getting the best prices and exclusive offers on a huge range of computer technology products like desktops, notebooks, printers, mobile phones, networking, digital cameras, software, storage and more. Plus, we offer other interesting products such as LCD TVs, MP3 players, gaming and home electronics.<br />\n<br />\nOur direct association with all the major brands means our customers will always find special deals on great products from the biggest names in the industry. And to help our customers choose the right products, we make it easy to find availability, pricing, reviews and ratings.', '<h1>Services</h1>\nOur focus has always been on helping customers save time and money. This is why we have invested in building a website that allows them to securely manage their accounts without intervention. It is the empowering, 24/7 self service approach that ensures we keep our customers satisfied, and our prices competitive.', '', '', '', '', 1),
+(11, 'Auction Details', 'auction-details', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Auction <span>Details</span></strong></h2>\n', '', '', 'Update your profile information now to get latest update and communications.', 'Paragraph 2', '', '', '', '', '', 1),
+(12, 'How it Works', 'how-it-works', NULL, NULL, NULL, NULL, NULL, '<h2>How it Works</h2>\n', '', '', '<h3><strong>Register new member</strong></h3>\n\n<p>You must be a registered member to participate in the auctions. There are no joining fees. It is totally free to join! Registration is important as it enables us to contact you if you are the winner of an item. To win or Buy product, you should a register member.</p>\n', '<h3><strong>Buying Bids</strong></h3>\n\n<p>Using Debit Card, Using Credit Cards, Using Internet Banking and Using Internet Banking. After selecting your payment method click on Submit button then you will be automatically redirecting to your option which you will select for payment option after the successful of your payment you will get mails at your registered email id.</p>\n', '<h3><strong>Choose Product and Place Bids</strong></h3>\n\n<p>Main page shows, list of product, so bidder can choose desire product and place a bid on product page, you should choose unique and low bid to win for a product, you can fire more bids, there is not limit.</p>\n', '<h3><strong>Winner</strong></h3>\n\n<p>With Top menu winner list, User can view and watch currently winner list of the site, and view all product info also like total bids, max price bid, etc , the page also display saving amount also.</p>\n', '<h3><strong>Delivery</strong></h3>\n\n<p>Your won product also delivered to winner by the site team within x days. If applicable shipping charge than winner also pay shipping charge also.</p>\n', '<p>Bid Auction Script is a tool which offers items for sale by a auction process. Rather than the bidder with the highest bid winning (as is the case in traditional items auctions), this script can be set where the person wiin who has the &#34;Lowest Unique Bid&#34;.</p>\n\n<p>Bids may be any amount between $0.01 and $10,000, allowing people to buy a item at an incredibly low price. The cost of the item is covered by the administration/bid fee you pay to make a bid.</p>\n\n<p><strong>How is the Lowest/Highesgt Unique Bid Determined?</strong></p>\n\n<p>The &#34;Lowest Unique Bid&#34; is an amount of money between $0.01 and $10,000. The amount closest to $0.01 where no other bidder has bid the same amount of money is deemed the &#34;Lowest Unique Bid&#34;. The amount closest to $10,000 where no other bidder has bid the same amount of money is deemed the &#34;Highest Unique Bid&#34;.</p>\n\n<p>This is a representation only.</p>\n\n<table bgcolor=\"#dddddd\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"400\">\n	<tbody>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.01</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Not Unique</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.03</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Lowest Unique Bid</strong></p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.04</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.05</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.07</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\">Unique, but not the lowest</p>\n			</td>\n		</tr>\n		<tr>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\">\n			<p align=\"center\">Bid</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"100\">\n			<p align=\"center\">$0.10</p>\n			</td>\n			<td prevstyle=\"border: 1px dashed #AAAAAA;\" style=\"border: 1px dashed rgb(170, 170, 170); border-image: none;\" width=\"200\">\n			<p align=\"center\"><strong>Highest Unique Bid </strong></p>\n			</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>&#160;</p>\n\n<p><em><strong>Example of a possible result at the end of the Auction.</strong></em></p>\n\n<p>In this example the Bid of 3c is the Lowest Unique Bidder and is awarded the auction result and would have to pay only 3cents. He/she has therefore purchased a items for $0.03 (Bid Amount) + the&#160;Admin Fee paid when he/she placed the bid.</p>\n\n<p>If the Bidder of the successful bid had more than one bid&#160;they would need to add .00 for each additional bid placed.<br />\nLets say as an example they placed a total of ten bids during the auction their total outlay to own the items would be 10 X .00 = 0.00 (initial Admin Fees) + $0.03 = 0.03.</p>\n\n<p>Remember: During the Auction the Lowest Unique Bid is constantly changing, if in this example someone else was to bid $0.03, then $0.03 would no longer be a &#34;Unique&#34; bid, meaning it would no longer be the Lowest Unique Bid, $0.04 would now become the Lowest Unique Bid. However if someone Bid $0.02, as this has not been bid previously by anyone else, it would then become the Lowest Unique Bid.</p>\n\n<p>&#160;</p>\n\n<p><strong>Strategic Considerations </strong></p>\n\n<p>It is important to note that the strategy of waiting to place a bid is not necessarily the most successful one for example:<br />\nIf at the close of the auction we didn&#39;t have a single lowest unique bid the successful bidder would be determined by the two lowest exact same bids however the bidder awarded the items would be the bidder that placed the first bid.</p>\n\n<p>So in that scenario it is very important to get your bid in early.</p>\n\n<p>&#160;</p>\n\n<p><strong>Start Bidding in just 4 Easy Steps</strong></p>\n\n<p><strong>1.&#160;Register</strong> - complete the registration form. Your password will then be emailed to the email address you provide us. It is vital you keep your username and password confidential, otherwise you may allow others to access your Bid Bank and place bids from your account.<br />\nYou are fully responsible for all activities that occur through your subscription and under your password and account.</p>\n\n<p><strong>2.&#160;Login </strong>- once you receive your password via email, login using your email address as your username and your password. You can change your password once you have logged in by typing a new one in the password field on the Edit Profile page.</p>\n\n<p><strong>3.&#160;Purchase Credit</strong> - Buy Credits from your account.</p>\n', '', 1),
+(13, 'Terms & Conditions', 'terms-conditions', NULL, NULL, NULL, NULL, NULL, '<h2>Terms &#38; Conditions</h2>\n', '', '', '<h3>1. CONDITIONS OF USE</h3>\n\n<p>Welcome to LowestUnique. By using the LowestUnique service (&#34;Services&#34;), you agree to be subject to the following terms of service (&#34;Terms&#34;) including those available by hyperlink, and enter into an agreement with Entertainment Shopping, Inc. and its internet platform is http://www.LowestUnique (&#34;LowestUnique&#34;).</p>\n\n<p>By accepting these Terms, you accept that these Terms and the LowestUnique Privacy Policy will apply whenever you use LowestUnique sites and services, as well as the manner in which LowestUnique operate its auctions as described on the LowestUnique&#160; site. If you use another LowestUnique site, you agree to accept the Terms and Privacy Policy applicable to that site. The agreement that applies on any of our domains and sub-domains is always the agreement that appears in the footer of each website. Some LowestUnique sites, services and tools may have additional or other terms that we provide to you when you use those sites, services or tools.</p>\n\n<p>None of the content on the LowestUnique site, including but not limited to the Help Section, is intended to amount to advice on which reliance should be placed. LowestUnique disclaims to the fullest extent permitted by law all liability and responsibility arising from any reliance placed on such materials by you or by anyone who may be informed of any of its contents.</p>\n\n<h3>2. ACCEPTING THE TERMS</h3>\n\n<p>You may not use the Services if you do not accept the Terms.</p>\n\n<p>You can accept the Terms by:</p>\n\n<ol>\n	<li>clicking to accept or agree to the Terms, where this option is made available to you by LowestUnique in the user interface for any Service; or</li>\n	<li>by actually using the Services. In this case, you understand and agree that LowestUnique will treat your use of the Services as acceptance of the Terms from that point onwards.</li>\n</ol>\n\n<p>You may not use the Services and may not accept the Terms if (a) you are not of legal age to form a binding contract with LowestUnique, or (b) you are a person barred from receiving the Services under the laws of the United States or other countries including the country in which you are resident or from which you use the Services.</p>\n\n<p>Before you continue, you should print off or save a local copy of the Terms for your records.</p>\n', '<h3>3. LICENSE AND SITE ACCESS</h3>\n\n<p>LowestUnique grants you a limited license to access and make personal use of this site and not to download (other than page caching) or modify it, or any portion of it, except with express written consent of LowestUnique. This license does not include any resale or commercial use of this site or its contents; any collection and use of any product listings, descriptions, or prices; any derivative use of this site or its contents; any downloading or copying of account information for the benefit of another merchant; or any use of data mining, robots, or similar data gathering and extraction tools. This site or any portion of this site, including the services provided on it, may not be reproduced, duplicated, copied, sold, resold, visited, or otherwise exploited for any commercial purpose without express written consent of LowestUnique. You may not frame or utilize framing techniques to enclose any trademark, logo, or other proprietary information (including images, text, page layout, or form) of LowestUnique without express written consent. You may not use any meta-tags or any other &#34;hidden text&#34; utilizing LowestUnique&#8217;s name or trademarks without the express written consent of LowestUnique. Any unauthorized use terminates the permission or license granted by LowestUnique. You are granted a limited, revocable, and nonexclusive right to create a hyperlink to the home page of LowestUnique&#160; so long as the link does not portray LowestUnique, or its products or services in a false, misleading, derogatory, or otherwise offensive matter. You may not use any LowestUnique logo or other proprietary graphic or trademark as part of the link without express written permission.</p>\n\n<h3>4. USER CONTENT, LINKS, THIRD-PARTY SELLERS</h3>\n\n<p>Our websites may contain (a) User Content (defined below) provided by other users, (b) links to other sites operated by third parties, (c) advertisements and/or sponsorships provided by third parties, and (d) stores, services, or product lines offered by third parties ((a), (b), (c), and (d) are collectively, Third-Party Materials.). We have no control over and are not responsible and assume no liability for any Third-Party Materials or the applicable third parties. We are not responsible for any acts or omissions of such third parties. We do not review, approve, endorse, guarantee, warrant, or make any representations with respect to Third-Party Materials or the applicable third parties. For example, we do not guarantee, warrant or represent that the Third-Party Materials are accurate, legal and/or inoffensive or that these third party sites do not contain viruses or other features that may adversely affect your computer. You use all Third Party Materials and interact with such third parties at your own risk. We are not obligated to be involved in any disputes between you and any such third parties. When you leave our site, our Terms (including our Privacy Policy) no longer govern. You should carefully review the applicable third party privacy statements and other terms and conditions of use. Without limiting the forgoing, if you have a problem with a link from any one of our sites, please notify us at info@LowestUnique</p>\n\n<p>You hereby release us, our subsidiaries, affiliates, officers, employees, agents, and successors from any claim, demands, losses, damages, rights, and actions of any kind, including personal injuries, death, and property damage, that is either directly or indirectly related to or arising from use of Third Party Materials or interactions with or conduct of the applicable third parties. In connection with the foregoing,</p>\n', '<h3>5. LICENSE GRANTED BY YOU</h3>\n\n<p>By providing, submitting, uploading any communications, reviews, comments, feedback, postings, materials, or other content for use on any of the LowestUnique websites (&#34;User Content&#34;), (a) you represent and warrant that you or the owner of all rights to such User Content and that such User Content does not violate our Terms and (b) you hereby grant us, and agree to grant us, an irrevocable, perpetual, royalty-free, fully paid-up, worldwide license (with the right to sublicense) in all languages to use, reproduce, distribute, publicly display, publicly perform, prepare derivative works of, modify, sell and otherwise exploit all or any part of the User Content in our sole discretion by any method now existing or later developed, subject to our Privacy Policy. Subject to our Privacy Policy, any User Content will be treated as non-confidential and non-proprietary and may be disseminated or used by us for any purpose, including, but not limited to, developing, creating, manufacturing or marketing products or services.</p>\n\n<h3>6. REGISTRATION AND PARTICIPATION</h3>\n\n<p>Employees and relatives of employees of LowestUnique are not eligible to participate in LowestUnique auctions under any circumstance.</p>\n\n<p>LowestUnique&#8217;s products and services are offered exclusively to private users and not to commercial or partly-commercial resellers. LowestUnique reserves the right to exclude commercial resellers from the participation in the auctions and to close such user accounts at any time.</p>\n\n<p>You may register only once using your postal address (registration using PO Boxes or equivalents is not permitted). Additionally, only one user registration per household is permitted.</p>\n\n<p>In order to access certain Services, you may be required to provide information about yourself (such as identification or contact details) as part of the registration process for the Service, or as part of your continued use of the Services. You agree that any registration information you give to LowestUnique will always be accurate, correct and up to date.</p>\n\n<p>During the registration process, you must choose a username. The username must not be offensive, be selected to deceive or mis-inform other users, may not offend common decency or infringe upon the rights of third parties. If LowestUnique receives information of a username which is illegal or in breach of these Terms, this username can be amended by LowestUnique without prior notice.</p>\n\n<p>You agree and understand that you are responsible for maintaining the confidentiality of passwords associated with any account you use to access the Service and that your user account may be used only by you and not anyone else. Accordingly, you agree that you will be solely responsible to LowestUnique for all activities that occur under your account. User accounts created during registration are non-transferable.</p>\n', '<h3>7. RULES, RESTRICTIONS, SUSPENSION</h3>\n\n<p>Without limiting other remedies, we may limit, suspend, or terminate our Service and user accounts, prohibit access to our sites and their content, services, and tools, delay or remove hosted content, including any User Content and take technical and legal steps to keep users off the sites if we think that they are creating problems or possible legal liabilities, infringing the intellectual property rights of third parties, or acting inconsistently with the letter or spirit of our policies. We also reserve the right to cancel unconfirmed accounts or accounts that have been inactive for a long time, or to modify or discontinue LowestUnique sites, services, or tools.</p>\n\n<p>You agree to the following conditions:</p>\n\n<ol>\n	<li>You agree to use the Services only for purposes that are permitted by (a) the Terms and (b) any applicable law, regulation or generally accepted practices or guidelines in the relevant jurisdictions (including any laws regarding the export of data or software to and from the United States or other relevant countries). You agree not to post User Content that (i) plagiarizes, violates or infringes upon the rights of any third-party, including trade secret, copyright, trademark, trade dress, privacy, patent, moral right, publicity, or other personal or proprietary rights, and/or (ii) contains unlawful, tortious, threatening, harmful, vulgar, defamatory, false, intentionally misleading, libelous, pornographic, obscene, patently offensive, inappropriate, offensive, harassing, or other unacceptable material or materials that are harmful to minors.</li>\n	<li>You also agree not to engage in any activity that circumvents, interferes with or disrupts the Services (or the servers and networks connected to the Services) or any user experience of our Services including but not limited to the following:</li>\n</ol>\n\n<ul>\n	<li>using any unauthorized third-party bidding software;</li>\n	<li>accessing any of the Services by means other than through the interface provided by LowestUnique (e.g. no use of scripts or web crawlers);</li>\n	<li>manipulating our fee structure, the billing process, bidding, auctions or fees owed to LowestUnique;</li>\n	<li>distributing spam,, unsolicited, or bulk electronic communications, chain letters, or pyramid schemes; or</li>\n	<li>collecting information about users, including email addresses, without their consent.</li>\n</ul>\n\n<p>You agree that you are solely responsible for (and that LowestUnique has no responsibility to you or to any third party for) any breach of your obligations under the Terms and for the consequences (including any loss or damage which LowestUnique may suffer) of any such breach. In case of a breach of these Terms, LowestUnique reserves the right to withhold deliveries or refunds for Bids.</p>\n', '<h3>8. BIDS</h3>\n\n<p>Bidding rights or bids (&#8220;Bids&#8221;) must be purchased and paid for by you prior to online bidding. Bids can be purchased in packages (&#8220;BidPacks&#8221;) as further described under &#8220;Bidding&#8221; in the &#8220;Help&#8221; Section of the LowestUnique Site. Prices for Bids or BidPacks may change in LowestUnique&#39;s discretion from time to time. Bids must currently be placed online through our website. In the future LowestUnique may allow Bids to be placed through third party websites or through use of your mobile phone. In such cases, you will be required to disclose your mobile phone number and be responsible for ensuring it is accurate and up to date. For information on when such opportunities may be available in the future, check the &#8220;Help&#8221; Section of the LowestUnique site.</p>\n\n<p>Bids and voucher Bids are non-transferable and valid for one year after they have been credited to your account. Free Bids are Bids you may get through a promotion or other marketing activity. Free Bids are usually time sensitive and are only valid for the time stated in a promotion. Upon expiration, they become void and can no longer be placed.</p>\n\n<p>Once a Bid is placed in an auction, it is deducted from your Bid account and can no longer be refunded. Refunds will not be issued for Bids placed in an auction, expired Bids, or Voucher Bids and Free Bids. For further information on refunds please see our return policy described under Returns &#38; Complaints in the &#8220;Help&#8221; Section.</p>\n', '<h3>9. THE AUCTION PROCESS</h3>\n\n<p>&#160;For information on how to place a bid, how to use the BidButler or how an auction works, please refer to the Bidding or Auctions topics of the &#8220;Help&#8221; Section on the LowestUnique site. Every auction ends when the remaining time reaches zero and the user who was the last to bid then wins the auction. All other Bids placed on the item expire and will not be credited back to your account nor will you be eligible for a refund for such Bids. The last bidder is determined based on the records in LowestUnique.s database and LowestUnique.s decision regarding who is the last bidder shall be final.</p>\n\n<p>You understand and agree that LowestUnique requires you to bid for auctioned items against other LowestUnique users, some of whom may reside outside the United States. In such cases, users in other countries may not always be bidding on the exact same product in a single auction. To ensure the auction remains fair, the auction items in a single auction will be comparable and reasonably equivalent.</p>\n\n<p>We do not represent or warrant that your Bid will be timely received or accepted by&#160; LowestUnique site and you understand that our receipt of your Bid depends on several factors, some of which we have no control over, including your Internet connection, the equipment you are using to access our site, and other technological and/or telecommunication-based factors. You agree that LowestUnique shall be held harmless from and against any and all claims, causes of action, expenses, costs, or losses arising from or related to any transaction in which your Bid is not received, delayed or otherwise rejected by LowestUnique.</p>\n\n<p>LowestUnique reserves the right to add, reschedule or remove products from the LowestUnique website at anytime without notice. An auction is deemed to have closed when the timer on the auctioned item counts &#34;closed&#34; and no users have placed a Bid. Users should be aware that the timer available to the user is an approximation which may be affected by network delays. The final decision of when an auction closes will be based on the timer used by LowestUnique servers.</p>\n\n<p>&#160;LowestUnique reserves the right to limit the number of auctions you can win within a specific time period. Please refer to the Auctions topic of the &#8220;Help&#8221; Section for further information. A Bid submitted by you constitutes your offer to enter into a binding contract with LowestUnique and in the event of winning an auction, you will receive a purchase offer for the item of the auction under the conditions set out in the related auction.</p>\n', '<h3>10.DELIVERY</h3>\n\n<p>All items purchased from LowestUnique are made pursuant to a shipment contract. This means that the risk of loss and title for such items pass to you upon delivery of the item to the carrier.</p>\n\n<p>Unless otherwise stated, delivery will be made directly from our third party suppliers or from our warehouse to the shipping address provided by you. Deliveries are made solely within the 50 states of the United States (explicitly excluding the U.S. sovereign territories of Guam, Puerto Rico and the U.S. Virgin Islands). Some restrictions or higher shipping costs may apply if the delivery address is in Alaska or Hawaii, please check notifications on the detail pages of the auctions in advance. You acknowledge that delivery times vary and any delivery time indicated is provided only as a guide and is not guaranteed. Please contact our service department at info@LowestUnique If an item is not delivered within the indicated time so that we can work with you to address the issue. LowestUnique shall be entitled to involve third parties to satisfy its contractual obligations without being required to notify the buyer. Obvious damage to the item from transport or packaging damaged during transport is to be reported to LowestUnique upon taking delivery.</p>\n\n<p>Should LowestUnique not be able to deliver the item ordered, LowestUnique shall be entitled to substitute the item with a comparable replacement product with the similar or better features, or provide a refund of the auction end price to you based upon your preference.</p>\n\n<h3>11. RETURNS/REFUNDS</h3>\n\n<p>If, within 14 days of delivery of an item, you decide you no longer want the item, LowestUnique will refund you with the amount that you paid for the item as well as original delivery costs, provided that you have (i) returned the item to LowestUnique, (ii) the item is still in its original packaging and (iii) the item is not damaged or used. Returns or refunds must be first initiated by contacting the LowestUnique customer service team in writing (by letter or email) within the 14 day period in order to be executed. Please note that we cannot offer you a refund on the cost of the Bids that you placed on that auction or the return shipping cost.</p>\n\n<p>Should LowestUnique incur additional costs for insufficient postage on the return or for courier shipments and other irregular shipping methods that are over and above postal shipping costs, these costs will be deducted from any payment whatsoever paid to you. Sets/boxes can only be returned in their entirety.</p>\n\n<p>Exceptions to the right to return are audio or video recordings, computer software that you have unsealed and other items noted by LowestUnique on the LowestUnique site. Such items are not eligible for return or refund.</p>\n\n<h3>12. INFORMATION INACCURACY DISCLAIMER</h3>\n\n<p>From time to time there may be information on the website that may contain typographical errors, inaccuracies, or omissions that may relate to product descriptions, pricing, and availability. LowestUnique reserves the right to correct any errors, inaccuracies or omissions and to change or update information at any time without prior notice (including after you have submitted your order). If a product offered by LowestUnique is not as described, your sole remedy is to return it in unused condition pursuant to our return policy.</p>\n', 1);
+INSERT INTO `cms_pages` (`cms_id`, `cms_page_name`, `cms_page_url`, `cms_page_html`, `cms_page_css`, `cms_page_components`, `cms_page_styles`, `cms_page_assets`, `cms_page_heading1`, `cms_page_heading2`, `cms_page_heading3`, `cms_page_paragraph1`, `cms_page_paragraph2`, `cms_page_paragraph3`, `cms_page_paragraph4`, `cms_page_paragraph5`, `cms_page_paragraph6`, `cms_page_paragraph7`, `active`) VALUES
+(14, 'faq', 'faq', NULL, NULL, NULL, NULL, NULL, '<h2>Frequently Asked Questions</h2>\n', '', '', '<span style=\"font-weight: bold;\">Q1. Do I have to pay to take part in</span><br />\n<br />\nA1. All you have to do is register and start bidding. At the bidding time you just have to buy credits. The credit option are on bidding page. this service? It looks too good to be true?<br />\n<br />\n<span style=\"font-weight: bold;\">Q2. How does Lowest Unique Bid Work?</span><br />\n<br />\nA2. Lowest Unique Bid is a unique fresh way to win items at auction for a fraction of the retail value, The winner of each auction is not necessarily the highest bidder, just the highest Unique bid (no one else has bid the same amount) The maximum amount anyone could win the auction by bidding is the max price which is set for each auction.<br />\n<br />\n<span style=\"font-weight: bold;\">Q3. What process is involved to make a winning bid?</span><br />\n<br />\nA3. After joining Lowest Unique Bid Auctions, members select the item they wish to bid on and place a valid bid that cannot exceed the displayed max price.<br />\n<br />\nMembers may bid as often as they wish on available items. Each valid bid will be documented in the My Account part of our website.<br />\n<br />\nA bid credit/s will be charged for each valid bid. The bid credits are determined item by item.<br />\nBid credits for each item are displayed with each auctioned item on the Lowest Unique Bid website. Each auction has a limited quantity of valid bids allowed.<br />\n<br />\nThe auction will successfully close upon receipt of the required quantity of valid bids (Note - auctions may be closed/withdrawn at Lowest Unique Bid Auction&#39;s discretion without notice, any auction withdrawn will have all bids received credited back to bidder accounts)<br />\n<br />\nThe number of valid bids allowed or remaining available is displayed with each item. The Bidder that submitted the highest unique valid bid will win the product. In the event that an auction has no unique valid bid, the Bidder that first submitted the highest non-unique valid bid will win the product.<br />\n<br />\nThe successful Bidder will receive a notification email directing them to confirm their order within five business days. The auctioned item will be processed and shipped to the address on record for the successful Bidder.', '<span style=\"font-weight: bold;\">Q4. How much does it cost to bid?</span><br />\n<br />\nA4. For each auction there is an Bid Credit amount, each credit costs $1.00 to purchase so an auction with an bid credit amount of 2 would in effect be costing you $2.00 per bid. Below is the credits details:<br />\n$1.00 = 1 Bid Credit<br />\n$5.00 = 5 Bid Credit<br />\n$10.00 = 10 Bid Credit ( +1 free)<br />\n$25.00 = 25 Bid Credit ( +3 free)<br />\n$50.00 = 50 Bid Credit ( +6 free)<br />\n$100.00 = 100 Bid Credit ( +12 free)<br />\n<br />\n<span style=\"font-weight: bold;\">Q5. How do I bid?</span><br />\n<br />\nA5. If you bid the max price you will not necessarily win the auction. The winner of the auction will be the person who has bid the highest unique price.<br />\n<br />\nFor example, if the max price is $100.00, you could bid $99.99. If $99.99 is the highest unique bid (no one else bid that amount and no one else bid a higher unique price) you will win the auction.<br />\n<br />\n<span style=\"font-weight: bold;\">Q6. What is a Unique Bid?</span><br />\n<br />\nA6. A bid is unique when there hasn&#39;t been another bidder bidding the same amount. A unique bid wins each auction.<br />\n<br />\nEach auction has a different maximum number of bids allowed. For example, if there is an auction with only three bidders allowed and two of them bid the max price of $50.00 and one of them bids $9.10, the $9.10 bid will win because it is the highest unique bid.<br />\n<br />\nRemember the highest bidder may not win the auction - it is the highest unique bid.', '<span style=\"font-weight: bold;\">Q7. How can I increase my chances of winning?</span><br />\n<br />\nA7. Lowest Unique Bid is different from regular auctions, giving everyone an equal chance of winning every auction.<br />\n<br />\nThe winning bid will never be more than the max price set for each auction.<br />\n<br />\nThe number of bids allowed on each auction is set before the auction begins.<br />\n<br />\nThere are no methods by which a bidder can gain an advantage over other bidders; all bids are kept hidden until the end of each auction.<br />\n<br />\nThe only way to increase your chances of wining is to bid multiple times, obviously someone who bids five times have more of a chance of winning than someone who bids once.<br />\n<br />\nIf you bid multiple times on the same auction, you are increasing your chances of winning that auction by covering a wider range of bids.<br />\n<br />\n<span style=\"font-weight: bold;\">Q8. When can I submit bids?</span><br />\n<br />\nA8. Bidders may submit valid bids at anytime of day or night that an auction is still open.<br />\n<br />\n<span style=\"font-weight: bold;\">Q9 Can I submit more than one bid per auction?</span><br />\n<br />\nA9. The number of valid bids for a given auction is limited to the required number of valid bids as displayed for each auctioned item.<br />\n<br />\nThere is no limit to the number of valid bids a member may submit for an auctioned item.', '<span style=\"font-weight: bold;\">Q10. How are successful bids determined?</span><br />\n<br />\nA10. Upon receipt of the required quantity of valid bids, Lowest Unique Bid will review all valid bids and identify the successful valid bid.<br />\n<br />\nThe Bidder that submitted the highest unique valid bid will win the product. The successful Bidder will receive a notification email directing them to confirm their order within five business days.<br />\n<br />\nIn the event that an auction has no unique valid bids, the Bidder that first submitted the highest non-unique valid bid will win the product.<br />\n<br />\n<span style=\"font-weight: bold;\">Q11. How can I see what the winning bid was in an auction?</span><br />\n<br />\nA11. Members may review auction winning, and all other bids, for successfully closed auctions by clicking on the Results Link on the website. Bidders may also review the status of any auction for which they submitted a valid bid by clicking on the Browse link<br />\n<br />\n<span style=\"font-weight: bold;\">Q12. I tried to submit a bid but it kept telling me &#34;my bid is higher than the max price&#34;. What am I doing wrong?</span><br />\n<br />\nA12. Bids cannot exceed the max Auction price as indicated for each item auctioned on the website.<br />\n<br />\n<span style=\"font-weight: bold;\">Q13. Can I cancel or change my bid after it has been submitted and confirmed?</span><br />\n<br />\nA13. All valid submitted bids are final and cannot be cancelled or changed. Any question regarding the validity of a bid should be submitted by clicking on the Contact Us link.', '<span style=\"font-weight: bold;\">Q14. When do the auctions end?</span><br />\n<br />\nA14. The auctions either end when the maximum number of bids has been reached or the end date has been reached. However, if an auction has reached its end date, but the minimum number of bids has not been reached, it may be extended.<br />\n<br />\n<span style=\"font-weight: bold;\">Q15. What is an bid credit?</span><br />\n<br />\nA15. Credits are our way of making the bidding process easier for you. It also allows you to earn credits by referring friends or buying large amounts of credits. Above it has been described<br />\n<br />\n<span style=\"font-weight: bold;\">Q16. What is the administration/handling fee?</span><br />\n<br />\nA16. The administration/handling fee (also known as the Bid Credit) varies from auction to auction and generally ranges from 1 credit to 56 credits.<br />\n<br />\n<span style=\"font-weight: bold;\">Q17. How much will the postage and packaging be on each item?</span><br />\n<br />\nA17. If you live in the US, and the goods are to be delivered to an address in the US shipping is FREE!! Unless stated in the auction details.<br />\n<br />\nIf the item is to be delivered elsewhere or you require special delivery instructions above and beyond our normal posting procedures you may incur extra fees as described in the Terms and Conditions.<br />\n<br />\n<span style=\"font-weight: bold;\">Q18. How do I receive the product if I am the successful Bidder?</span><br />\n<br />\nA18. Successful Bidders will receive an email notification. Upon receipt of the winning bid amount from the winning bidder, the item will be shipped to the address on record for the successful Bidder. All items will be shipped standard ground shipping via a carrier of Lowest Unique Bid Auction&#39;s choosing', '<span style=\"font-weight: bold;\">Q19. Are any of the items used or refurbished?</span><br />\n<br />\nA19. At present, all auctioned items are new and include the full manufacturer&#39;s warranty. Lowest Unique Bid Auction may, at a later date, offer refurbished items or pre-sold items on consignment (these will be clearely marked)<br />\n<br />\nAll Bidders and the public in general will be notified of the change at that time. Look in the auctions details section of any listed auction, if the goods/products are used, refurbished or pre-sold items this is where you will be notified.<br />\n<br />\nUSED Vehicles are SOLD AS SEEN; a used vehicle will clearly have its date of registration shown. Used vehicles come with no warranties or guarantees of roadworthiness or reliability. Although every effort is made to ensure vehicles are of a high standard.<br />\n<br />\nAny and all used vehicle&#39;s sold are sold as seen, Lowest Unique Bid make no guarantees to the vehicles roadworthiness, a winning bidder of used auctions should have that vehicle checked over by a qualified motor dealership as soon as possible. Collection of the vehicle is the winner&#39;s responsability, winners may be required to participate in publicity pictures/news stories.<br />\n<br />\n<span style=\"font-weight: bold;\">Q20. I am the winning bidder of a vehicle how do I take possession?</span><br />\n<br />\nA20. New vehicles will be bought and paid for from a local dealership to us, it is your responsibility to arrange collection/delivery from the dealership. If the vehicle can be sourced from a dealership of your choice close to you for the same price we have negotiated? (not necessarily the Normal MSRP, we may have negotiated a discount ?) We may choose to purchase the vehicle from the dealership of your choice; this is purely at Lowest Unique Bid discretion.<br />\n<br />\nUsed vehicles must be collected within 14 days of the auction closing, vehicles not collected within 14 days must have a storage charge (Lowest Unique Bid discretion) applied at the rate of &#239;&#191;&#189;?$15.00 per day, for each day after the 14 day initial collection period. If a vehicle still has not been collected after 28 days, the vehicle will be sold and the balance after Lowest Unique Bid fees &#38; expenses being deducted will be forwarded onto the auction winner.', '<p><span style=\"font-weight: bold;\">Q21. Do you offer a cash alternative?</span><br />\n<br />\nA21. At Lowest Unique Bid discretion we offer a cash/cheque alternative to any winning auction, this cash alternative is no less than 60% of the auctions listed Normal MSRP price.<br />\n<br />\n<span style=\"font-weight: bold;\">Q22. Can I review the auctions I&#39;ve entered?</span><br />\n<br />\nA22. By clicking on the My Account link on at the top of the page.<br />\n<br />\n<span style=\"font-weight: bold;\">Q23. I don&#39;t have a credit/debit card or paypal account. Can I pay using a cheque?</span><br />\n<br />\nA23. Yes you can pay using a cheque, For this event you have to contact to admin for more information.<br />\n<br />\n<span style=\"font-weight: bold;\">Q24. How do I cancel my membership?</span><br />\n<br />\nA24. If you wish to cancel your membership with Lowest Unique Bid Auction, simply fill out the Contact form on this site with the request to cancel. Please keep in mind you will lose any and all bid credits you have in your account, all bidding history, and you will no longer receive Bid Watch or Bid Alert messages. You may, if you choose sign up at any time in the future, but you will be starting afresh with no bid credits or Lowest Unique Bid history.</p>\n\n<p><span style=\"font-weight: bold;\">Q25. Why can&#39;t I log in?</span><br />\n<br />\nA25. You must first register and confirm your registration via email to log in.<br />\n<br />\n<span style=\"font-weight: bold;\">Q26. It says my email address is invalid when I try logging in.</span><br />\n<br />\nA26. Make sure you&#39;re using the valid email address that was used when you registered. If you changed your email address in my Details then you must log in with your new one. Also make sure your email address is in the proper format.<br />\n<br />\n<span style=\"font-weight: bold;\">Q27. Are all payments secure?</span><br />\n<br />\nA27. Yes. All payments are handled through PayPal, which is a highly respected online payment gateway and is totally secure.<br />\n<br />\nNeed more answers? Contact <a classname=\"\" href=\"mailto:admin@uniquescriptz.com\">UniqueScriptz</a>.</p>\n', 1),
+(15, 'Privacy Policy', 'privacy-policy', NULL, NULL, NULL, NULL, NULL, '<h2>Privacy Policy</h2>\n', '', '', '<strong><span style=\"font-size: 20px;\">General</span></strong>\n<p>We may amend this Privacy Policy&#160; at any time by posting the new Privacy Policy on Bajebids. Bajebids reserves&#160; the right to change this Privacy Policy at any time without notice to You.&#160; Consequently, You should review this Privacy Policy for changes each time You&#160; visit Bajebids.</p>\n', '', '', '', '', '', '', 1),
+(16, 'login', 'login', NULL, NULL, NULL, NULL, NULL, '<h1>Login to Place Bid</h1>\n', '', '', 'Login Content', '', '', '', '', '', '', 1),
+(20, 'register', 'register', NULL, NULL, NULL, NULL, NULL, '<h2>Register Now</h2>\n', '', '', 'Please provide a valid email address, where you will receive the account activation code. Your account information: (note: all fields are required !)', '', '', '', '', '', '', 1),
+(21, 'Forgot Password', 'forgot-password', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Forgot Password</strong></h2>\n', '', '', 'Please enter your Email address in order to receive the password in your E-mail.', '', '', '', '', '', '', 1),
+(22, 'Gift Credits', 'gift-credits', NULL, NULL, NULL, NULL, NULL, '<h2>Gift Coupons</h2>\n', '', '', 'Gift your friends coupons to place bids', '', '', '', '', '', '', 1),
+(23, 'Buy Credits', 'buy-credits', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Buy <span>Credits</span></strong></h2>\n', '', '', 'To buy more credits click on&#160;<strong>Buy Now</strong>&#160;button.<br />\nWhen you purchase credits we give you some&#160;&#39;Free&#39; Credits&#160;which can only be used in special auctions that we will run on a regular basis. In these auctions only Free credits can be used to bid for the auction lots.', '', '', '', '', '', '', 1),
+(24, 'Account Details', 'account-details', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Account <span>Details</span></strong></h2>\n', '', '', 'Update your profile information now to get latest update and communications.', '', '', '', '', '', '', 1),
+(25, 'Account Preferences', 'preferences', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Account <span>Preferences</span></strong></h2>\n', '', '', 'Refer friends and update Newsletter Settings', '', '', '', '', '', '', 1),
+(26, 'Payments', 'payments', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Payment <span>History</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
+(27, 'Auction Wishlist', 'wishlist', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Auction <span>Wishlist</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
+(28, 'Current Auction', 'current-auctions', NULL, NULL, NULL, NULL, NULL, '<h2><strong>My Current <span>Auctions</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
+(29, 'Closed Auction', 'closed-auctions', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Closed <span>Auctions</span></strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
+(30, 'Auction Won', 'won-auctions', NULL, NULL, NULL, NULL, NULL, '<h2><strong>Auction <span>Won</span> by You</strong></h2>\n', '', '', '', '', '', '', '', '', '', 1),
+(31, 'Contact Us', 'contact', '<div class=\"row\" id=\"iprh\"></div><div class=\"row\" id=\"ifc6\"></div><section class=\"bdg-sect\"><h1 class=\"heading\"><h2 id=\"i9j2\"><strong id=\"ivcn\">CONTACT<span> </span><span id=\"i9aiy\">US</span></strong></h2></h1><p class=\"paragraph\"><span id=\"ixl4m\">Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum formas human.</span></p></section>', '* { box-sizing: border-box; } body {margin: 0;}.row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}#i9j2{box-sizing:border-box;margin-top:0px;margin-bottom:25px;font-family:Lato, sans-serif;font-weight:500;line-height:1;color:rgb(51, 51, 51);font-size:32px;padding-bottom:20px;position:relative;text-transform:uppercase;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;}#ivcn{box-sizing:border-box;font-weight:bolder;}#i9aiy{box-sizing:border-box;color:rgb(205, 165, 87);}#ixl4m{color:rgb(89, 89, 89);font-family:Lato, sans-serif;font-size:16px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;background-color:rgb(244, 244, 244);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;display:inline !important;float:none;}', '[{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"iprh\"}},{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"ifc6\"}},{\"tagName\":\"section\",\"classes\":[\"bdg-sect\"],\"components\":[{\"tagName\":\"h1\",\"type\":\"text\",\"classes\":[\"heading\"],\"components\":[{\"tagName\":\"h2\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"i9j2\"},\"components\":[{\"tagName\":\"strong\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"ivcn\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"CONTACT\",\"_innertext\":false},{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\" \",\"_innertext\":false}],\"_innertext\":true},{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"i9aiy\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"US\",\"_innertext\":false}],\"_innertext\":true}],\"_innertext\":true}],\"_innertext\":true}]},{\"tagName\":\"p\",\"type\":\"text\",\"classes\":[\"paragraph\"],\"components\":[{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"ixl4m\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum formas human.\",\"_innertext\":false}],\"_innertext\":true}]}]}]', '[{\"selectors\":[{\"name\":\"row\",\"private\":1}],\"style\":{\"display\":\"table\",\"padding-top\":\"10px\",\"padding-right\":\"10px\",\"padding-bottom\":\"10px\",\"padding-left\":\"10px\",\"width\":\"100%\"}},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell30\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell70\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"8%\",\"display\":\"table-cell\",\"height\":\"75px\"}},{\"selectors\":[\"#i9j2\"],\"style\":{\"box-sizing\":\"border-box\",\"margin-top\":\"0px\",\"margin-bottom\":\"25px\",\"font-family\":\"Lato, sans-serif\",\"font-weight\":\"500\",\"line-height\":\"1\",\"color\":\"rgb(51, 51, 51)\",\"font-size\":\"32px\",\"padding-bottom\":\"20px\",\"position\":\"relative\",\"text-transform\":\"uppercase\",\"font-style\":\"normal\",\"font-variant-ligatures\":\"normal\",\"font-variant-caps\":\"normal\",\"letter-spacing\":\"normal\",\"orphans\":\"2\",\"text-align\":\"left\",\"text-indent\":\"0px\",\"white-space\":\"normal\",\"widows\":\"2\",\"word-spacing\":\"0px\",\"-webkit-text-stroke-width\":\"0px\",\"background-color\":\"rgb(255, 255, 255)\",\"text-decoration-thickness\":\"initial\",\"text-decoration-style\":\"initial\",\"text-decoration-color\":\"initial\"}},{\"selectors\":[\"#ivcn\"],\"style\":{\"box-sizing\":\"border-box\",\"font-weight\":\"bolder\"}},{\"selectors\":[\"#i9aiy\"],\"style\":{\"box-sizing\":\"border-box\",\"color\":\"rgb(205, 165, 87)\"}},{\"selectors\":[\"#ixl4m\"],\"style\":{\"color\":\"rgb(89, 89, 89)\",\"font-family\":\"Lato, sans-serif\",\"font-size\":\"16px\",\"font-style\":\"normal\",\"font-variant-ligatures\":\"normal\",\"font-variant-caps\":\"normal\",\"font-weight\":\"400\",\"letter-spacing\":\"normal\",\"orphans\":\"2\",\"text-align\":\"left\",\"text-indent\":\"0px\",\"text-transform\":\"none\",\"white-space\":\"normal\",\"widows\":\"2\",\"word-spacing\":\"0px\",\"-webkit-text-stroke-width\":\"0px\",\"background-color\":\"rgb(244, 244, 244)\",\"text-decoration-thickness\":\"initial\",\"text-decoration-style\":\"initial\",\"text-decoration-color\":\"initial\",\"display\":\"inline !important\",\"float\":\"none\"}}]', '[]', '<h2><strong>Contact <span>Us</span></strong></h2>\n', '', '', '', '', '', '', '', '', 'Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum formas human.', 1),
+(32, 'winners', 'winners', '<div class=\"row\" id=\"icvn\"><div id=\"i2y6\" class=\"cell\"><div id=\"i55h\"><h2>PREVIOUS AUCTION WINNERS</h2></div><div id=\"ihdq\"><span id=\"in32\">Click on an Auction Number/Name to see all bids!</span></div></div></div>', '* { box-sizing: border-box; } body {margin: 0;}.row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}.cell{width:8%;display:table-cell;height:75px;}#i55h{padding:10px;}#ihdq{padding:10px;}#in32{color:rgb(89, 89, 89);font-family:Lato, sans-serif;font-size:16px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;display:inline !important;float:none;}@media (max-width: 768px){.cell{width:100%;display:block;}}', '[{\"name\":\"Row\",\"droppable\":\".cell\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":0,\"bl\":0,\"br\":0,\"minDim\":1},\"classes\":[{\"name\":\"row\",\"private\":1}],\"attributes\":{\"id\":\"icvn\"},\"components\":[{\"name\":\"Cell\",\"draggable\":\".row\",\"resizable\":{\"tl\":0,\"tc\":0,\"tr\":0,\"cl\":0,\"cr\":1,\"bl\":0,\"br\":0,\"minDim\":1,\"bc\":0,\"currentUnit\":1,\"step\":0.2},\"classes\":[{\"name\":\"cell\",\"private\":1}],\"attributes\":{\"id\":\"i2y6\"},\"components\":[{\"type\":\"text\",\"attributes\":{\"id\":\"i55h\"},\"components\":[{\"tagName\":\"h2\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"PREVIOUS AUCTION WINNERS\",\"_innertext\":false}],\"_innertext\":true}]},{\"type\":\"text\",\"attributes\":{\"id\":\"ihdq\"},\"components\":[{\"tagName\":\"span\",\"type\":\"text\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"editable\":false,\"selectable\":false,\"hoverable\":false,\"attributes\":{\"id\":\"in32\"},\"components\":[{\"type\":\"textnode\",\"removable\":false,\"draggable\":false,\"highlightable\":0,\"copyable\":false,\"selectable\":true,\"content\":\"Click on an Auction Number/Name to see all bids!\",\"_innertext\":false}],\"_innertext\":true}]}]}]}]', '[{\"selectors\":[{\"name\":\"row\",\"private\":1}],\"style\":{\"display\":\"table\",\"padding-top\":\"10px\",\"padding-right\":\"10px\",\"padding-bottom\":\"10px\",\"padding-left\":\"10px\",\"width\":\"100%\"}},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell30\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[\"cell70\"],\"style\":{\"width\":\"100%\",\"display\":\"block\"},\"mediaText\":\"(max-width: 768px)\",\"atRuleType\":\"media\"},{\"selectors\":[{\"name\":\"cell\",\"private\":1}],\"style\":{\"width\":\"8%\",\"display\":\"table-cell\",\"height\":\"75px\"}},{\"selectors\":[\"#i55h\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#ihdq\"],\"style\":{\"padding\":\"10px\"}},{\"selectors\":[\"#in32\"],\"style\":{\"color\":\"rgb(89, 89, 89)\",\"font-family\":\"Lato, sans-serif\",\"font-size\":\"16px\",\"font-style\":\"normal\",\"font-variant-ligatures\":\"normal\",\"font-variant-caps\":\"normal\",\"font-weight\":\"400\",\"letter-spacing\":\"normal\",\"orphans\":\"2\",\"text-align\":\"left\",\"text-indent\":\"0px\",\"text-transform\":\"none\",\"white-space\":\"normal\",\"widows\":\"2\",\"word-spacing\":\"0px\",\"-webkit-text-stroke-width\":\"0px\",\"background-color\":\"rgb(255, 255, 255)\",\"text-decoration-thickness\":\"initial\",\"text-decoration-style\":\"initial\",\"text-decoration-color\":\"initial\",\"display\":\"inline !important\",\"float\":\"none\"}}]', '[]', '<h2>Previous Auction Winners</h2>\n', 'Click on an Auction Number/Name to see all bids!', '', '', '', '', '', '', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -4480,7 +4675,7 @@ INSERT INTO `cms_pages` (`cms_id`, `cms_page_name`, `cms_page_url`, `cms_page_he
 CREATE TABLE `config_currency` (
   `id` smallint(2) NOT NULL,
   `currency` varchar(4) DEFAULT NULL,
-  `currency_code` varchar(2) NOT NULL,
+  `currency_code` varchar(5) NOT NULL,
   `base_currency` smallint(1) NOT NULL,
   `coversion_rate` float NOT NULL,
   `active` tinyint(1) NOT NULL
@@ -4492,8 +4687,9 @@ CREATE TABLE `config_currency` (
 
 INSERT INTO `config_currency` (`id`, `currency`, `currency_code`, `base_currency`, `coversion_rate`, `active`) VALUES
 (20, 'USD', '$', 1, 1, 1),
-(21, 'INR', 'Rs', 0, 78, 1),
-(27, 'AUD', 'A$', 0, 56.56, 1);
+(21, 'INR', 'Rs', 0, 82.19, 1),
+(27, 'AUD', 'A$', 0, 1.56, 1),
+(28, 'CAD', 'CA$', 0, 1.37, 1);
 
 -- --------------------------------------------------------
 
@@ -4506,9 +4702,9 @@ CREATE TABLE `country` (
   `Name` char(52) NOT NULL DEFAULT '',
   `Continent` enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') NOT NULL DEFAULT 'Asia',
   `Region` char(26) NOT NULL DEFAULT '',
-  `SurfaceArea` float(10,2) NOT NULL DEFAULT '0.00',
+  `SurfaceArea` float(10,2) NOT NULL DEFAULT 0.00,
   `IndepYear` smallint(6) DEFAULT NULL,
-  `Population` int(11) NOT NULL DEFAULT '0',
+  `Population` int(11) NOT NULL DEFAULT 0,
   `LifeExpectancy` float(3,1) DEFAULT NULL,
   `GNP` float(10,2) DEFAULT NULL,
   `GNPOld` float(10,2) DEFAULT NULL,
@@ -4774,7 +4970,7 @@ CREATE TABLE `countrylanguage` (
   `CountryCode` char(3) NOT NULL DEFAULT '',
   `Language` char(30) NOT NULL DEFAULT '',
   `IsOfficial` enum('T','F') NOT NULL DEFAULT 'F',
-  `Percentage` float(4,1) NOT NULL DEFAULT '0.0'
+  `Percentage` float(4,1) NOT NULL DEFAULT 0.0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -5770,6 +5966,30 @@ INSERT INTO `countrylanguage` (`CountryCode`, `Language`, `IsOfficial`, `Percent
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `manage_banner`
+--
+
+CREATE TABLE `manage_banner` (
+  `id` int(10) NOT NULL,
+  `banner_id` varchar(255) NOT NULL,
+  `banner_name` varchar(255) NOT NULL,
+  `banner_img` varchar(255) NOT NULL,
+  `banner_url` varchar(100) NOT NULL,
+  `banner_open` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated-at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `manage_banner`
+--
+
+INSERT INTO `manage_banner` (`id`, `banner_id`, `banner_name`, `banner_img`, `banner_url`, `banner_open`, `created_at`, `updated-at`) VALUES
+(4, 'COD4', 'tests', '1772banner_img.jpg', '', 1, '2022-09-30 13:52:01', '2022-09-30 13:52:01');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `manage_categories`
 --
 
@@ -5777,7 +5997,7 @@ CREATE TABLE `manage_categories` (
   `id` int(11) NOT NULL,
   `category_id` varchar(30) NOT NULL,
   `category_name` varchar(50) NOT NULL,
-  `category_parent` text,
+  `category_parent` text DEFAULT NULL,
   `category_slug` varchar(60) DEFAULT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -5787,7 +6007,7 @@ CREATE TABLE `manage_categories` (
 --
 
 INSERT INTO `manage_categories` (`id`, `category_id`, `category_name`, `category_parent`, `category_slug`, `status`) VALUES
-(28, 'UNI28', 'Electronics', NULL, 'electronics', 1),
+(28, 'UNI28', 'Electronics', '0', 'Electronics', 1),
 (30, 'UNI30', 'Mobiles', NULL, 'mobiles', 1),
 (31, 'UNI31', 'Sports', NULL, 'sports', 1),
 (32, 'UNI32', 'Automotive', NULL, 'automotive', 1),
@@ -5807,15 +6027,15 @@ INSERT INTO `manage_categories` (`id`, `category_id`, `category_name`, `category
 CREATE TABLE `manage_coupons` (
   `id` int(11) NOT NULL,
   `coupon_code` varchar(20) NOT NULL DEFAULT '0',
-  `points_earned` int(10) NOT NULL DEFAULT '0',
-  `coupon_value` int(10) NOT NULL DEFAULT '0',
+  `points_earned` int(10) NOT NULL DEFAULT 0,
+  `coupon_value` int(10) NOT NULL DEFAULT 0,
   `coupon_sdate` varchar(15) NOT NULL,
   `coupon_edate` varchar(15) NOT NULL,
-  `coupon_used` tinyint(1) NOT NULL DEFAULT '0',
+  `coupon_used` tinyint(1) NOT NULL DEFAULT 0,
   `valid_plan` smallint(4) DEFAULT NULL,
   `user_id` varchar(15) DEFAULT NULL,
   `reg_id` int(11) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -5823,8 +6043,7 @@ CREATE TABLE `manage_coupons` (
 --
 
 INSERT INTO `manage_coupons` (`id`, `coupon_code`, `points_earned`, `coupon_value`, `coupon_sdate`, `coupon_edate`, `coupon_used`, `valid_plan`, `user_id`, `reg_id`, `status`) VALUES
-(1, 'HIL2564', 50, 100, '2019-01-16', '2019-01-26', 0, NULL, NULL, NULL, 0),
-(2, 'AAA102', 100, 60, '2017-02-24', '2017-02-28', 0, NULL, NULL, NULL, 0),
+(2, 'AAA102', 100, 60, '2017-02-24', '2022-12-31', 0, NULL, NULL, NULL, 1),
 (3, 'AAA103', 100, 60, '2017-02-24', '2017-02-28', 0, NULL, NULL, NULL, 0),
 (4, 'sfs4569', 60, 100, '2019-01-16', '2019-01-31', 0, NULL, NULL, NULL, 0),
 (5, 'sfs4569', 60, 100, '2019-01-16', '2019-01-31', 0, NULL, NULL, NULL, 0),
@@ -5846,11 +6065,11 @@ CREATE TABLE `manage_paymentgateway` (
   `id` tinyint(2) NOT NULL,
   `gateway_name` varchar(20) NOT NULL DEFAULT '',
   `gateway_email` varchar(60) NOT NULL,
-  `secret_key` varchar(60) DEFAULT NULL,
-  `public_key` varchar(60) DEFAULT NULL,
-  `gateway_fee` float NOT NULL DEFAULT '0',
-  `gateway_other_fee` float NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `secret_key` varchar(255) DEFAULT NULL,
+  `public_key` varchar(255) DEFAULT NULL,
+  `gateway_fee` float NOT NULL DEFAULT 0,
+  `gateway_other_fee` float NOT NULL DEFAULT 0,
+  `status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -5858,8 +6077,41 @@ CREATE TABLE `manage_paymentgateway` (
 --
 
 INSERT INTO `manage_paymentgateway` (`id`, `gateway_name`, `gateway_email`, `secret_key`, `public_key`, `gateway_fee`, `gateway_other_fee`, `status`) VALUES
-(1, 'Paypal', 'info@theekgroup.com', 'fs', 'fsfsf', 0, 0, 1),
-(2, 'Stripe', 'pankajbains@gmail.com', NULL, NULL, 23, 2, 1);
+(1, 'Paypal', 'pankajbains@gmail.com', 'fs', 'fsfsf', 0, 0, 1),
+(2, 'Stripe', 'pankajbains@gmail.com', 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ', 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP', 0, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manage_subscriber`
+--
+
+CREATE TABLE `manage_subscriber` (
+  `id` int(10) NOT NULL,
+  `subscriber_id` varchar(255) NOT NULL,
+  `email_id` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `manage_subscriber`
+--
+
+INSERT INTO `manage_subscriber` (`id`, `subscriber_id`, `email_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'e5c359cbfcaf14890f53fcf559a36d2c', 'shoaib.kipm@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'e97f23444c3139643295f9558655cd72', 'mohd.shoaib@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'b7270ba6d0d40af338115bccca34f216', 'kishor@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, '30cbb5b17f8849ed26d8b02c83302772', 'pankaj@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'ddfa35c84120009784154a96f0cc4ce3', 'kishor2@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, '72f0d3b0120aec6f4c6da8426f839666', 'zia@gmail.com', 'subscribed', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, '4cb6b03dd03352830bd8ba350f81a7f1', 'tauheed786@gmail.com', 'subscribed', '2022-02-10 00:31:16', '2022-02-10 00:31:16'),
+(8, 'd0a0102ef2ce849edc4911cac6b63ccd', 'shoaib987@gmail.com', 'subscribed', '2022-02-10 11:42:26', '2022-02-10 11:42:26'),
+(9, 'da5fe620cc0cca1c181b071514cdec5c', 'shoaib@gmail.com', 'subscribed', '2022-07-05 13:33:51', '2022-07-05 13:33:51'),
+(10, '647c71253dfbe1516bbd6fa62365b3d5', 'srk@gmail.com', 'subscribed', '2022-07-07 16:32:37', '2022-07-07 16:32:37'),
+(11, '3fefd654dd39819e3f3540599542b601', 'pankajbains@gmail.com', 'subscribed', '2022-10-05 15:32:49', '2022-10-05 15:32:49'),
+(12, '2f7672ae82a93b2cd083ce5d99e1c7b8', 'dedesigns@gmail.com', 'unsubscribed', '2022-10-12 14:54:35', '2022-10-12 14:54:35');
 
 -- --------------------------------------------------------
 
@@ -5875,13 +6127,18 @@ CREATE TABLE `manage_wallets` (
   `description` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `manage_wallets`
+-- Table structure for table `password_reset`
 --
 
-INSERT INTO `manage_wallets` (`id`, `user_id`, `points_earned`, `points_used`, `description`) VALUES
-(1, 'LOC30-2018', 20, 0, 'Use of Login'),
-(2, 'LOC30-2018', 56, 0, 'sharing service');
+CREATE TABLE `password_reset` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `time` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -5901,6 +6158,17 @@ CREATE TABLE `user_address` (
   `country` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `user_address`
+--
+
+INSERT INTO `user_address` (`id`, `user_id`, `bill_id`, `ship_id`, `address`, `city`, `state`, `pin`, `country`) VALUES
+(1, 'UNI11-2021', 0, 0, 'gorakhnaths', 'Lucknow', 'Uttar Prad', '273001', 'IN'),
+(2, 'UNI13-2021', 0, 0, 'Golghar', 'Gorakhpur', 'UP', '273001', 'IN'),
+(3, 'UNI19-2022', 0, 0, 'Hauz Khas', 'New Delhi', 'New Delhi', '110030', 'IN'),
+(4, 'COD1-2022', 0, 0, '50 pinnacle drive', 'ontario', 'ontario', 'N2P0H8', 'CA'),
+(5, 'USR2-2022', 0, 0, '50 pinnacle dr', 'kitchener', 'ontario', 'N2P0H8', 'CA');
+
 -- --------------------------------------------------------
 
 --
@@ -5913,14 +6181,6 @@ CREATE TABLE `user_affiliates` (
   `aff_points` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `user_affiliates`
---
-
-INSERT INTO `user_affiliates` (`aff_id`, `aff_level`, `aff_points`) VALUES
-(1, 1, 2),
-(3, 2, 1.5);
-
 -- --------------------------------------------------------
 
 --
@@ -5929,10 +6189,10 @@ INSERT INTO `user_affiliates` (`aff_id`, `aff_level`, `aff_points`) VALUES
 
 CREATE TABLE `user_bidcoupon_rate` (
   `id` int(11) NOT NULL,
-  `coupon_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `coupon_credit` int(11) NOT NULL DEFAULT '0',
+  `coupon_rate` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `coupon_credit` int(11) NOT NULL DEFAULT 0,
   `coupon_validity` smallint(3) DEFAULT NULL,
-  `active` smallint(1) NOT NULL DEFAULT '0'
+  `active` smallint(1) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -5940,7 +6200,7 @@ CREATE TABLE `user_bidcoupon_rate` (
 --
 
 INSERT INTO `user_bidcoupon_rate` (`id`, `coupon_rate`, `coupon_credit`, `coupon_validity`, `active`) VALUES
-(20, '5.00', 20, 3, 1),
+(20, '5.00', 20, 4, 0),
 (23, '10.00', 30, 4, 1),
 (24, '15.00', 30, 5, 1);
 
@@ -5960,10 +6220,10 @@ CREATE TABLE `user_bidcoupon_records` (
   `coupon_code` varchar(20) DEFAULT NULL,
   `coupon_value` int(10) DEFAULT NULL,
   `coupon_credit` int(10) DEFAULT NULL,
-  `coupon_validity` smallint(2) DEFAULT '0',
-  `coupon_used` smallint(1) NOT NULL DEFAULT '0',
-  `paid` smallint(1) NOT NULL DEFAULT '0',
-  `mailsent` smallint(1) NOT NULL DEFAULT '0',
+  `coupon_validity` smallint(2) DEFAULT 0,
+  `coupon_used` smallint(1) NOT NULL DEFAULT 0,
+  `paid` smallint(1) NOT NULL DEFAULT 0,
+  `mailsent` smallint(1) NOT NULL DEFAULT 0,
   `txn_id` varchar(30) DEFAULT NULL,
   `txn_date` date NOT NULL DEFAULT '0000-00-00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -5973,8 +6233,8 @@ CREATE TABLE `user_bidcoupon_records` (
 --
 
 INSERT INTO `user_bidcoupon_records` (`id`, `name`, `first_name`, `last_name`, `email`, `message`, `coupon_code`, `coupon_value`, `coupon_credit`, `coupon_validity`, `coupon_used`, `paid`, `mailsent`, `txn_id`, `txn_date`) VALUES
-(1, 'pankaj', 'Pankaj', 'Bains', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', 'test', 'upJ6BQ7z3', 5, 20, 3, 1, 1, 1, 'gdgdgd ffs', '2020-04-04'),
-(5, 'pankaj', 'pankaj', 'bains', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', 'test', 'H62e3JRsl', 15, 30, 5, 0, 1, 1, 'fssfsfssvsb', '2020-04-05');
+(1, 'Pankaj Bains', 'Brian', 'Warner', 'K1B1ZThVeklDcFRLVmFCRkhBSVZUMnU3UDlnNytjcU9qQUpOUWQ0UGNzQT0=', '', 'PBym0j95R', 10, 30, 4, 0, 0, 0, NULL, '0000-00-00'),
+(2, 'Pankaj Bains', 'Brian', 'Warner', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', '', '6OWk83zlG', 10, 30, 4, 0, 0, 0, NULL, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -5984,10 +6244,10 @@ INSERT INTO `user_bidcoupon_records` (`id`, `name`, `first_name`, `last_name`, `
 
 CREATE TABLE `user_bidcredit_rate` (
   `id` int(11) NOT NULL,
-  `credit_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `paid_credit` int(11) NOT NULL DEFAULT '0',
-  `free_credit` int(11) NOT NULL DEFAULT '0',
-  `active` smallint(1) NOT NULL DEFAULT '0'
+  `credit_rate` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `paid_credit` int(11) NOT NULL DEFAULT 0,
+  `free_credit` int(11) NOT NULL DEFAULT 0,
+  `active` smallint(1) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -5995,9 +6255,9 @@ CREATE TABLE `user_bidcredit_rate` (
 --
 
 INSERT INTO `user_bidcredit_rate` (`id`, `credit_rate`, `paid_credit`, `free_credit`, `active`) VALUES
-(25, '10.00', 20, 10, 1),
 (26, '20.00', 40, 20, 1),
-(27, '30.00', 60, 30, 1);
+(27, '30.00', 60, 30, 1),
+(33, '15.00', 16, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -6017,7 +6277,8 @@ CREATE TABLE `user_credits` (
 --
 
 INSERT INTO `user_credits` (`id`, `user_id`, `paid_credit`, `free_credit`) VALUES
-(1, 'UNI2-2020', 96, 0);
+(17, 'COD1-2022', 174, 200),
+(18, 'USR2-2022', 38, 100);
 
 -- --------------------------------------------------------
 
@@ -6029,8 +6290,8 @@ CREATE TABLE `user_emails` (
   `id` smallint(11) NOT NULL,
   `user_emails_type` varchar(60) DEFAULT NULL,
   `user_emails_subject` varchar(255) DEFAULT NULL,
-  `user_emails_body` text,
-  `status` tinyint(2) NOT NULL DEFAULT '0'
+  `user_emails_body` text DEFAULT NULL,
+  `status` tinyint(2) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -6047,9 +6308,12 @@ INSERT INTO `user_emails` (`id`, `user_emails_type`, `user_emails_subject`, `use
 (7, 'auction_lost', 'Auction Bid Update at [[SITENAME]]', '<p>Hello [[USERNAME]],<br />\n<br />\nThe auction for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] is now over.</p>\n\n<p>Unfortunately, your bid of [[BIDAMOUNT]] was not the winning bid.</p>\n\n<p>You may view all the bids for the auction on the results page at [[SITENAMELINK]].<br />\n<br />\nPlease bid on another [[SITENAMELINK]] auction for more chances to win name brand products at up to 98% off their retail value.<br />\n<br />\nThank you,<br />\nBid Administrator<br />\n<br />\nPlease do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
 (8, 'successful_unique_bid', 'Successful Unique Bid Placed at [[SITENAME]]', '<p>Hello [[USERNAME]],<br />\n<br />\nYour bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] was <span style=\"color:#a52a2a\">placed </span>successfully. Your bid was Unique but not the Lowest!<br />\n<br />\nPlease <strong>watch </strong>the bids in your account, as the status of your bids can change as new bids are placed by other members.<br />\n<br />\nThank you,<br />\nBid Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
 (9, 'successful_not_unique_bid', 'Successful Not Unique Bid Placed at [[SITENAME]]', '<p>Hello [[USERNAME]],</p>\n\n<p>Your bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] was placed successfully. Your bid was Not Unique, you can try your luck once again by placing different bid amount.</p>\n\n<p>Please watch the bids in your account, as the status of your bids can change as new bids are placed by other members.</p>\n\n<p>Thank you,<br />\nBid Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
-(10, 'successful_no_longer_unique_bid', 'Successful Bid No Longer Unique at [[SITENAME]]', '<p>Hello [[USERNAME]],</p>\n\n<p>Your bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] is no longer unique. Another member has just placed a bid for the same amount. Please bid again for another chance to win the [[AUCTIONNAMELINK]].</p>\n\n<p>Thank you,<br />\nBid Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 0),
-(11, 'auction_invoice', 'Auction Invoices from [[SITENAME]]', '<p>Dear [[USERNAME]],</p>\n\n<p>Thank you for your bids in our auction.</p>\n\n<p>Please find your proforma invoice enclosed. You can open the document with the program Acrobat Reader. The document is also available under &#34;My Account&#34; in &#34;Invoices&#34; on the website of [[SITENAME]].</p>\n\n<p>Payments</p>\n\n<p>We request that you transfer the total amount due to our account at the ___________ bank:</p>\n\n<p>* Account number: _____________</p>\n\n<p>* On behalf of: ___________.</p>\n\n<p>* IBAN:</p>\n\n<p>* BIC/SWIFT:</p>\n\n<p>* Reference number: [[invoice-number]]</p>\n\n<p>Please note that no transfers are made between banks on weekends (Friday from 16.00 hrs).</p>\n\n<p>We thank you for the confidence shown in our company.</p>\n\n<p>Yours sincerely,<br />\nAdministrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAME]].</p>\n', 1),
-(12, 'successful_unique_lowest_bid', 'Successful Lowest Unique Bid Placed at [[SITENAME]]', '<p>Hello [[USERNAME]],<br />\n<br />\nYour bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] was placed successfully. Your bid was Unique and Lowest! .<br />\n<br />\nPlease watch the bids in your account, as the status of your bids can change as new bids are placed by other members.<br />\n<br />\nThank you,<br />\nBid Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1);
+(10, 'successful_no_longer_unique_bid', 'Successful Bid No Longer Unique at [[SITENAME]]', '<p>Hello [[USERNAME]],</p>\n\n<p>Your bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] is no longer unique. Another member has just placed a bid for the same amount. Please bid again for another chance to win the [[AUCTIONNAMELINK]].</p>\n\n<p>Thank you,<br />\nBid Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
+(11, 'auction_invoice', 'Auction Invoices from [[SITENAME]]', '<p>Dear [[USERNAME]],</p>\n\n<p>Thank you for your bids in our auction.</p>\n\n<p>The document is also available under &#34;My Account&#34; in &#34;Invoices&#34; on the website of [[SITENAME]].</p>\n\n<p>Payments</p>\n\n<p>We request that you transfer the total amount due to our account at the ___________ bank:</p>\n\n<p>* Account number: _____________</p>\n\n<p>* On behalf of: ___________.</p>\n\n<p>* IBAN:</p>\n\n<p>* BIC/SWIFT:</p>\n\n<p>* Reference number: [[INVOICENO]]</p>\n\n<p>Please note that no transfers are made between banks on weekends (Friday from 16.00 hrs).</p>\n\n<p>We thank you for the confidence shown in our company.</p>\n\n<p>Yours sincerely,<br />\nAdministrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAME]].</p>\n', 1),
+(12, 'successful_unique_lowest_bid', 'Successful Lowest Unique Bid Placed at [[SITENAME]]', '<p>Hello [[USERNAME]],<br />\n<br />\nYour bid of [[BIDAMOUNT]] for the [[AUCTIONNAMELINK]] at [[SITENAMELINK]] was placed successfully. Your bid was Unique and Lowest! .<br />\n<br />\nPlease watch the bids in your account, as the status of your bids can change as new bids are placed by other members.<br />\n<br />\nThank you,<br />\nBid Administrator</p>\n\n<hr />\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].</p>\n', 1),
+(13, 'gift_coupon_email', 'You have received a gift coupon for [[sender]]', '<p>Dear [[name]],</p>\n\n<p>Lucky You!</p>\n\n<p>You have received a gift coupon for [[sender]] which can be used at [[sitename]].com</p>\n\n<p>Your special message says</p>\n\n<p>[[msg]]</p>\n\n<p>To redeem your coupon use the following coupon code in Buy Credit section of [[sitename]].com after you have logged on or set up an account.</p>\n\n<p>Cut and Paste this code: [[couponcode]] and then add the last 4 numbers of your mobile to activate</p>\n\n<p>Note that this voucher expires on [[expiredate]]</p>\n\n<p>Thank you,<br />\nCoupon Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].com</p>\n', 1),
+(14, 'bid_credits', 'You have purchased a credit offer plan [[PAID]] Paid Credits & [[FREE]] Free Credits', '<p>Dear [[NAME]],</p>\n\n<p>&#160;</p>\n\n<p>You have purchased a bid credit point for &#160;[[PAID]] Paid Credits &#38; [[FREE]] Free Credits which can be used at [[SITENAME]].com</p>\n\n<p>&#160;&#160;</p>\n\n<p>Thank you,<br />\nCoupon Administrator</p>\n\n<p>Please do not respond to this email address as it is not monitored. If you have a question, please use the contact us form at [[SITENAMELINK]].com</p>\n', 1),
+(15, 'reset_password', 'Reset Password', '<p>Hello [[USER_NAME]],</p>\n\n<p>To reset your password, please follow the [[LINK]].</p>\n\n<p>This link will be valid for 5 minutes only.</p>\n\n<p>&#160;</p>\n\n<p>Thank you<br />\nBid Administrator</p>\n', 1);
 
 -- --------------------------------------------------------
 
@@ -6060,14 +6324,15 @@ INSERT INTO `user_emails` (`id`, `user_emails_type`, `user_emails_subject`, `use
 CREATE TABLE `user_payment` (
   `id` int(11) NOT NULL,
   `user_id` varchar(15) NOT NULL DEFAULT '0',
-  `purchase_date` date NOT NULL DEFAULT '0000-00-00',
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `purchase_date` date DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `txn_id` varchar(60) DEFAULT NULL,
   `plan_id` int(11) DEFAULT NULL,
   `plan_type` varchar(10) NOT NULL,
   `paid_amount` decimal(10,2) DEFAULT NULL,
-  `paid_credit` int(11) NOT NULL DEFAULT '0',
-  `free_credit` int(11) NOT NULL DEFAULT '0'
+  `paid_credit` int(11) NOT NULL DEFAULT 0,
+  `free_credit` int(11) NOT NULL DEFAULT 0,
+  `paymentgateway_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -6081,6 +6346,14 @@ CREATE TABLE `user_referral` (
   `user_id` varchar(15) NOT NULL,
   `referral_id` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user_referral`
+--
+
+INSERT INTO `user_referral` (`id`, `user_id`, `referral_id`) VALUES
+(1, 'COD1-2022', ''),
+(2, 'USR2-2022', '0');
 
 -- --------------------------------------------------------
 
@@ -6099,13 +6372,13 @@ CREATE TABLE `user_register` (
   `mobile` varchar(16) NOT NULL DEFAULT '0',
   `country` char(2) NOT NULL,
   `ipaddress` varchar(20) DEFAULT NULL,
-  `newsletters` smallint(1) DEFAULT '1',
-  `activitystatus` smallint(1) DEFAULT '1',
-  `verified` smallint(1) DEFAULT '0',
-  `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `newsletters` smallint(1) DEFAULT 1,
+  `activitystatus` smallint(1) DEFAULT 1,
+  `verified` smallint(1) DEFAULT 0,
+  `reg_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `gender` varchar(10) DEFAULT NULL,
-  `active` smallint(1) NOT NULL DEFAULT '0',
-  `banned` smallint(1) DEFAULT '0',
+  `active` smallint(1) NOT NULL DEFAULT 0,
+  `banned` smallint(1) DEFAULT 0,
   `terms` smallint(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -6114,7 +6387,8 @@ CREATE TABLE `user_register` (
 --
 
 INSERT INTO `user_register` (`reg_id`, `user_id`, `first_name`, `last_name`, `user_name`, `email`, `password`, `mobile`, `country`, `ipaddress`, `newsletters`, `activitystatus`, `verified`, `reg_date`, `gender`, `active`, `banned`, `terms`) VALUES
-(2, 'UNI2-2020', 'pankaj', 'bains', 'R2dvNGFGdHEvbXJwcllKYmRIWlM0UT09', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', 'eVpJOENQREE0OSt1NXlMSVdQZnp6Zz09', '9868950850', 'AD', '::1', 1, 0, 0, '2020-04-03 03:03:00', NULL, 1, 0, 1);
+(1, 'COD1-2022', 'Pankaj', 'Bains', 'R2dvNGFGdHEvbXJwcllKYmRIWlM0UT09', 'WmtkcUtDTzJNRTY1cWtYNXZNeUVId2l4M09hSW53U3FSN3B5REtLcHM5VT0=', 'eVpJOENQREE0OSt1NXlMSVdQZnp6Zz09', '2269785447', 'CA', '::1', 1, 0, 0, '2022-10-03 20:01:22', 'Male', 1, 0, 0),
+(2, 'USR2-2022', 'De', 'Designs', 'OWZrTTJOVkhEejRyWHY5REdHK2pBZz09', 'K1B1ZThVeklDcFRLVmFCRkhBSVZUMnU3UDlnNytjcU9qQUpOUWQ0UGNzQT0=', 'eVpJOENQREE0OSt1NXlMSVdQZnp6Zz09', '2269785447', 'CA', '::1', 0, 1, 0, '2022-10-12 18:51:37', NULL, 1, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -6185,6 +6459,12 @@ ALTER TABLE `auction_media`
   ADD UNIQUE KEY `auct_id` (`img_id`);
 
 --
+-- Indexes for table `auction_wishlist`
+--
+ALTER TABLE `auction_wishlist`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `auction_won`
 --
 ALTER TABLE `auction_won`
@@ -6223,6 +6503,12 @@ ALTER TABLE `countrylanguage`
   ADD KEY `CountryCode` (`CountryCode`);
 
 --
+-- Indexes for table `manage_banner`
+--
+ALTER TABLE `manage_banner`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `manage_categories`
 --
 ALTER TABLE `manage_categories`
@@ -6244,9 +6530,21 @@ ALTER TABLE `manage_paymentgateway`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `manage_subscriber`
+--
+ALTER TABLE `manage_subscriber`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `manage_wallets`
 --
 ALTER TABLE `manage_wallets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_reset`
+--
+ALTER TABLE `password_reset`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -6336,13 +6634,13 @@ ALTER TABLE `admin_config_social`
 -- AUTO_INCREMENT for table `admin_users`
 --
 ALTER TABLE `admin_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `auction_bids`
 --
 ALTER TABLE `auction_bids`
-  MODIFY `bid_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `bid_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `auction_category`
@@ -6354,31 +6652,37 @@ ALTER TABLE `auction_category`
 -- AUTO_INCREMENT for table `auction_features`
 --
 ALTER TABLE `auction_features`
-  MODIFY `auct_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `auct_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `auction_invoice`
 --
 ALTER TABLE `auction_invoice`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `auction_items`
 --
 ALTER TABLE `auction_items`
-  MODIFY `auct_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `auct_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `auction_media`
 --
 ALTER TABLE `auction_media`
-  MODIFY `img_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `img_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `auction_wishlist`
+--
+ALTER TABLE `auction_wishlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `auction_won`
 --
 ALTER TABLE `auction_won`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `city`
@@ -6390,19 +6694,25 @@ ALTER TABLE `city`
 -- AUTO_INCREMENT for table `cms_pages`
 --
 ALTER TABLE `cms_pages`
-  MODIFY `cms_id` smallint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `cms_id` smallint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `config_currency`
 --
 ALTER TABLE `config_currency`
-  MODIFY `id` smallint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` smallint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `manage_banner`
+--
+ALTER TABLE `manage_banner`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `manage_categories`
 --
 ALTER TABLE `manage_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `manage_coupons`
@@ -6414,55 +6724,67 @@ ALTER TABLE `manage_coupons`
 -- AUTO_INCREMENT for table `manage_paymentgateway`
 --
 ALTER TABLE `manage_paymentgateway`
-  MODIFY `id` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `manage_subscriber`
+--
+ALTER TABLE `manage_subscriber`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `manage_wallets`
 --
 ALTER TABLE `manage_wallets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `password_reset`
+--
+ALTER TABLE `password_reset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_address`
 --
 ALTER TABLE `user_address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_affiliates`
 --
 ALTER TABLE `user_affiliates`
-  MODIFY `aff_id` smallint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `aff_id` smallint(2) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_bidcoupon_rate`
 --
 ALTER TABLE `user_bidcoupon_rate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `user_bidcoupon_records`
 --
 ALTER TABLE `user_bidcoupon_records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_bidcredit_rate`
 --
 ALTER TABLE `user_bidcredit_rate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `user_credits`
 --
 ALTER TABLE `user_credits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `user_emails`
 --
 ALTER TABLE `user_emails`
-  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user_payment`
@@ -6474,13 +6796,13 @@ ALTER TABLE `user_payment`
 -- AUTO_INCREMENT for table `user_referral`
 --
 ALTER TABLE `user_referral`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_register`
 --
 ALTER TABLE `user_register`
-  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `reg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

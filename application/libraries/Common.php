@@ -15,7 +15,7 @@
 		var $button_path = '';		// The path of the buttons
 		
 		 
-	
+		//https://github.com/Sanjeev-Singla/codeigniter-paypal-integration/tree/master/application
 		
 		function __construct()
 		{

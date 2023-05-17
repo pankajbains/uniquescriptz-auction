@@ -89,15 +89,18 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 			
 		}
 		
+
+		//Used on Common.php under library folder.
+		
 		public function send_email($emailto,$emailfrom,$name,$subject,$text,$replyto=null){
 					
 					$header="MIME-Version: 1.0\r\n";
 					$header.= "Content-type: text/html; charset=iso-8859-1\r\n";
 					$header.="From: ".$name." <".$emailfrom.">\r\n";
 					$header.= "Reply-To: ".$emailfrom. "\r\n";
-					//$mail = mail($emailto,$subject,$text,$header);
-					//return $mail;
-
+					$mail = mail($emailto,$subject,$text,$header);
+					return $mail;
+/*
 					$this->load->library('email'); // Note: no $config param needed
 					$this->email->from($emailfrom, $name);
 					$this->email->to($emailto);
@@ -111,8 +114,9 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
 					$result = $this->email->send();
 					return $result;
-
+*/
 		}
+
 
 
 
@@ -137,7 +141,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
 			 
 			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
-			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['username']);  
 			$sitenamenew= $this->config->item('sitename');
 			
 			$activeword = array("[[current_date]]","[[name]]","[[sender]]","[[sitename]]","[[msg]]", "[[couponcode]]", "[[expiredate]]","[[SITENAMELINK]]" );
@@ -156,7 +160,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 
 		public function buy_credit_email($content_record)
 		{
-	
+			
 			$emailcontent = $this->frontend_templates_m->emaildata('bid_credits');
 				 
 			$subjectold = $emailcontent['content_emails'][0]['user_emails_subject'];
@@ -170,7 +174,7 @@ require APPPATH.'third_party/MX/Dompdf/autoload.inc.php';
 			$emailto = $this->common->encrypt_decrypt('decrypt',$_SESSION['email']);
 			 
 			$sitelinknew="<a href='".base_url()."'>".base_url()."</a>"; 
-			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['user_name']);  
+			$sendername= $this->common->encrypt_decrypt('decrypt',$_SESSION['username']);  
 			$sitenamenew= $this->config->item('sitename');
 			
 			$activeword = array("[[NAME]]","[[SITENAME]]", "[[SITENAMELINK]]","[[PAID]]","[[FREE]]" );

@@ -23,7 +23,7 @@ date_default_timezone_set('Australia/Sydney');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:8080/pankajbains-codeigniter/';
+$config['base_url'] = 'http://localhost:8080/uniquescriptz-auction/';
 
 /*
 |--------------------------------------------------------------------------
@@ -560,8 +560,7 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['sitename'] = 'Codeigniter';//$_SERVER['HTTP_HOST'];
+$config['sitename'] = 'Unique Auction Script';//$_SERVER['HTTP_HOST'];
 
-
-// $config['stripe_key'] = 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP';
-// $config['stripe_secret'] = 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ';
+$config['stripe_key'] = 'pk_test_51Iac2XSJTrSMxFduNOgYiH04uUQPodd3JbjtIpWF5hyHrJcwn81XpVlKO1AYgu4YLg30wSQd75Okc6ZKdvWWGWV400qjCdEgXP';
+$config['stripe_secret'] = 'sk_test_51Iac2XSJTrSMxFduIRAj416XdQ3TIPJMWBtlmu0JQasH0ueUYfAPOoqv3krbPLQw7CAgaYEmEuo9dbOBip3RjRfC00noQGgMaQ';

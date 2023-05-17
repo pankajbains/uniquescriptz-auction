@@ -3,12 +3,12 @@
 // ------------------------------------------------------------------------
 // Paypal IPN Class
 // ------------------------------------------------------------------------
-
+// https://github.com/Sanjeev-Singla/codeigniter-paypal-integration/tree/master/application
 // Use PayPal on Sandbox or Live
 $config['sandbox'] = TRUE; // FALSE for live environment
 
 // PayPal Business Email ID
-$config['business'] = 'sb-pfrkt6187545@business.example.com';
+$config['business'] = 'sb-s5rf12347457@business.example.com';
 
 // If (and where) to log ipn to file
 $config['paypal_lib_ipn_log_file'] = BASEPATH . 'logs/paypal_ipn.log';
@@ -18,6 +18,6 @@ $config['paypal_lib_ipn_log'] = TRUE;
 $config['paypal_lib_button_path'] = 'buttons';
 
 // What is the default currency?
-$config['paypal_lib_currency_code'] = 'CAD';
+//$config['paypal_lib_currency_code'] = 'USD';
 
 ?>

@@ -334,12 +334,13 @@ class frontend_auctions_m extends CI_Model {
 
 		public function bidchart($auction){
 
-				$this->db->select('auction_bids.bid_price, count(*) as total, auction_bids.bid_status');
+				$this->db->select('*, COUNT( bid_price  ) total');
 				$this->db->from('auction_bids');
 				$wharray = array('auction_bids.auction_id'=>$auction);
 
 				$this->db->where($wharray);
 				$this->db->group_by('bid_price');
+				$this->db->having('total > 0');
 				$this->db->order_by('auction_bids.bid_price', 'ASC');
 				$query = $this->db->get();
 				//echo $this->db->last_query(); 
@@ -355,7 +356,7 @@ class frontend_auctions_m extends CI_Model {
 			$this->db->from('auction_bids');
 			$this->db->join('auction_items', 'auction_items.auction_id = auction_bids.auction_id');
 			$this->db->join('user_register', 'auction_bids.user_id = user_register.user_id');
-			$this->db->limit('50');
+			$this->db->limit('25');
 
 			if($user!=0){
 				$wharray = array('auction_bids.auction_id'=>$auction, 'bid_status !='=>'2');
@@ -410,7 +411,7 @@ class frontend_auctions_m extends CI_Model {
 
 				$this->db->join('auction_media', 'auction_items.auction_id = auction_media.auction_id');
 
-				//$this->db->where($whereitem);
+				$this->db->where($whereitem);
 				$this->db->limit(4, 0);
 				$this->db->order_by('rand()');
 				$query = $this->db->get();
@@ -751,7 +752,6 @@ class frontend_auctions_m extends CI_Model {
 						
 					}
 					
-
 					// get  min and max bid from auciton bids 
 					$site['config_type']="site_settings";
 
@@ -874,7 +874,7 @@ class frontend_auctions_m extends CI_Model {
 
 					$mailwon = 1;//$this->common->send_email($this->common-encrypt_decrypt('decrypt',$user_won_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
 
-					/* ----------------- Mail to Auction Not Won ----------------- */
+					/* ----------------- Mail to Auction Not Won ----------------- 
 
 					$this->db->distinct();
 					$this->db->select('auction_bids.user_id');
@@ -897,7 +897,7 @@ class frontend_auctions_m extends CI_Model {
 							$user_lose_result = $query->result_array();
 							
 
-							/*-------- Send Lose Bids Email -----------------*/
+							/*-------- Send Lose Bids Email -----------------
 
 							$emailcontent = $this->frontend_templates_m->emaildata('auction_lost');
 							//var_dump($emailcontent);
@@ -923,9 +923,9 @@ class frontend_auctions_m extends CI_Model {
 							$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
 
 							$maillose = 1; //$this->common->send_email($this->common-encrypt_decrypt('decrypt', $user_lose_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+							
 
-
-					}
+					}*/
 					
 
 					if($mailwon){
@@ -974,7 +974,7 @@ class frontend_auctions_m extends CI_Model {
 			if($auction_invoice_count>0){
 				
 				foreach ($query->result_array() as $auction_invoice){
-					
+					//var_dump($auction_invoice);
 					$this->db->select('*');
 					$this->db->from('user_register');
 					$wharray = array('user_id' => $auction_invoice['user_id']);
@@ -983,7 +983,7 @@ class frontend_auctions_m extends CI_Model {
 				 
 					$user_count = $query->num_rows();
 					$user_invoice_result = $query->result_array();
-
+					//var_dump($user_invoice_result);
 					/*-------- Send Invoice Email -----------------*/
 
 					$emailcontent = $this->frontend_templates_m->emaildata('auction_invoice');
@@ -1001,7 +1001,7 @@ class frontend_auctions_m extends CI_Model {
 					// $auctionlink="<a href='".base_url()."/product/".str_replace(' ','-',$auction_invoice['auction_name'])."/".$auction_invoice['auction_id']."'>".$auction_invoice['auction_name']."</a>";
 
 					// $bidamount= $auction_invoice['invoice_amount'];
-					$invoice_no = 'UIN'.$auction_invoice['id'].'-'.date('y');
+					$invoice_no = strtoupper(substr($this->config->item('sitename'), 0, 3)).$auction_invoice['id'].date('m').'-'.date('Y');
 					
 					$sitenamenew=$this->config->item('sitename');
 
@@ -1046,7 +1046,7 @@ class frontend_auctions_m extends CI_Model {
 						<tr>
 							<td>'.$auction_invoice['auction_name'].'/'.$auction_invoice['auction_id'].'</td>
 							<td>'.$username.'</td>
-							<td>'.$this->common->encrypt_decrypt('decrypt',$auction_invoice['email']).'</td>
+							<td>'.$this->common->encrypt_decrypt('decrypt',$user_invoice_result[0]['email']).'</td>
 							<td>'.$invoice_no.'</td>
 							<td>'.$auction_invoice["invoice_amount"].'</td>
 						</tr>
@@ -1055,7 +1055,7 @@ class frontend_auctions_m extends CI_Model {
 						</table>
 					   	</div>
 					</br></br></br></br></br>
-					'.$user_details2.'  
+					'.$user_details.'  
 					';
 
 
@@ -1074,7 +1074,7 @@ class frontend_auctions_m extends CI_Model {
 					// $this->pdf->setPaper('A4','portrait');//landscape 
 					// $pdf_name = "invoice".$invoice_no."pdf";
 					// $domdpf = $this->pdf->stream($pdf_name, array('Attachment'=>false));  
-					$mailinvoice = $this->common->send_email($this->common->encrypt_decrypt('decrypt', $user_invoice_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
+					$mailinvoice = 1;//$this->common->send_email($this->common->encrypt_decrypt('decrypt', $user_invoice_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew);
 					 
 					if($mailinvoice  != false){
  

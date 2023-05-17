@@ -47,7 +47,7 @@ class home_m extends CI_Model {
 				
 				$pass= array('admin_password' => md5($data['password']), 'admin_cpassword' => md5($data['cpassword']));
 				$this->db->where($wharray);
-				$query=$this->db->update('admin_users', $pass);
+			//	$query=$this->db->update('admin_users', $pass);
 
 				session_destroy();
 				//$this->session->sess_destroy();
@@ -244,21 +244,21 @@ class home_m extends CI_Model {
 						if($data['headerlogo']!=''){
 							$this->db->where('config_type ', $data['config_type']);
 							$query=$this->db->update('admin_config_app', $datalogo);
-							var_dump($datalogo);
+							//var_dump($datalogo);
 						}
 
 						if($data['stickylogo']!=''){
 							$this->db->where('config_type ', $data['config_type']);
 							$query=$this->db->update('admin_config_app', $datasticky);
 
-							var_dump($this->db->last_query());
+							//var_dump($this->db->last_query());
 						}
 
 						if($data['favicon']!=''){
 							$this->db->where('config_type', $data['config_type']);
 							$query=$this->db->update('admin_config_app', $datafav);
 
-							var_dump($this->db->last_query());
+							//var_dump($this->db->last_query());
 						}
 
 

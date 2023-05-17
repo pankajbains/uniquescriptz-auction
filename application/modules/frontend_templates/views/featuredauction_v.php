@@ -12,7 +12,9 @@
         line-height: 1;
         -webkit-font-smoothing: antialiased;
     }
-    
+    .slick-slide{
+        position: inherit !important;
+    }
 </style>
 <?php
 

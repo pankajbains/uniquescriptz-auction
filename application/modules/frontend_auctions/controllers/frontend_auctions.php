@@ -136,7 +136,6 @@ class Frontend_auctions extends Frontend_Controller {
 					$dataprovider[] = '{"Bid": "'.($content_bids[$i]['bid_price']+$randvalue).'","Between":"$'.($content_bids[$i]['bid_price']-$randvalueneg).' - $'.($content_bids[$i]['bid_price']+$randvalueplus).'","message": "'.$msg.'","value":'.$content_bids[$i]['total'].'}';
 				}
 				
-				
 
 				$datagraph = (count($content_bids)>0)?implode(',',$dataprovider):'';
 				echo $datagraph;
@@ -225,8 +224,8 @@ class Frontend_auctions extends Frontend_Controller {
 			$textnew = str_replace($activeword, $replacedword, $text);
 			$subject = str_replace('[[SITENAME]]', $sitenamenew, $subjectold);
 			
-			//$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
-			 $mail = 1;
+			$mail = $this->send_email($this->common->encrypt_decrypt('decrypt',$user_result[0]['email']),$emailfrom,$sitenamenew,$subject,$textnew,$replyto);
+			// $mail = 1;
 			if($mail){
 				echo 'You Bid of amount <strong>'.$this->frontend_templates->convert_currency_price('currency_price',$_POST['bid_price']).'</strong> placed successfully. It was '.$placebid[2].'.-success-'.$placebid[2];
 			}
@@ -249,7 +248,7 @@ class Frontend_auctions extends Frontend_Controller {
 	{
 
 		$closeitem=$this->frontend_auctions_m->close_now();
-		//var_dump($closeitem);
+		var_dump($closeitem);
 
 	}
 

@@ -97,7 +97,7 @@ $(document).ready(function () {
 							if (html!='') {
 
 								var msg = html.split("-"); 
-								console.log(html); 
+								//console.log(msg[0]+msg[1]); 
 
 								if(msg[1]=='success'){
 
@@ -120,23 +120,17 @@ $(document).ready(function () {
 
 									}
 									 
-								
 									prod_desc(auction_id);
 									//latest(bid_id,regid);
 									//proditem(bid_id,regid);
 
 								}else{
-
 									$("#success").removeClass("alert-success").addClass("alert-danger");
-
 								}
 
 								$('#success').html(msg[0]);
 								$('#success').show().delay(2000).fadeOut();
 								
-
-
-
 							}
 							
 						}
