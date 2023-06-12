@@ -23,7 +23,7 @@ date_default_timezone_set('Australia/Sydney');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:8080/uniquescriptz-auction/';
+$config['base_url'] = 'http://uniquescriptzdemo.com/uniquescriptz-auction-v20/';
 
 /*
 |--------------------------------------------------------------------------
@@ -409,7 +409,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'pop_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = "C:/xampp/tmp";
+$config['sess_save_path'] = "/tmp";
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
